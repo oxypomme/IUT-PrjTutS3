@@ -25,3 +25,6 @@ yarn-error.log*
 #VS Code
 /.vscode
 .eslintcache
+
+# Folder icon
+desktop.ini
