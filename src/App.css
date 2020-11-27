@@ -5,6 +5,7 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+  filter: hue-rotate(-50deg);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -23,7 +24,7 @@
 }
 
 .App-link {
-  color: rgb(112, 76, 182);
+  color: rgb(35, 100, 174);
 }
 
 @keyframes App-logo-float {
