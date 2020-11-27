@@ -1,8 +1,13 @@
 import React from 'react';
+
 import logo from '../../logo.svg';
-import { Counter } from '../../features/counter/Counter';
 import '../../App.css';
+
+import { Counter } from '../../features/counter/Counter';
 import { Navbar } from '../../features/navbar/Navbar';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
 export function Home(): JSX.Element {
     return (
@@ -12,8 +17,10 @@ export function Home(): JSX.Element {
                 <div className="App-header">
                     <img src={logo} className="App-logo" alt="logo" />
                     <Counter />
+
                     <p>
-                        Edit <code>src/App.js</code> and save to reload.
+                        Edit <code>src/App.js</code> and save to reload. <br />
+                        Prepare the <FontAwesomeIcon icon={faCoffee} /> coffee !
                     </p>
                     <span>
                         <span>Learn </span>
