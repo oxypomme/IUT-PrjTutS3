@@ -13,13 +13,13 @@ import './App.css';
 function App(): JSX.Element {
   return (
     <Router>
+      <Navbar />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/signin" component={SignIn} />
         <Route exact path="/signup" component={SignUp} />
         <Route component={NotFound} />
       </Switch>
-      <Navbar />
     </Router>
   );
 }

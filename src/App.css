@@ -1,3 +1,17 @@
+:root{
+  --accent1: #FD6C9E;
+  --accent2: #02A1CC;
+  --background1: #D3D3D3;
+  --background2: #ffffff;
+  background: var(--background1);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .App {
   text-align: center;
 }
@@ -23,7 +37,7 @@
 }
 
 .App-link {
-  color: rgb(35, 100, 174);
+  color: var(--accent2);
 }
 
 @keyframes App-logo-float {

@@ -1,0 +1,54 @@
+.sign-app{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.sign-app label{
+    display: none;
+}
+
+.sign-app input[type="text"],
+.sign-app input[type="password"] {
+    border: none;
+    margin: 0 5px 0 10px;
+    outline: 0;
+    height: 100%;
+    background-color: transparent;
+}
+
+.sign-app input[type="submit"]{
+    margin-top: 10px;
+    width: 220px;
+    height: 32px;
+    background-color: var(--accent1);
+    border: none;
+    border-radius: 5px;
+    outline: 0;
+}
+
+.sign-app input[type="submit"]:hover{
+    /*TODO: Style on hover*/
+}
+
+.sign-app input[type="submit"]:focus{
+    /*TODO: Style on click*/
+}
+
+.sign-textbox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: 0;
+    width: 200px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    background: var(--background2);
+}
+
+.sign-textbox:not(:last-child){
+    border-bottom: none;
+}
