@@ -1,4 +1,4 @@
-.sign-app{
+.signin-app{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,12 +6,12 @@
     height: 100vh;
 }
 
-.sign-app label{
+.signin-app label{
     display: none;
 }
 
-.sign-app input[type="text"],
-.sign-app input[type="password"] {
+.signin-app input[type="text"],
+.signin-app input[type="password"] {
     border: none;
     margin: 0 5px 0 10px;
     outline: 0;
@@ -19,7 +19,7 @@
     background-color: transparent;
 }
 
-.sign-app input[type="submit"]{
+.signin-app input[type="submit"]{
     margin-top: 10px;
     width: 220px;
     height: 32px;
@@ -29,11 +29,11 @@
     outline: 0;
 }
 
-.sign-app input[type="submit"]:hover{
+.signin-app input[type="submit"]:hover{
     /*TODO: Style on hover*/
 }
 
-.sign-app input[type="submit"]:focus{
+.signin-app input[type="submit"]:focus{
     /*TODO: Style on click*/
 }
 
