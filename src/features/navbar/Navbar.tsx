@@ -10,6 +10,7 @@ export function Navbar(): JSX.Element {
                 <li><img src={logo} className={styles.navlogo} alt="logo" /></li>
                 <li><Link to="/">Accueil</Link></li>
                 <li className={styles.navfloat}><Link to="/login">Connexion</Link></li>
+                <li className={styles.navfloat}><Link to="/camera">Test caméra</Link></li>
             </ul>
         </nav >
     );

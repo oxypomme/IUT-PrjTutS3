@@ -5,6 +5,7 @@ import { Navbar } from './features/navbar/Navbar';
 
 import { Home } from './views/Home/Home';
 import { Login } from './views/Login/Login';
+import { Camera } from './../src/features/camera/Camera';
 import { NotFound } from './views/NotFound/NotFound';
 
 import './App.css';
@@ -16,6 +17,7 @@ function App(): JSX.Element {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
+        <Route exact path="/camera" component={Camera} />
         <Route component={NotFound} />
       </Switch>
     </Router>
