@@ -6,5 +6,9 @@
 }
 
 .App.login > * {
-    margin: 100px;
+    padding: 100px;
+}
+
+.App.login > :first-child {
+    border-right: 1px solid var(--background2);
 }
