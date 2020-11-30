@@ -5,7 +5,6 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
-  filter: hue-rotate(-50deg);
 }
 
 @media (prefers-reduced-motion: no-preference) {

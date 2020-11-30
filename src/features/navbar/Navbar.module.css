@@ -28,7 +28,6 @@
 .navlogo{
     height: 32px;
     padding: 8px 8px 0px 16px;
-    filter: hue-rotate(-50deg);
 }
 
 .navfloat{
