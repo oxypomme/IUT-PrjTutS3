@@ -8,10 +8,9 @@ export function Navbar(): JSX.Element {
         <nav className={styles.navbar}>
             <ul className={styles.navlist}>
                 <li><img src={logo} className={styles.navlogo} alt="logo" /></li>
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/news">News</Link></li>
-                <li><Link to="/contact">Contact</Link></li>
-                <li className={styles.navfloat}><Link to="/about">About</Link></li>
+                <li><Link to="/">Accueil</Link></li>
+                <li className={styles.navfloat}><Link to="/signin">Connexion</Link></li>
+                <li className={styles.navfloat}><Link to="/signup">Inscription</Link></li>
             </ul>
         </nav >
     );

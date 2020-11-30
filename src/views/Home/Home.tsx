@@ -4,7 +4,6 @@ import logo from '../../logo.svg';
 import '../../App.css';
 
 import { Counter } from '../../features/counter/Counter';
-import { Navbar } from '../../features/navbar/Navbar';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
@@ -13,7 +12,6 @@ export function Home(): JSX.Element {
     return (
         <div className="App">
             <header>
-                <Navbar />
                 <div className="App-header">
                     <img src={logo} className="App-logo" alt="logo" />
                     <Counter />
