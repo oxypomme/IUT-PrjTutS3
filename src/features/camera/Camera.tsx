@@ -1,16 +1,16 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import styles from './Camera.module.css';
 
 export function Camera(): JSX.Element {
-  const dispatch = useDispatch();
-
+  // const dispatch = useDispatch();
   const snap = () => {
     const canvas = document.querySelector<HTMLCanvasElement>('#canvas');
     const video = document.querySelector<HTMLVideoElement>('#video');
-    if (canvas != null && video != null) {
-      // canvas.getContext('2d')?.drawImage(video, 0, 0, 640, 480);
-      dispatch(canvas.getContext('2d')?.drawImage(video, 0, 0, 640, 480));
+    const images = document.querySelector<HTMLVideoElement>('#images');
+    if (canvas != null && video != null && images != null) {
+      canvas.getContext('2d')?.drawImage(video, 0, 0, 640, 480);
+      images.insertAdjacentHTML('beforeend', '<img src=' + canvas.toDataURL() + ' style="width: 320px; height: 240px;"></img>');
     }
   }
 
@@ -29,8 +29,10 @@ export function Camera(): JSX.Element {
     <div>
       <div className={styles.container}>
         <video id="video" width="640" height="480" className={styles.video}></video>
-        <button id="snap" onClick={() => dispatch(snap())}>Snap Photo</button>
-        <canvas id="canvas" width="640" height="480" className={styles.video}></canvas>
+        <button id="snap" onClick={() => snap()}>Snap Photo</button>
+        <canvas id="canvas" width="640" height="480" className={styles.canvas}></canvas>
+        <div id="images">
+        </div>
       </div>
     </div>
   );
