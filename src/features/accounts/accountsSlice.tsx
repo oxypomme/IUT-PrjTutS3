@@ -15,20 +15,22 @@ export class User {
 export const accountsSlice = createSlice({
     name: 'accounts',
     initialState: {
-        value: new Array(0)
+        value: new Array<User>()
     },
     reducers: {
         addUser: (state, action) => {
-            state.value.push(action.payload);
+            const user: User = JSON.parse(action.payload);
+            state.value.push(user);
         },
         removeUser: (state, action) => {
-            state.value.splice(action.payload);
+            const id: number = action.payload;
+            state.value.splice(id);
         }
     }
 });
 
 export const { addUser } = accountsSlice.actions;
 
-export const selectUsers = (state: any) => state.accounts.value;
+export const selectUsers = (state: any): User[] => state.accounts.value;
 
 export default accountsSlice.reducer;

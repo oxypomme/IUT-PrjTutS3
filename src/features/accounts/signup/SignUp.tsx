@@ -1,10 +1,9 @@
 import React, { Dispatch, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import {
     User,
     addUser,
-    selectUsers
 } from '../accountsSlice';
 
 import styles from './SignUp.module.css';
@@ -14,19 +13,19 @@ import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 
 function onSubmit(dispatch: Dispatch<unknown>, username: string, mail: string, passwd: string): void {
     //TODO: Vérification des données
+    //TODO: Clear fields
     dispatch(addUser(JSON.stringify(new User(username, mail, passwd))))
 }
 
 export function SignUp(): JSX.Element {
     const dispatch = useDispatch();
-    //const users = useSelector(selectUsers);
 
     const [username, setUsername] = useState('');
     const [mail, setMail] = useState('');
     const [passwd, setPasswd] = useState('');
 
     return (
-        <form>
+        <div>
             <div className={styles.textbox}>
                 <FontAwesomeIcon icon={faUser} />
                 <input
@@ -84,6 +83,6 @@ export function SignUp(): JSX.Element {
             >
                 Inscription
             </button>
-        </form>
+        </div>
     );
 }
