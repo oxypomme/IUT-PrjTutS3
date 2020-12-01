@@ -1,4 +1,4 @@
-import React, { Dispatch, useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import {
@@ -11,7 +11,7 @@ import styles from './SignUp.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 
-function onSubmit(dispatch: Dispatch<unknown>): void {
+function onSubmit(): User | null {
     const username = document.getElementById("r-username") as HTMLInputElement | null;
     const mail = document.getElementById("r-email") as HTMLInputElement | null;
     const passwd = document.getElementById("r-passwd") as HTMLInputElement | null;
@@ -28,23 +28,20 @@ function onSubmit(dispatch: Dispatch<unknown>): void {
             // TODO: check if email is really an email
             // Check if the password confirmation is true
             if (passwd?.value === passwdconf?.value) {
-                // Create the user
-                dispatch(addUser(JSON.stringify(new User(username.value, mail.value, passwd.value))))
-
                 // Reset form
                 username.value = "";
                 mail.value = "";
                 passwd.value = "";
                 passwdconf.value = "";
 
-                // Action when registered
-                console.log("registred");
+                return new User(username.value, mail.value, passwd.value);
             } else
                 alert("Les mots de passes ne correspondent pas.");
         else
             alert("Au moins un champ est nul.");
     else
         alert("Un des champs n'a pas été trouvé.");
+    return null;
 }
 
 export function SignUp(): JSX.Element {
@@ -112,7 +109,14 @@ export function SignUp(): JSX.Element {
 
             <button
                 className={styles.submit}
-                onClick={() => onSubmit(dispatch)}
+                onClick={() => {
+                    const user = onSubmit();
+                    if (user) {
+                        dispatch(addUser(JSON.stringify(user)));
+                        // Action when registered
+                        console.log("registred");
+                    }
+                }}
             >
                 Inscription
             </button>
