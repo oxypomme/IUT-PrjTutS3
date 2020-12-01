@@ -48,3 +48,7 @@
 .spacer{
     margin: 10px;
 }
+
+.errorfield{
+    border: 2px solid red !important;
+}

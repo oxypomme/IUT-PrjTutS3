@@ -11,18 +11,44 @@ import styles from './SignUp.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 
-function onSubmit(dispatch: Dispatch<unknown>, username: string, mail: string, passwd: string): void {
-    //TODO: Vérification des données
-    //TODO: Clear fields
-    dispatch(addUser(JSON.stringify(new User(username, mail, passwd))))
+function onSubmit(dispatch: Dispatch<unknown>): void {
+    const username = document.getElementById("u-username") as HTMLInputElement | null;
+    const mail = document.getElementById("u-email") as HTMLInputElement | null;
+    const passwd = document.getElementById("u-passwd") as HTMLInputElement | null;
+    const passwdconf = document.getElementById("u-passwdconf") as HTMLInputElement | null;
+
+    // Check if elements are found
+    if (username && mail && passwd && passwdconf)
+        // Check if values are not null or empty
+        if ((typeof username.value != 'undefined' && username.value)
+            && (typeof mail.value != 'undefined' && mail.value)
+            && (typeof passwd.value != 'undefined' && passwd.value)
+            && (typeof passwdconf.value != 'undefined' && passwdconf.value))
+            // TODO: password strength bar
+            // TODO: check if email is really an email
+            // Check if the password confirmation is true
+            if (passwd?.value === passwdconf?.value) {
+                // Create the user
+                dispatch(addUser(JSON.stringify(new User(username.value, mail.value, passwd.value))))
+
+                // Reset form
+                username.value = "";
+                mail.value = "";
+                passwd.value = "";
+                passwdconf.value = "";
+
+                // Action when registered
+                console.log("registred");
+            } else
+                alert("Les mots de passes ne correspondent pas.");
+        else
+            alert("Au moins un champ est nul.");
+    else
+        alert("Un des champs n'a pas été trouvé.");
 }
 
 export function SignUp(): JSX.Element {
     const dispatch = useDispatch();
-
-    const [username, setUsername] = useState('');
-    const [mail, setMail] = useState('');
-    const [passwd, setPasswd] = useState('');
 
     return (
         <div>
@@ -30,9 +56,9 @@ export function SignUp(): JSX.Element {
                 <FontAwesomeIcon icon={faUser} />
                 <input
                     type="text"
+                    id="u-username"
                     name="username"
                     placeholder="Nom d'utilisateur"
-                    onChange={event => setUsername(event.target.value)}
                 />
                 <label
                     className={styles.label}
@@ -47,9 +73,9 @@ export function SignUp(): JSX.Element {
                 <FontAwesomeIcon icon={faUser} />
                 <input
                     type="email"
+                    id="u-email"
                     name="email"
                     placeholder="Addresse mail"
-                    onChange={event => setMail(event.target.value)}
                 />
                 <label className={styles.label} htmlFor="email">Email</label>
             </div>
@@ -60,9 +86,9 @@ export function SignUp(): JSX.Element {
                 <FontAwesomeIcon icon={faLock} />
                 <input
                     type="password"
+                    id="u-passwd"
                     name="passwd"
                     placeholder="Mot de passe"
-                    onChange={event => setPasswd(event.target.value)}
                 />
                 <label className={styles.label} htmlFor="passwd">Password</label>
             </div>
@@ -70,16 +96,23 @@ export function SignUp(): JSX.Element {
                 <FontAwesomeIcon icon={faLock} />
                 <input
                     type="password"
+                    id="u-passwdconf"
                     name="passwdconf"
                     placeholder="Mot de passe"
-                    onChange={event => { console.log("todo"); /*TODO: check if same as passwd*/ }}
+                    onChange={event => {
+                        const passwd = document.getElementById("u-passwd") as HTMLInputElement;
+                        if (passwd && passwd.value != event.target.value)
+                            event.target.parentElement?.classList.add(styles.errorfield);
+                        else
+                            event.target.parentElement?.classList.remove(styles.errorfield);
+                    }}
                 />
                 <label className={styles.label} htmlFor="passwdconf">Password</label>
             </div>
 
             <button
                 className={styles.submit}
-                onClick={() => onSubmit(dispatch, username, mail, passwd)}
+                onClick={() => onSubmit(dispatch)}
             >
                 Inscription
             </button>
