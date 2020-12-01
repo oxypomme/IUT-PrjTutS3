@@ -25,6 +25,10 @@ function onSubmit(users: User[]) {
             for (let index = 0; index < users.length; index++) {
                 const user: User = users[index];
                 if (user.name == username.value && user.passwd == passwd.value) {
+                    // Reset form
+                    username.value = "";
+                    passwd.value = "";
+
                     // Action when logged
                     console.log("I'm in !");
                 }
