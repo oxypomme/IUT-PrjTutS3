@@ -12,10 +12,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 
 function onSubmit(dispatch: Dispatch<unknown>): void {
-    const username = document.getElementById("u-username") as HTMLInputElement | null;
-    const mail = document.getElementById("u-email") as HTMLInputElement | null;
-    const passwd = document.getElementById("u-passwd") as HTMLInputElement | null;
-    const passwdconf = document.getElementById("u-passwdconf") as HTMLInputElement | null;
+    const username = document.getElementById("r-username") as HTMLInputElement | null;
+    const mail = document.getElementById("r-email") as HTMLInputElement | null;
+    const passwd = document.getElementById("r-passwd") as HTMLInputElement | null;
+    const passwdconf = document.getElementById("r-passwdconf") as HTMLInputElement | null;
 
     // Check if elements are found
     if (username && mail && passwd && passwdconf)
@@ -56,7 +56,7 @@ export function SignUp(): JSX.Element {
                 <FontAwesomeIcon icon={faUser} />
                 <input
                     type="text"
-                    id="u-username"
+                    id="r-username"
                     name="username"
                     placeholder="Nom d'utilisateur"
                 />
@@ -73,7 +73,7 @@ export function SignUp(): JSX.Element {
                 <FontAwesomeIcon icon={faUser} />
                 <input
                     type="email"
-                    id="u-email"
+                    id="r-email"
                     name="email"
                     placeholder="Addresse mail"
                 />
@@ -86,7 +86,7 @@ export function SignUp(): JSX.Element {
                 <FontAwesomeIcon icon={faLock} />
                 <input
                     type="password"
-                    id="u-passwd"
+                    id="r-passwd"
                     name="passwd"
                     placeholder="Mot de passe"
                 />
@@ -96,11 +96,11 @@ export function SignUp(): JSX.Element {
                 <FontAwesomeIcon icon={faLock} />
                 <input
                     type="password"
-                    id="u-passwdconf"
+                    id="r-passwdconf"
                     name="passwdconf"
                     placeholder="Mot de passe"
                     onChange={event => {
-                        const passwd = document.getElementById("u-passwd") as HTMLInputElement;
+                        const passwd = document.getElementById("r-passwd") as HTMLInputElement;
                         if (passwd && passwd.value != event.target.value)
                             event.target.parentElement?.classList.add(styles.errorfield);
                         else

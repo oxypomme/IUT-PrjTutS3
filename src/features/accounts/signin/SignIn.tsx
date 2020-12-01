@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import {
@@ -11,21 +11,29 @@ import styles from './SignIn.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 
-function onSubmit(users: User[], username: string, passwd: string) {
-    for (let index = 0; index < users.length; index++) {
-        const user: User = users[index];
-        if (user.name == username && user.passwd == passwd) {
-            console.log("I'm in !");
-            //TODO: action on logged
+function onSubmit(users: User[]) {
+    const username = document.getElementById("r-username") as HTMLInputElement | null;
+    const passwd = document.getElementById("r-passwd") as HTMLInputElement | null;
+
+    // Check if elements are found
+    if (username && passwd)
+        // Check if values are not null or empty
+        if ((typeof username.value != 'undefined' && username.value)
+            && (typeof passwd.value != 'undefined' && passwd.value)) {
+            // TODO: CHANGE THAT PIECE OF ***** FOR GOD SAKE
+            // Check if the username and the passwords match
+            for (let index = 0; index < users.length; index++) {
+                const user: User = users[index];
+                if (user.name == username.value && user.passwd == passwd.value) {
+                    // Action when logged
+                    console.log("I'm in !");
+                }
+            }
         }
-    }
 }
 
 export function SignIn(): JSX.Element {
     const users = useSelector(selectUsers, shallowEqual);
-
-    const [username, setUsername] = useState('');
-    const [passwd, setPasswd] = useState('');
 
     return (
         <div>
@@ -33,9 +41,8 @@ export function SignIn(): JSX.Element {
                 <FontAwesomeIcon icon={faUser} />
                 <input
                     type="text"
-                    name="username"
+                    name="l-username"
                     placeholder="Nom d'utilisateur"
-                    onChange={event => setUsername(event.target.value)}
                 />
                 <label className={styles.label} htmlFor="username">Username</label>
             </div>
@@ -43,15 +50,14 @@ export function SignIn(): JSX.Element {
                 <FontAwesomeIcon icon={faLock} />
                 <input
                     type="password"
-                    name="passwd"
+                    name="l-passwd"
                     placeholder="Mot de passe"
-                    onChange={event => setPasswd(event.target.value)}
                 />
                 <label className={styles.label} htmlFor="passwd">Password</label>
             </div>
             <button
                 className={styles.submit}
-                onClick={() => onSubmit(users, username, passwd)}
+                onClick={() => onSubmit(users)}
             >
                 Connexion
             </button>
