@@ -17,6 +17,7 @@ function App(): JSX.Element {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
+        <Route exact path="/profile" component={NotFound} />
         <Route exact path="/camera" component={Camera} />
         <Route component={NotFound} />
       </Switch>
