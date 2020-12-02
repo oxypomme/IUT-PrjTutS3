@@ -15,29 +15,22 @@ function onSubmit(): User | null {
     const username = document.getElementById("r-username") as HTMLInputElement | null;
     const mail = document.getElementById("r-email") as HTMLInputElement | null;
     const passwd = document.getElementById("r-passwd") as HTMLInputElement | null;
-    const passwdconf = document.getElementById("r-passwdconf") as HTMLInputElement | null;
 
     // Check if elements are found
-    if (username && mail && passwd && passwdconf)
+    if (username && mail && passwd)
         // Check if values are not null or empty
+        // TODO: password strength bar
+        // TODO: check if email is really an email
         if ((typeof username.value != 'undefined' && username.value)
             && (typeof mail.value != 'undefined' && mail.value)
-            && (typeof passwd.value != 'undefined' && passwd.value)
-            && (typeof passwdconf.value != 'undefined' && passwdconf.value))
-            // TODO: password strength bar
-            // TODO: check if email is really an email
-            // Check if the password confirmation is true
-            if (passwd?.value === passwdconf?.value) {
-                // Reset form
-                username.value = "";
-                mail.value = "";
-                passwd.value = "";
-                passwdconf.value = "";
+            && (typeof passwd.value != 'undefined' && passwd.value)) {
+            // Reset form
+            username.value = "";
+            mail.value = "";
+            passwd.value = "";
 
-                return new User(username.value, mail.value, passwd.value);
-            } else
-                alert("Les mots de passes ne correspondent pas.");
-        else
+            return new User(username.value, mail.value, passwd.value);
+        } else
             alert("Au moins un champ est nul.");
     else
         alert("Un des champs n'a pas été trouvé.");
@@ -88,23 +81,6 @@ export function SignUp(): JSX.Element {
                     placeholder="Mot de passe"
                 />
                 <label className={styles.label} htmlFor="passwd">Password</label>
-            </div>
-            <div className={styles.textbox}>
-                <FontAwesomeIcon icon={faLock} />
-                <input
-                    type="password"
-                    id="r-passwdconf"
-                    name="passwdconf"
-                    placeholder="Mot de passe"
-                    onChange={event => {
-                        const passwd = document.getElementById("r-passwd") as HTMLInputElement;
-                        if (passwd && passwd.value != event.target.value)
-                            event.target.parentElement?.classList.add(styles.errorfield);
-                        else
-                            event.target.parentElement?.classList.remove(styles.errorfield);
-                    }}
-                />
-                <label className={styles.label} htmlFor="passwdconf">Password</label>
             </div>
 
             <button
