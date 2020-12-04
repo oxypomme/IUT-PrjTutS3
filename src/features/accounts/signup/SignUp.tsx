@@ -14,7 +14,7 @@ const Label = styled.label`
     display: none;
 `;
 
-const Spacer = styled.label`
+const Spacer = styled.div`
     margin: 10px;
 `;
 
@@ -75,7 +75,7 @@ const SignUp = (): JSX.Element => {
           placeholder='Mot de passe'
         />
         <Label htmlFor='passwd'>
-          Password
+        Password
         </Label>
       </div>
       <div
@@ -92,7 +92,7 @@ const SignUp = (): JSX.Element => {
           placeholder='Mot de passe'
         />
         <Label htmlFor='passwdconf'>
-          Password
+        Password
         </Label>
       </div>
 
