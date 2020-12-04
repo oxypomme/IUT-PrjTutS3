@@ -1,8 +1,8 @@
-import React, { ChangeEvent, ChangeEventHandler } from "react";
+import React from "react";
 import classnames from "classnames";
 import { useDispatch } from "react-redux";
 
-import { User, addUser } from "../accountsSlice";
+import { addUser } from "../accountsSlice";
 
 import styles from './SignUp.module.css';
 import styled from '@emotion/styled';
@@ -75,7 +75,7 @@ const SignUp = (): JSX.Element => {
           placeholder='Mot de passe'
         />
         <Label htmlFor='passwd'>
-        Password
+          Password
         </Label>
       </div>
       <div
@@ -92,7 +92,7 @@ const SignUp = (): JSX.Element => {
           placeholder='Mot de passe'
         />
         <Label htmlFor='passwdconf'>
-        Password
+          Password
         </Label>
       </div>
 
