@@ -7,9 +7,14 @@ import {
 } from '../accountsSlice';
 
 import styles from './SignIn.module.css';
+import styled from '@emotion/styled';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+
+const Label = styled.label`
+    display: none;
+`;
 
 function onSubmit(users: User[]) {
     const username = document.getElementById("r-username") as HTMLInputElement | null;
@@ -48,7 +53,7 @@ const SignIn = (): JSX.Element => {
                     name="l-username"
                     placeholder="Nom d'utilisateur"
                 />
-                <label className={styles.label} htmlFor="username">Username</label>
+                <Label htmlFor="username">Username</Label>
             </div>
             <div className={styles.textbox}>
                 <FontAwesomeIcon icon={faLock} />
@@ -57,7 +62,7 @@ const SignIn = (): JSX.Element => {
                     name="l-passwd"
                     placeholder="Mot de passe"
                 />
-                <label className={styles.label} htmlFor="passwd">Password</label>
+                <Label htmlFor="passwd">Password</Label>
             </div>
             <button
                 className={styles.submit}

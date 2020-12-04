@@ -4,10 +4,19 @@ import { useDispatch } from "react-redux";
 
 import { User, addUser } from "../accountsSlice";
 
-import styles from "./SignUp.module.css";
+import styles from './SignUp.module.css';
+import styled from '@emotion/styled';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+
+const Label = styled.label`
+    display: none;
+`;
+
+const Spacer = styled.label`
+    margin: 10px;
+`;
 
 const SignUp = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -49,12 +58,12 @@ const SignUp = (): JSX.Element => {
           name='email'
           placeholder='Addresse mail'
         />
-        <label className={styles.label} htmlFor='email'>
+        <Label htmlFor="email">
           Email
-        </label>
+        </Label>
       </div>
 
-      <div className={styles.spacer} />
+      <Spacer />
 
       <div className={styles.textbox}>
         <FontAwesomeIcon icon={faLock} />
@@ -65,9 +74,9 @@ const SignUp = (): JSX.Element => {
           name='passwd'
           placeholder='Mot de passe'
         />
-        <label className={styles.label} htmlFor='passwd'>
+        <Label htmlFor='passwd'>
           Password
-        </label>
+        </Label>
       </div>
       <div
         className={classnames([styles.textbox], {
@@ -82,13 +91,13 @@ const SignUp = (): JSX.Element => {
           name='passwdconf'
           placeholder='Mot de passe'
         />
-        <label className={styles.label} htmlFor='passwdconf'>
+        <Label htmlFor='passwdconf'>
           Password
-        </label>
+        </Label>
       </div>
 
       <button className={styles.submit}>Inscription</button>
-    </form>
+    </form >
   );
 };
 
