@@ -36,7 +36,7 @@ function onSubmit(users: User[]) {
         }
 }
 
-export function SignIn(): JSX.Element {
+const SignIn = (): JSX.Element => {
     const users = useSelector(selectUsers, shallowEqual);
 
     return (
@@ -68,3 +68,5 @@ export function SignIn(): JSX.Element {
         </div>
     );
 }
+
+export default SignIn;

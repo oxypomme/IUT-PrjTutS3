@@ -2,8 +2,8 @@ import React from "react";
 
 import "./Login.css";
 
-import { SignIn } from "../../features/accounts/signin/SignIn";
-import SignUp from "../../features/accounts/signup/SignUp";
+import SignIn from '../../features/accounts/signin/SignIn';
+import SignUp from '../../features/accounts/signup/SignUp';
 
 export function Login(): JSX.Element {
   return (
