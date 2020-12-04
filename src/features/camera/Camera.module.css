@@ -4,6 +4,7 @@
 }
 .video {
     border: 2px solid black;
+    display: block;
 }
 .canvas {
     display:none;
