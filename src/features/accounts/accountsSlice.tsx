@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-export class User {
+/*export class User {
     name: string;
     mail: string;
     passwd: string;
@@ -10,23 +10,29 @@ export class User {
         this.mail = mail;
         this.passwd = passwd;
     }
+}*/
+
+export interface User {
+  name: string;
+  mail: string;
+  passwd: string;
 }
 
 export const accountsSlice = createSlice({
-    name: 'accounts',
-    initialState: {
-        value: new Array<User>()
+  name: "accounts",
+  initialState: {
+    value: new Array<User>(),
+  },
+  reducers: {
+    addUser: (state, action) => {
+      const user: User = action.payload;
+      state.value.push(user);
     },
-    reducers: {
-        addUser: (state, action) => {
-            const user: User = JSON.parse(action.payload);
-            state.value.push(user);
-        },
-        removeUser: (state, action) => {
-            const id: number = action.payload;
-            state.value.splice(id);
-        }
-    }
+    removeUser: (state, action) => {
+      const id: number = action.payload;
+      state.value.splice(id);
+    },
+  },
 });
 
 export const { addUser } = accountsSlice.actions;
