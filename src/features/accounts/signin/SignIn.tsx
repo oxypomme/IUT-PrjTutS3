@@ -1,8 +1,9 @@
 import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
+import { firebaseApp } from "../../../app/sagas"; //TODO: Not the right thing
+
 import {
-    User,
     selectUsers
 } from '../accountsSlice';
 
@@ -16,61 +17,56 @@ const Label = styled.label`
     display: none;
 `;
 
-function onSubmit(users: User[]) {
-    const username = document.getElementById("r-username") as HTMLInputElement | null;
-    const passwd = document.getElementById("r-passwd") as HTMLInputElement | null;
-
-    // Check if elements are found
-    if (username && passwd)
-        // Check if values are not null or empty
-        if ((typeof username.value != 'undefined' && username.value)
-            && (typeof passwd.value != 'undefined' && passwd.value)) {
-            // TODO: CHANGE THAT PIECE OF ***** FOR GOD SAKE
-            // Check if the username and the passwords match
-            for (let index = 0; index < users.length; index++) {
-                const user: User = users[index];
-                if (user.name == username.value && user.passwd == passwd.value) {
-                    // Reset form
-                    username.value = "";
-                    passwd.value = "";
-
-                    // Action when logged
-                    console.log("I'm in !");
-                }
-            }
-        }
-}
-
 const SignIn = (): JSX.Element => {
     const users = useSelector(selectUsers, shallowEqual);
 
+    const [email, setEmail] = React.useState();
+    const [passwd, setPasswd] = React.useState();
+
+    const handleSetEmailOnChange = (event) => setEmail(event.target.value);
+
+    const handleSetPasswordOnChange = (event) => setPasswd(event.target.value);
+
+    const handleOnSubmit = async (event) => {
+        event.preventDefault();
+        const canSubmit = email && passwd;
+        if (canSubmit) {
+            await firebaseApp.auth().signInWithEmailAndPassword(email, passwd).catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // ...
+            });
+            // TODO: message de connexion
+            console.log("connected");
+        }
+    }
+
     return (
-        <div>
+        <form onSubmit={handleOnSubmit}>
             <div className={styles.textbox}>
                 <FontAwesomeIcon icon={faUser} />
                 <input
                     type="text"
-                    name="l-username"
-                    placeholder="Nom d'utilisateur"
+                    name="email"
+                    placeholder="Adresse mail"
+                    value={email}
+                    onChange={handleSetEmailOnChange}
                 />
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="email">Email</Label>
             </div>
             <div className={styles.textbox}>
                 <FontAwesomeIcon icon={faLock} />
                 <input
                     type="password"
-                    name="l-passwd"
+                    name="passwd"
                     placeholder="Mot de passe"
+                    value={passwd}
+                    onChange={handleSetPasswordOnChange}
                 />
                 <Label htmlFor="passwd">Password</Label>
             </div>
-            <button
-                className={styles.submit}
-                onClick={() => onSubmit(users)}
-            >
-                Connexion
-            </button>
-        </div>
+            <button className={styles.submit}>Connexion</button>
+        </form>
     );
 }
 
