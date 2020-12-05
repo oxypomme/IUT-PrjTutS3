@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { firebaseApp } from "../../../app/sagas"; //TODO: Not the right thing
 
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { Button, Spacer, TextBox } from '../../../components/styledComponents';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
