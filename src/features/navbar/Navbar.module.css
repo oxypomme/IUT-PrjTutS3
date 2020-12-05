@@ -1,4 +1,4 @@
-.navlist{
+.navlist {
     position: fixed;
     top: 0;
     width: 100%;
@@ -8,13 +8,14 @@
     overflow: hidden;
     background-color: #333;
     height: 49px;
+    z-index: 9999;
 }
 
-.navlist > *{
+.navlist>* {
     float: left;
 }
 
-.navlist > * > a {
+.navlist>*>a {
     display: block;
     color: white;
     text-align: center;
@@ -22,15 +23,15 @@
     text-decoration: none;
 }
 
-.navlist > * > a:hover {
+.navlist>*>a:hover {
     background-color: #111;
 }
 
-.navlogo{
+.navlogo {
     height: 32px;
     padding: 8px 8px 0px 16px;
 }
 
-.navfloat{
+.navfloat {
     float: right;
 }
