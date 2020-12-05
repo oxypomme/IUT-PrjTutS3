@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom';
 import logo from '../../logo.svg';
 import styles from './Navbar.module.css'
 
-export function Navbar(): JSX.Element {
+import firebase from "firebase";
+
+export const Navbar = (): JSX.Element => {
+    const user = firebase.auth().currentUser;
+
     return (
         <nav className={styles.navbar}>
             <ul className={styles.navlist}>

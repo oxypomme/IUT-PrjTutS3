@@ -1,7 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-
-import { firebaseApp } from "../../../app/sagas"; //TODO: Not the right thing
+import firebase from "firebase";
 
 import { Button, Spacer, TextBox, HiddenLabel } from '../../../components/styledComponents';
 
@@ -30,7 +29,7 @@ const SignUp = (): JSX.Element => {
     event.preventDefault();
     const canSubmit = email && passwd && !hasError;
     if (canSubmit) {
-      await firebaseApp.auth().createUserWithEmailAndPassword(email, passwd).catch((error) => {
+      await firebase.auth().createUserWithEmailAndPassword(email, passwd).catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         // ...

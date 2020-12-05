@@ -1,16 +1,24 @@
 import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
-import { firebaseApp } from "../../../app/sagas"; //TODO: Not the right thing
+import firebase from 'firebase';
 
 import {
     selectUsers
 } from '../accountsSlice';
 
+import styled from '@emotion/styled';
 import { Button, TextBox, HiddenLabel } from '../../../components/styledComponents';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+
+const PasswdRecoveryLink = styled.a`
+    color: gray;
+    font-size: 8pt;
+    display: block;
+    text-align: right;
+`
 
 const SignIn = (): JSX.Element => {
     const users = useSelector(selectUsers, shallowEqual);
@@ -26,13 +34,26 @@ const SignIn = (): JSX.Element => {
         event.preventDefault();
         const canSubmit = email && passwd;
         if (canSubmit) {
-            await firebaseApp.auth().signInWithEmailAndPassword(email, passwd).catch((error) => {
+            await firebase.auth().signInWithEmailAndPassword(email, passwd).catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 // ...
             });
             // TODO: message de connexion
             console.log("connected");
+        }
+    }
+
+    const handleResetPassword = async (event) => {
+        event.preventDefault();
+        if (email) {
+            await firebase.auth().sendPasswordResetEmail(email).catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // ...
+            });
+            // TODO: Timer
+            console.log("password recovery");
         }
     }
 
@@ -60,6 +81,7 @@ const SignIn = (): JSX.Element => {
                 />
                 <HiddenLabel htmlFor="passwd">Password</HiddenLabel>
             </TextBox>
+            <PasswdRecoveryLink href="#" onClick={handleResetPassword}>Mot de passe oublié ?</PasswdRecoveryLink>
             <Button primary>Connexion</Button>
         </form>
     );
