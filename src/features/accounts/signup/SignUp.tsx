@@ -3,8 +3,8 @@ import { useDispatch } from "react-redux";
 
 import { firebaseApp } from "../../../app/sagas"; //TODO: Not the right thing
 
-import styles from './SignUp.module.css';
 import styled from '@emotion/styled';
+import { Button, Spacer, TextBox } from '../../../components/styledComponents';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
@@ -17,49 +17,8 @@ const Label = styled.label`
   display: none;
 `;
 
-const Spacer = styled.div`
-  margin: 10px;
-`;
-
-const TextBox = styled.div<errorProps>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  margin: 0;
-  width: 200px;
-  border: ${props => !props.isError ? '1px solid lightgray' : '2px solid red'};
-  border-radius: 5px;
-  background: var(--background2);
-
-  & > * {
-    border: none;
-    margin: 0 5px 0 10px;
-    outline: 0;
-    height: 100%;
-    background-color: transparent;
-  }
-  &:not(:last-child){
-    ${props => !props.isError ? 'border-bottom: none' : ''};
-  }
-`;
-
-const Submit = styled.button`
-  margin-top: 10px;
-  width: 220px;
-  height: 32px;
-  background-color: var(--accent2);
-  border: none;
-  border-radius: 5px;
-  outline: 0;
-  cursor: pointer;
-
-  &:hover{
-    /*TODO: Style on hover*/
-  }
-  &:focus{
-    /*TODO: Style on click*/
-  }
+const CustomTextBox = styled(TextBox) <errorProps>`
+  border: ${props => !props.isError ? '1px solid lightgray' : '1px solid red'};
 `;
 
 const SignUp = (): JSX.Element => {
@@ -129,7 +88,7 @@ const SignUp = (): JSX.Element => {
           Password
         </Label>
       </TextBox>
-      <TextBox isError={hasError}>
+      <CustomTextBox isError={hasError}>
         <FontAwesomeIcon icon={faLock} />
         <input
           value={confirmation}
@@ -141,9 +100,9 @@ const SignUp = (): JSX.Element => {
         <Label htmlFor='passwdconf'>
           Password
         </Label>
-      </TextBox>
+      </CustomTextBox>
 
-      <Submit>Inscription</Submit>
+      <Button>Inscription</Button>
     </form >
   );
 };
