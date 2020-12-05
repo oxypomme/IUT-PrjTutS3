@@ -31,4 +31,4 @@ debug.log
 desktop.ini
 
 # Security reasons duh
-src/app/firebaseconfig.js
+firebaseconfig.js
