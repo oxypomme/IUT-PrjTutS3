@@ -3,23 +3,10 @@ import { useDispatch } from "react-redux";
 
 import { firebaseApp } from "../../../app/sagas"; //TODO: Not the right thing
 
-import styled from '@emotion/styled';
-import { Button, Spacer, TextBox } from '../../../components/styledComponents';
+import { Button, Spacer, TextBox, HiddenLabel } from '../../../components/styledComponents';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
-
-type errorProps = {
-  isError?: boolean;
-}
-
-const Label = styled.label`
-  display: none;
-`;
-
-const CustomTextBox = styled(TextBox) <errorProps>`
-  border: ${props => !props.isError ? '1px solid lightgray' : '1px solid red'};
-`;
 
 const SignUp = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -68,9 +55,9 @@ const SignUp = (): JSX.Element => {
           name='email'
           placeholder='Addresse mail'
         />
-        <Label htmlFor="email">
+        <HiddenLabel htmlFor="email">
           Email
-        </Label>
+        </HiddenLabel>
       </TextBox>
 
       <Spacer />
@@ -84,11 +71,11 @@ const SignUp = (): JSX.Element => {
           name='passwd'
           placeholder='Mot de passe'
         />
-        <Label htmlFor='passwd'>
+        <HiddenLabel htmlFor='passwd'>
           Password
-        </Label>
+        </HiddenLabel>
       </TextBox>
-      <CustomTextBox isError={hasError}>
+      <TextBox borderColor={hasError ? 'red' : 'default'}>
         <FontAwesomeIcon icon={faLock} />
         <input
           value={confirmation}
@@ -97,10 +84,10 @@ const SignUp = (): JSX.Element => {
           name='passwdconf'
           placeholder='Mot de passe'
         />
-        <Label htmlFor='passwdconf'>
+        <HiddenLabel htmlFor='passwdconf'>
           Password
-        </Label>
-      </CustomTextBox>
+        </HiddenLabel>
+      </TextBox>
 
       <Button>Inscription</Button>
     </form >

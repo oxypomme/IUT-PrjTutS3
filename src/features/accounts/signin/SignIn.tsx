@@ -7,15 +7,10 @@ import {
     selectUsers
 } from '../accountsSlice';
 
-import styles from './SignIn.module.css';
-import styled from '@emotion/styled';
+import { Button, TextBox, HiddenLabel } from '../../../components/styledComponents';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
-
-const Label = styled.label`
-    display: none;
-`;
 
 const SignIn = (): JSX.Element => {
     const users = useSelector(selectUsers, shallowEqual);
@@ -43,7 +38,7 @@ const SignIn = (): JSX.Element => {
 
     return (
         <form onSubmit={handleOnSubmit}>
-            <div className={styles.textbox}>
+            <TextBox>
                 <FontAwesomeIcon icon={faUser} />
                 <input
                     type="text"
@@ -52,9 +47,9 @@ const SignIn = (): JSX.Element => {
                     value={email}
                     onChange={handleSetEmailOnChange}
                 />
-                <Label htmlFor="email">Email</Label>
-            </div>
-            <div className={styles.textbox}>
+                <HiddenLabel htmlFor="email">Email</HiddenLabel>
+            </TextBox>
+            <TextBox>
                 <FontAwesomeIcon icon={faLock} />
                 <input
                     type="password"
@@ -63,9 +58,9 @@ const SignIn = (): JSX.Element => {
                     value={passwd}
                     onChange={handleSetPasswordOnChange}
                 />
-                <Label htmlFor="passwd">Password</Label>
-            </div>
-            <button className={styles.submit}>Connexion</button>
+                <HiddenLabel htmlFor="passwd">Password</HiddenLabel>
+            </TextBox>
+            <Button primary>Connexion</Button>
         </form>
     );
 }
