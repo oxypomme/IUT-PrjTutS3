@@ -2,6 +2,8 @@ import React from "react";
 import classnames from "classnames";
 import { useDispatch } from "react-redux";
 
+import { firebaseApp } from "../../../app/sagas"; //TODO: Not the right thing
+
 import { addUser } from "../accountsSlice";
 
 import styles from './SignUp.module.css';
@@ -36,11 +38,18 @@ const SignUp = (): JSX.Element => {
     setHasError(passwd !== newConfirmation);
   };
 
-  const handleOnSubmit = (event) => {
+  const handleOnSubmit = async (event) => {
     event.preventDefault();
     const canSubmit = email && passwd && !hasError;
     if (canSubmit) {
-      dispatch(addUser({ name: "", email, passwd }));
+      await firebaseApp.auth().createUserWithEmailAndPassword(email, passwd).catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ...
+      });
+      //TODO: Message d'inscription
+      console.log("registered");
+      //dispatch(addUser({ name: "", email, passwd }));
     } else {
       setGlobalError("fdsqhlkmnjuindjk fsmqmnkjdlsfqbklnjd fsqnkjbhdsflq");
     }

@@ -2,7 +2,9 @@ import firebase from 'firebase';
 import ReduxSagaFirebase from 'redux-saga-firebase';
 import { firebaseConfig } from './firebaseconfig';
 
-const reduxSagaFirebase = new ReduxSagaFirebase(firebase.initializeApp(firebaseConfig));
+export const firebaseApp = firebase.initializeApp(firebaseConfig)
+
+const reduxSagaFirebase = new ReduxSagaFirebase(firebaseApp);
 
 function* mySaga() {
     // https://redux-saga.js.org/
