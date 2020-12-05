@@ -1,6 +1,8 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import firebase from "firebase";
+
+import firebase from "firebase/app";
+import 'firebase/auth';
 
 import { Button, Spacer, TextBox, HiddenLabel } from '../../../components/styledComponents';
 
@@ -35,7 +37,8 @@ const SignUp = (): JSX.Element => {
         // ...
       });
       //TODO: Message d'inscription
-      console.log("registered");
+      alert("registered");
+      window.location.reload();
       //dispatch(addUser({ name: "", email, passwd }));
     } else {
       setGlobalError("fdsqhlkmnjuindjk fsmqmnkjdlsfqbklnjd fsqnkjbhdsflq");
