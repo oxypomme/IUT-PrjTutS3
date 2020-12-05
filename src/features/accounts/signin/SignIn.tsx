@@ -1,7 +1,8 @@
 import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
-import firebase from 'firebase';
+import firebase from "firebase/app";
+import 'firebase/auth';
 
 import {
     selectUsers
@@ -37,10 +38,16 @@ const SignIn = (): JSX.Element => {
             await firebase.auth().signInWithEmailAndPassword(email, passwd).catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                // ...
+                if (errorCode === 'auth/wrong-password') {
+                    alert('Wrong password.');
+                } else {
+                    alert(errorMessage);
+                }
+                return;
             });
             // TODO: message de connexion
-            console.log("connected");
+            alert("connected");
+            window.location.reload();
         }
     }
 
