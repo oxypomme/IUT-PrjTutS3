@@ -1,12 +1,7 @@
 import React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
 
 import firebase from "firebase/app";
 import 'firebase/auth';
-
-import {
-    selectUsers
-} from '../accountsSlice';
 
 import styled from '@emotion/styled';
 import { Button, TextBox, HiddenLabel } from '../../../components/styledComponents';
@@ -22,8 +17,6 @@ const PasswdRecoveryLink = styled.a`
 `
 
 const SignIn = (): JSX.Element => {
-    const users = useSelector(selectUsers, shallowEqual);
-
     const [email, setEmail] = React.useState();
     const [passwd, setPasswd] = React.useState();
 
