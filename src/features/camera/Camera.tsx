@@ -25,6 +25,16 @@ export function Camera(): JSX.Element {
     setImages([...images, webcamRef.current.getScreenshot()]);
   }, [images, setImages]);
 
+  const uploadFile = React.useCallback((event) => {
+    const file = event.target.files[0];
+    if (file == undefined || !file.name.match(/.(jpg|jpeg|png|gif|jfif|pjpeg|.pjp)$/i))
+      return;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      setImages([...images, e.target.result as string]);
+    }
+  }, [images, setImages]);
   return (
     <div>
       <Select
@@ -39,7 +49,8 @@ export function Camera(): JSX.Element {
         screenshotFormat="image/jpeg"
         className={styles.video}
       />
-      <button onClick={snap} style={{ display: 'block' }}>Snap</button>
+      <button onClick={snap}>Snap</button>
+      <input type="file" onChange={uploadFile} accept="image/png, image/jpeg, image/gif" style={{ display: 'block' }} />
       {images.map((image, index) => (
         <img src={image} key={index} style={{ width: 320, border: '1px dashed magenta' }} />
       ))}
