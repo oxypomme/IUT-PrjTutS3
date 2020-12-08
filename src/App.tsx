@@ -7,6 +7,7 @@ import { Home } from './views/Home/Home';
 import { Login } from './views/Login/Login';
 import { Camera } from './../src/features/camera/Camera';
 import { NotFound } from './views/NotFound/NotFound';
+import  CreateProfile  from  './views/createprofile/CreateProfile'
 
 import './App.css';
 
@@ -19,7 +20,9 @@ function App(): JSX.Element {
         <Route exact path="/login" component={Login} />
         <Route exact path="/profile" component={NotFound} />
         <Route exact path="/camera" component={Camera} />
-        <Route component={NotFound} />
+         <Route exact path= "/SignUp/1" component={CreateProfile} />
+         <Route component={NotFound} />
+       
       </Switch>
     </Router>
   );
