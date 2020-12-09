@@ -1,6 +1,5 @@
 import React from "react";
 
-
 import { Button, TextBox, HiddenLabel } from '../../../components/styledComponents';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,7 +7,7 @@ import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { isNonNullChain } from "typescript";
 import { Tags } from './Tags';
 
-const Form = (): JSX.Element => {
+const RegisterPersonal = (): JSX.Element => {
   const [name, setName] = React.useState();
   const [hasError, setHasError] = React.useState(false);
   const [age, setAge] = React.useState();
@@ -73,4 +72,4 @@ const Form = (): JSX.Element => {
   );
 };
 
-export default Form;
+export default RegisterPersonal;

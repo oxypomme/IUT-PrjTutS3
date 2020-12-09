@@ -3,7 +3,7 @@ import createSagaMiddleware from 'redux-saga'
 
 import counterReducer from '../features/counter/counterSlice';
 
-import mySaga from './sagas';
+import rootSaga from './sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -14,6 +14,6 @@ export default () => {
     },
     middleware: [...getDefaultMiddleware({thunk: false}), sagaMiddleware]
   });
-  sagaMiddleware.run(mySaga);
+  sagaMiddleware.run(rootSaga);
   return store;
 } 

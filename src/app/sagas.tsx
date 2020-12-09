@@ -1,15 +1,14 @@
-import firebase from 'firebase';
-import ReduxSagaFirebase from 'redux-saga-firebase';
+import { call, put, takeEvery, take, cancelled, cancel, fork } from 'redux-saga/effects'
+
+import firebase from 'firebase/app';
 import { firebaseConfig } from './firebaseconfig';
 
 export const firebaseApp = firebase.initializeApp(firebaseConfig)
 
-const reduxSagaFirebase = new ReduxSagaFirebase(firebaseApp);
-
-function* mySaga() {
+function* rootSaga() {
     // https://redux-saga.js.org/
     // https://www.npmjs.com/package/redux-saga-firebase
-    yield "";
+
 }
 
-export default mySaga;
+export default rootSaga;
