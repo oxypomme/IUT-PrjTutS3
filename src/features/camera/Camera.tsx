@@ -37,10 +37,12 @@ export function Camera(): JSX.Element {
   }, [images, setImages]);
   return (
     <div>
-      <Select
-        onChange={device => setCam(device.value)}
-        options={devices}
-      />
+      <div style={{ width: 320, padding: '8px' }}>
+        <Select
+          onChange={device => setCam(device.value)}
+          options={devices}
+        />
+      </div>
 
       <Webcam
         audio={false}
