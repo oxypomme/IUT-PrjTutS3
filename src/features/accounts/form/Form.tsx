@@ -1,5 +1,4 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 
 
 import { Button, TextBox, HiddenLabel } from '../../../components/styledComponents';
@@ -7,20 +6,20 @@ import { Button, TextBox, HiddenLabel } from '../../../components/styledComponen
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { isNonNullChain } from "typescript";
+import { Tags } from './Tags';
 
 const Form = (): JSX.Element => {
-  const dispatch = useDispatch();
   const [name, setName] = React.useState();
   const [hasError, setHasError] = React.useState(false);
   const [age, setAge] = React.useState();
   const [town, setTown] = React.useState();
-  
 
- const handleOnChange = ({ target }) => {
+
+  const handleOnChange = ({ target }) => {
     const { value: newName } = target;
     setName(newName);
-   setHasError(name !== isNonNullChain);
-  }; 
+    setHasError(name !== isNonNullChain);
+  };
   const handleSetAgeOnChange = (event) => setAge(event.target.value);
 
   const handleSetTownOnChange = (event) => setTown(event.target.value);
@@ -69,6 +68,7 @@ const Form = (): JSX.Element => {
       </TextBox>
 
       <Button>Suivant</Button>
+      <Tags />
     </form >
   );
 };
