@@ -9,7 +9,7 @@ export function Mic(): JSX.Element {
 
     const onStop = React.useCallback((recordedBlob: ReactMicStopEvent) => {
         // console.log('recordedBlob is: ', recordedBlob);
-        setMicRecords([...micRecords, recordedBlob as ReactMicStopEvent]);
+        setMicRecords([...micRecords, recordedBlob]);
     }, [recording, setRecording]);
 
 
@@ -17,7 +17,6 @@ export function Mic(): JSX.Element {
         <div>
             <ReactMic
                 record={recording}
-                // className='sound-wave'
                 onStop={onStop}
                 strokeColor='magenta'
                 backgroundColor='#bbbbbb'
