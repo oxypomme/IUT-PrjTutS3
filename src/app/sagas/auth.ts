@@ -1,4 +1,4 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put, takeLatest } from 'redux-saga/effects'
 
 import { rsf } from '../firebase'
 
@@ -60,5 +60,10 @@ function* deleteAuth(action) {
 }
 
 export default function* authSagas() {
-    yield console.log("YEET");
+    yield takeLatest('LOGIN_EMAIL_REQUESTED', logInMail);
+    yield takeLatest('LOGOUT_REQUESTED', logOut);
+    yield takeLatest('UPDATE_EMAIL_REQUESTED', updateEmail);
+    yield takeLatest('UPDATE_PASSWORD_REQUESTED', updatePassword);
+    yield takeLatest('RESET_PASSWORD_REQUESTED', sendPasswordReset);
+    yield takeLatest('DELETE_AUTHL_REQUESTED', deleteAuth);
 }

@@ -17,6 +17,7 @@ function* createProfile(action) {
         const key = yield call(rsf.database.create, '/profiles', action.payload)
         /*
         action.payload = {
+            mail: ,
             age: ,
             name: ,
             tags: ,
@@ -50,4 +51,7 @@ function* deleteProfile(action) {
 
 export default function* profilesSagas() {
     yield takeLatest('FETCH_PROFILES_REQUESTED', getProfiles);
+    yield takeLatest('CREATE_PROFILE_REQUESTED', createProfile);
+    yield takeLatest('EDIT_PROFILE_REQUESTED', updateProfile);
+    yield takeLatest('DELETE_PROFILE_REQUESTED', deleteProfile);
 }
