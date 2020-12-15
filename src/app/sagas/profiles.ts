@@ -19,13 +19,13 @@ function* createProfile(action) {
         yield call(rsf.database.update, '/profiles/' + key, action.payload);
         /*
         action.payload = {
-            mail: ,
-            age: ,
-            name: ,
-            tags: ,
-            orientation: ,
-            town: ,
-            imageURL: 
+            mail: "",
+            age: 0,
+            name: "",
+            tags: [0],
+            orientation: 0/1/2,
+            town: "",
+            imageURL: ""
         }
         */
         yield put({ type: "CREATE_PROFILE_SUCCEED", payload: key });
@@ -38,15 +38,15 @@ function* updateProfile(action) {
     try {
         yield call(rsf.database.update, '/profiles/' + action.key, action.payload);
         /*
-        action.key = 
+        action.key = 0
         action.payload = {
-            mail: ,
-            age: ,
-            name: ,
-            tags: ,
-            orientation: ,
-            town: ,
-            imageURL: 
+            mail: "",
+            age: 0,
+            name: "",
+            tags: [0],
+            orientation: 0/1/2,
+            town: "",
+            imageURL: ""
         }
         */
         yield put({ type: "EDIT_PROFILE_SUCCEED", payload: {} });
