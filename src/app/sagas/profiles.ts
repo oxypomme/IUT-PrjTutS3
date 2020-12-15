@@ -5,16 +5,18 @@ import '@firebase/database'
 
 function* getProfiles(action?) {
     try {
-        const profiles = yield call(rsf.database.read, '/profiles' + (action?.payload && typeof action.payload == 'number' ? '/' + action.payload : ''))
-        yield put({ type: "FETCH_PROFILES_SUCCEED", payload: profiles })
+        const profiles = yield call(rsf.database.read, '/profiles' + (action?.payload && typeof action.payload == 'number' ? '/' + action.payload : ''));
+        yield put({ type: "FETCH_PROFILES_SUCCEED", payload: profiles });
     } catch (error) {
-        yield put({ type: "FETCH_PROFILES_FAILED", payload: error.message })
+        yield put({ type: "FETCH_PROFILES_FAILED", payload: error.message });
     }
 }
 
 function* createProfile(action) {
     try {
-        const key = yield call(rsf.database.create, '/profiles', action.payload)
+        //TODO: generate key
+        const key = -1;
+        yield call(rsf.database.update, '/profiles/' + key, action.payload);
         /*
         action.payload = {
             mail: ,
@@ -34,18 +36,31 @@ function* createProfile(action) {
 
 function* updateProfile(action) {
     try {
-        yield call(rsf.database.update, '/profiles/' + action.key, action.payload)
-        yield put({ type: "EDIT_PROFILE_SUCCEED", payload: {} })
+        yield call(rsf.database.update, '/profiles/' + action.key, action.payload);
+        /*
+        action.key = 
+        action.payload = {
+            mail: ,
+            age: ,
+            name: ,
+            tags: ,
+            orientation: ,
+            town: ,
+            imageURL: 
+        }
+        */
+        yield put({ type: "EDIT_PROFILE_SUCCEED", payload: {} });
     } catch (error) {
-        yield put({ type: "EDIT_PROFILE_FAILED", payload: error.message })
+        yield put({ type: "EDIT_PROFILE_FAILED", payload: error.message });
     }
 }
 
 function* deleteProfile(action) {
     try {
-        yield console.log("todo");
+        yield call(rsf.database.delete, '/profiles/' + action.payload);
+        yield put({ type: "DELETE_PROFILE_SUCCEED", payload: {} });
     } catch (error) {
-        yield console.log("todo");
+        yield put({ type: "DELETE_PROFILE_FAILED", payload: error.message });
     }
 }
 

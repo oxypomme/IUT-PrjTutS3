@@ -6,9 +6,9 @@ import '@firebase/database'
 function* getTags(action?) {
     try {
         const tags = yield call(rsf.database.read, '/tags' + (action?.payload && typeof action.payload == 'number' ? '/' + action.payload : ''));
-        yield put({ type: "FETCH_TAGS_SUCCEED", payload: tags })
+        yield put({ type: "FETCH_TAGS_SUCCEED", payload: tags });
     } catch (error) {
-        yield put({ type: "FETCH_TAGS_FAILED", payload: error.message })
+        yield put({ type: "FETCH_TAGS_FAILED", payload: error.message });
     }
 }
 
