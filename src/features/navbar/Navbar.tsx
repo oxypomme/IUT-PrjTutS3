@@ -5,13 +5,17 @@ import styles from './Navbar.module.css'
 
 import firebase from "firebase/app";
 import 'firebase/auth';
+import { useDispatch } from 'react-redux';
 
 export const Navbar = (): JSX.Element => {
+    //TODO: Remove firebase here
     const guser = firebase.auth().currentUser;
+    const dispatch = useDispatch();
 
     const handleLogout = async (event) => {
         event.preventDefault();
-        await firebase.auth().signOut();
+        dispatch({ type: 'LOGOUT_AUTH_REQUESTED' });
+        //TODO: better reload
         window.location.reload();
     }
 

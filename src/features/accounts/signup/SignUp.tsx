@@ -1,9 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 
-import firebase from "firebase/app";
-import 'firebase/auth';
-
 import { Button, Spacer, TextBox, HiddenLabel } from '../../../components/styledComponents';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -31,15 +28,14 @@ const SignUp = (): JSX.Element => {
     event.preventDefault();
     const canSubmit = email && passwd && !hasError;
     if (canSubmit) {
-      await firebase.auth().createUserWithEmailAndPassword(email, passwd).catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ...
+      dispatch({
+        type: 'CREATE-EMAIL_AUTH_REQUESTED',
+        payload: {
+          email: email,
+          passwd: passwd
+        }
       });
       //TODO: Message d'inscription
-      alert("registered");
-      window.location.reload();
-      //dispatch(addUser({ name: "", email, passwd }));
     } else {
       setGlobalError("fdsqhlkmnjuindjk fsmqmnkjdlsfqbklnjd fsqnkjbhdsflq");
     }

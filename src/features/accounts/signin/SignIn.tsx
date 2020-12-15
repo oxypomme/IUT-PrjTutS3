@@ -1,13 +1,11 @@
 import React from 'react';
 
-import firebase from "firebase/app";
-import 'firebase/auth';
-
 import styled from '@emotion/styled';
 import { Button, TextBox, HiddenLabel } from '../../../components/styledComponents';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch } from 'react-redux';
 
 const PasswdRecoveryLink = styled.a`
     color: gray;
@@ -17,6 +15,7 @@ const PasswdRecoveryLink = styled.a`
 `
 
 const SignIn = (): JSX.Element => {
+    const dispatch = useDispatch();
     const [email, setEmail] = React.useState();
     const [passwd, setPasswd] = React.useState();
 
@@ -28,32 +27,24 @@ const SignIn = (): JSX.Element => {
         event.preventDefault();
         const canSubmit = email && passwd;
         if (canSubmit) {
-            await firebase.auth().signInWithEmailAndPassword(email, passwd).catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                if (errorCode === 'auth/wrong-password') {
-                    alert('Wrong password.');
-                } else {
-                    alert(errorMessage);
+            dispatch({
+                type: 'LOGIN-EMAIL_AUTH_REQUESTED',
+                payload: {
+                    email: email,
+                    passwd: passwd
                 }
-                return;
             });
             // TODO: message de connexion
-            alert("connected");
-            window.location.reload();
         }
     }
 
     const handleResetPassword = async (event) => {
         event.preventDefault();
         if (email) {
-            await firebase.auth().sendPasswordResetEmail(email).catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // ...
+            dispatch({
+                type: 'RESET-PASSWORD_AUTH_REQUESTED',
+                payload: email
             });
-            // TODO: Timer
-            console.log("password recovery");
         }
     }
 
