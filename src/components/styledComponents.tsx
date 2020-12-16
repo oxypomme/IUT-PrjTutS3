@@ -8,6 +8,7 @@ export const HiddenLabel = styled.label`
   display: none;
 `;
 
+
 export const TextBox = styled.div<{ borderColor?: string }>`
   display: flex;
   justify-content: center;
@@ -47,5 +48,17 @@ export const Button = styled.button<{ primary?: boolean }>`
     border: 1px solid ${props => props.primary ? 'var(--accent1)' : 'var(--accent2)'};
     color: ${props => props.primary ? 'var(--accent1)' : 'var(--accent2)'};
     background: var(--background2);
+  }
+`;
+
+export const ErrorLabel = styled.div`
+  color: red;
+  border: 2px solid red;
+  border-radius: 5px;
+  padding: 4px;
+  margin-bottom: 4px;
+
+  & > div > svg {
+    margin-right: 8px;
   }
 `;
