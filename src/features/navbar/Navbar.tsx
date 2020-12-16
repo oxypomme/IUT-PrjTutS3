@@ -14,24 +14,23 @@ export const Navbar = (): JSX.Element => {
         event.preventDefault();
         dispatch({ type: 'LOGOUT_AUTH_REQUESTED' });
         dispatch(setConnected(''));
-        //TODO: better reload
-        window.location.reload();
     }
 
-    let userElement: JSX.Element = <Link to="/login">Connexion</Link>;
-    let logOutElement: JSX.Element;
-    if (guser) {
-        userElement = <Link to="/profile">Mon profil</Link>;
-        logOutElement = <li className={styles.navfloat}><a href="#" onClick={handleLogout}>Déconnexion</a></li>;
-    }
+    console.log(guser);
 
     return (
         <nav className={styles.navbar}>
             <ul className={styles.navlist}>
                 <li><img src={logo} className={styles.navlogo} alt="logo" /></li>
                 <li><Link to="/">Accueil</Link></li>
-                <li className={styles.navfloat}>{userElement}</li>
-                {logOutElement}
+                {guser ?
+                    <li className={styles.navfloat}><Link to="/profile">Mon profil</Link></li> : ''
+                }
+                {guser ?
+                    <li className={styles.navfloat}><a href="#" onClick={handleLogout}>Déconnexion</a></li>
+                    :
+                    <li className={styles.navfloat}><Link to="/login">Connexion</Link></li>
+                }
                 <li className={styles.navfloat}><Link to="/camera">Test caméra</Link></li>
             </ul>
         </nav >
