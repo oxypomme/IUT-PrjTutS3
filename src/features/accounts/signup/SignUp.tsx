@@ -7,12 +7,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { addMail } from "../accountSlice";
 
+export interface IError { component: string, label: string; }
+
 const SignUp = (): JSX.Element => {
     const dispatch = useDispatch();
     const [email, setEmail] = React.useState<string>();
     const [passwd, setPasswd] = React.useState();
     const [secondPasswd, setSecondPasswd] = React.useState();
-    const [globalErrors, setGlobalErrors] = React.useState<Array<string>>([]);
+    const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const handleSetEmailOnChange = (event) => setEmail(event.target.value);
 
@@ -25,11 +27,11 @@ const SignUp = (): JSX.Element => {
         let errors = [];
 
         if (email === undefined || email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.([a-zA-Z0-9-]+){2,4}$/) === null)
-            errors = [...errors, "L'email n'est pas valide."];
+            errors = [...errors, { component: "email", label: "L'email n'est pas valide." } as IError];
         if (passwd === undefined)
-            errors = [...errors, "Veuillez entrer un mot de passe."];
-        if (passwd !== secondPasswd)
-            errors = [...errors, "Les mots de passes ne correspondent pas."];
+            errors = [...errors, { component: "passwd", label: "Veuillez entrer un mot de passe." } as IError];
+        if (secondPasswd === undefined || passwd !== secondPasswd)
+            errors = [...errors, { component: "secondPasswd", label: "Les mots de passes ne correspondent pas." } as IError];
 
         setGlobalErrors(errors);
         if (errors.length < 1) {
@@ -52,15 +54,15 @@ const SignUp = (): JSX.Element => {
         <form onSubmit={handleOnSubmit}>
             {globalErrors.length > 0 &&
                 <ErrorLabel>
-                    {globalErrors.map((content, index) => (
+                    {globalErrors.map((error, index) => (
                         <div key={index}>
                             <FontAwesomeIcon icon={faExclamationTriangle} />
-                            {content}
+                            {error.label}
                         </div>
                     ))}
                 </ErrorLabel>
             }
-            <TextBox>
+            <TextBox borderColor={globalErrors.some(e => e.component === "email") ? 'red' : 'default'}>
                 <FontAwesomeIcon icon={faUser} />
                 <input
                     type='email'
@@ -76,7 +78,7 @@ const SignUp = (): JSX.Element => {
 
             <Spacer />
 
-            <TextBox>
+            <TextBox borderColor={globalErrors.some(e => e.component === "passwd") ? 'red' : 'default'}>
                 <FontAwesomeIcon icon={faLock} />
                 <input
                     value={passwd}
@@ -89,16 +91,16 @@ const SignUp = (): JSX.Element => {
                     Password
                 </HiddenLabel>
             </TextBox>
-            <TextBox>
+            <TextBox borderColor={globalErrors.some(e => e.component === "secondPasswd") ? 'red' : 'default'}>
                 <FontAwesomeIcon icon={faLock} />
                 <input
                     value={secondPasswd}
                     onChange={handleSetSecondPasswordOnChange}
                     type='password'
-                    name='passwdconf'
+                    name='secondPasswd'
                     placeholder='Mot de passe'
                 />
-                <HiddenLabel htmlFor='passwdconf'>
+                <HiddenLabel htmlFor='secondPasswd'>
                     Password
                 </HiddenLabel>
             </TextBox>
