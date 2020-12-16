@@ -25,7 +25,8 @@ function* createProfile(action) {
             tags: [0],
             orientation: 0/1/2,
             town: "",
-            imageURL: ""
+            imageURL: "",
+            desc: ""
         }
         */
         yield put({ type: "CREATE_PROFILE_SUCCEED", payload: key });
@@ -46,7 +47,8 @@ function* updateProfile(action) {
             tags: [0],
             orientation: 0/1/2,
             town: "",
-            imageURL: ""
+            imageURL: "",
+            desc : ""
         }
         */
         yield put({ type: "EDIT_PROFILE_SUCCEED", payload: {} });
