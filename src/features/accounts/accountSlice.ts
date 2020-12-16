@@ -3,50 +3,53 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 export const accountSlice = createSlice({
     name: 'account',
     initialState: {
-        age: 0,
-        desc: "",
-        imageURL: "",
-        mail: "",
-        name: "",
-        orientation: 0,
-        tags: new Array<number>(0),
-        town: "",
+        new: {
+            age: 0,
+            desc: "",
+            imageURL: "",
+            mail: "",
+            name: "",
+            orientation: 0,
+            tags: new Array<number>(0),
+            town: "",
+        },
+        uid: ""
     },
     reducers: {
         addAge: (state, action) => {
             // The payload must be the age
-            state.age = action.payload;
+            state.new.age = action.payload;
         },
         addDesc: (state, action) => {
             // The payload must be the description
-            state.desc = action.payload
+            state.new.desc = action.payload
         },
         addPhoto: (state, action) => {
             // The payload must be the image URL
-            state.imageURL = action.payload
+            state.new.imageURL = action.payload
         },
         addMail: (state, action) => {
             // The payload must be the email
-            state.mail = action.payload;
+            state.new.mail = action.payload;
         },
         addName: (state, action) => {
             // The payload must be the name
-            state.name = action.payload;
+            state.new.name = action.payload;
         },
         addPrefs: (state, action) => {
             // The payload must be the orientation
-            state.orientation = action.payload;
+            state.new.orientation = action.payload;
         },
         addTag: (state, action) => {
             //The payload must be the Tag(s) ID to add
-            state.tags.push(action.payload);
+            state.new.tags.push(action.payload);
         },
         removeTag: (state, action) => {
             //The payload must be the Tag(s) ID to remove
             const removeTag = (id: number): void => {
-                const index = state.tags.indexOf(id);
+                const index = state.new.tags.indexOf(id);
                 if (index > -1) {
-                    state.tags.splice(index, 1);
+                    state.new.tags.splice(index, 1);
                 }
             }
 
@@ -63,23 +66,30 @@ export const accountSlice = createSlice({
         },
         addCity: (state, action) => {
             // The payload must be the city
-            state.town = action.payload;
+            state.new.town = action.payload;
         },
+        setConnected: (state, action) => {
+            // The payload must be the uid
+            state.uid = action.payload;
+        }
     }
 });
 
-export const { addMail, addName, addAge, addCity, addPrefs, addTag, removeTag, addDesc, addPhoto } = accountSlice.actions;
+export const { addMail, addName, addAge, addCity, addPrefs, addTag, removeTag, addDesc, addPhoto, setConnected } = accountSlice.actions;
 
 export const getState = state => state.account;
 
-const getAge = createSelector(getState, (state) => state.age);
-const getDesc = createSelector(getState, (state) => state.desc);
-const getImageURL = createSelector(getState, (state) => state.imageURL);
-export const getMail = createSelector(getState, (state) => state.mail);
-const getName = createSelector(getState, (state) => state.name);
-const getOrientation = createSelector(getState, (state) => state.orientation);
-const getTags = createSelector(getState, (state) => state.tags);
-const getTown = createSelector(getState, (state) => state.town);
+const getAge = createSelector(getState, (state) => state.new.age);
+const getDesc = createSelector(getState, (state) => state.new.desc);
+const getImageURL = createSelector(getState, (state) => state.new.imageURL);
+export const getMail = createSelector(getState, (state) => state.new.mail);
+const getName = createSelector(getState, (state) => state.new.name);
+const getOrientation = createSelector(getState, (state) => state.new.orientation);
+const getTags = createSelector(getState, (state) => state.new.tags);
+const getTown = createSelector(getState, (state) => state.new.town);
+
+export const getAuthId = createSelector(getState, (state) => state.uid);
+export const getConnection = createSelector(getState, (state) => state.uid !== "")
 
 export const getPersonalInfos = createSelector(
     getName,

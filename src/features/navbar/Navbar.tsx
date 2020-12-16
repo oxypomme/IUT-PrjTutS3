@@ -3,18 +3,17 @@ import { Link } from 'react-router-dom';
 import logo from '../../logo.svg';
 import styles from './Navbar.module.css'
 
-import firebase from "firebase/app";
-import 'firebase/auth';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getConnection, setConnected } from '../accounts/accountSlice';
 
 export const Navbar = (): JSX.Element => {
-    //TODO: Remove firebase here
-    const guser = firebase.auth().currentUser;
     const dispatch = useDispatch();
+    const guser = useSelector(getConnection);
 
     const handleLogout = async (event) => {
         event.preventDefault();
         dispatch({ type: 'LOGOUT_AUTH_REQUESTED' });
+        dispatch(setConnected(''));
         //TODO: better reload
         window.location.reload();
     }
@@ -25,14 +24,6 @@ export const Navbar = (): JSX.Element => {
         userElement = <Link to="/profile">Mon profil</Link>;
         logOutElement = <li className={styles.navfloat}><a href="#" onClick={handleLogout}>Déconnexion</a></li>;
     }
-
-
-    const [, setRerender] = useState(0);
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (user && !guser) {
-            setRerender(value => ++value);
-        }
-    });
 
     return (
         <nav className={styles.navbar}>
