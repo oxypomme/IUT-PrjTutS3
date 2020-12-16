@@ -3,16 +3,28 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 export const accountSlice = createSlice({
     name: 'account',
     initialState: {
-        mail: "",
         age: 0,
-        name: "",
-        tags: new Array<number>(0),
-        orientation: 0,
-        town: "",
+        desc: "",
         imageURL: "",
-        desc: ""
+        mail: "",
+        name: "",
+        orientation: 0,
+        tags: new Array<number>(0),
+        town: "",
     },
     reducers: {
+        addAge: (state, action) => {
+            // The payload must be the age
+            state.age = action.payload;
+        },
+        addDesc: (state, action) => {
+            // The payload must be the description
+            state.desc = action.payload
+        },
+        addPhoto: (state, action) => {
+            // The payload must be the image URL
+            state.imageURL = action.payload
+        },
         addMail: (state, action) => {
             // The payload must be the email
             state.mail = action.payload;
@@ -20,14 +32,6 @@ export const accountSlice = createSlice({
         addName: (state, action) => {
             // The payload must be the name
             state.name = action.payload;
-        },
-        addAge: (state, action) => {
-            // The payload must be the age
-            state.age = action.payload;
-        },
-        addCity: (state, action) => {
-            // The payload must be the city
-            state.town = action.payload;
         },
         addPrefs: (state, action) => {
             // The payload must be the orientation
@@ -57,14 +61,10 @@ export const accountSlice = createSlice({
             }
 
         },
-        addDesc: (state, action) => {
-            // The payload must be the description
-            state.desc = action.payload
+        addCity: (state, action) => {
+            // The payload must be the city
+            state.town = action.payload;
         },
-        addPhoto: (state, action) => {
-            // The payload must be the image URL
-            state.imageURL = action.payload
-        }
     }
 });
 
@@ -72,14 +72,14 @@ export const { addMail, addName, addAge, addCity, addPrefs, addTag, removeTag, a
 
 export const getState = state => state.account;
 
-export const getMail = createSelector(getState, (state) => state.mail);
 const getAge = createSelector(getState, (state) => state.age);
-const getName = createSelector(getState, (state) => state.name);
-const getTags = createSelector(getState, (state) => state.tags);
-const getOrientation = createSelector(getState, (state) => state.orientation);
-const getTown = createSelector(getState, (state) => state.town);
-const getImageURL = createSelector(getState, (state) => state.imageURL);
 const getDesc = createSelector(getState, (state) => state.desc);
+const getImageURL = createSelector(getState, (state) => state.imageURL);
+export const getMail = createSelector(getState, (state) => state.mail);
+const getName = createSelector(getState, (state) => state.name);
+const getOrientation = createSelector(getState, (state) => state.orientation);
+const getTags = createSelector(getState, (state) => state.tags);
+const getTown = createSelector(getState, (state) => state.town);
 
 export const getPersonalInfos = createSelector(
     getName,

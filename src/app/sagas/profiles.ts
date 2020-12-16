@@ -17,19 +17,20 @@ function* createProfile(action) {
         //TODO: generate key
         const key = -1;
         yield call(rsf.database.update, '/profiles/' + key, action.payload);
+        yield call(rsf.database.update, '/link/' + key, action.payload.mail);
         /*
         action.payload = {
-            mail: "",
             age: 0,
-            name: "",
-            tags: [0],
-            orientation: 0/1/2,
-            town: "",
+            desc: "",
             imageURL: "",
-            desc: ""
+            mail: "",
+            name: "",
+            orientation: 0/1/2,
+            tags: [0],
+            town: ""
         }
         */
-        yield put({ type: "CREATE_PROFILE_SUCCEED", payload: key });
+        yield put({ type: "CREATE_PROFILE_SUCCEED", payload: {} });
     } catch (error) {
         yield put({ type: "CREATE_PROFILE_FAILED", payload: error.message });
     }
@@ -41,14 +42,14 @@ function* updateProfile(action) {
         /*
         action.key = 0
         action.payload = {
-            mail: "",
             age: 0,
-            name: "",
-            tags: [0],
-            orientation: 0/1/2,
-            town: "",
+            desc: "",
             imageURL: "",
-            desc : ""
+            mail: "",
+            name: "",
+            orientation: 0/1/2,
+            tags: [0],
+            town: ""
         }
         */
         yield put({ type: "EDIT_PROFILE_SUCCEED", payload: {} });
@@ -60,6 +61,8 @@ function* updateProfile(action) {
 function* deleteProfile(action) {
     try {
         yield call(rsf.database.delete, '/profiles/' + action.payload);
+        yield call(rsf.database.delete, '/link/' + action.payload);
+        //TODO: delete auth. fork() ?
         yield put({ type: "DELETE_PROFILE_SUCCEED", payload: {} });
     } catch (error) {
         yield put({ type: "DELETE_PROFILE_FAILED", payload: error.message });
