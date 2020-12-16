@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 
 import { Button, TextBox, HiddenLabel } from '../../../components/styledComponents';
 
@@ -6,8 +7,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { isNonNullChain } from "typescript";
 import { Tags } from './Tags';
+import { addAge, addCity, addName } from "../accountSlice";
 
 const RegisterPersonal = (): JSX.Element => {
+  const dispatch = useDispatch();
   const [name, setName] = React.useState();
   const [hasError, setHasError] = React.useState(false);
   const [age, setAge] = React.useState();
@@ -19,12 +22,26 @@ const RegisterPersonal = (): JSX.Element => {
     setName(newName);
     setHasError(name !== isNonNullChain);
   };
+
+  //TODO: convert to number
   const handleSetAgeOnChange = (event) => setAge(event.target.value);
 
+  //TODO: use a proper thing, not a simple textbox
   const handleSetTownOnChange = (event) => setTown(event.target.value);
 
+  const handleOnSubmit = (event) => {
+    event.preventDefault();
+    const canSubmit = name && age && town && !hasError;
+    if (canSubmit) {
+      dispatch(addName(name));
+      dispatch(addAge(age));
+      dispatch(addCity(town));
+      //TODO: Redirection, prochain formulaire
+    }
+  }
+
   return (
-    <form>
+    <form onSubmit={handleOnSubmit}>
       <TextBox borderColor={hasError ? 'red' : 'default'}>
         <FontAwesomeIcon icon={faUser} />
         <input

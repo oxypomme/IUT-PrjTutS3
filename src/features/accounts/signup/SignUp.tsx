@@ -5,6 +5,7 @@ import { Button, Spacer, TextBox, HiddenLabel } from '../../../components/styled
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import { addMail } from "../accountSlice";
 
 const SignUp = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -24,19 +25,23 @@ const SignUp = (): JSX.Element => {
     setHasError((passwd !== newConfirmation) && newConfirmation);
   };
 
-  const handleOnSubmit = async (event) => {
+  const handleOnSubmit = (event) => {
     event.preventDefault();
     const canSubmit = email && passwd && !hasError;
     if (canSubmit) {
+      dispatch(addMail(email));
+      //DEBUG
+      /*
       dispatch({
         type: 'CREATE-EMAIL_AUTH_REQUESTED',
         payload: {
           email: email,
           passwd: passwd
         }
-      });
-      //TODO: Message d'inscription
+      });*/
+      //TODO: Redirection, prochain formulaire
     } else {
+      //TODO: Hum...
       setGlobalError("fdsqhlkmnjuindjk fsmqmnkjdlsfqbklnjd fsqnkjbhdsflq");
     }
   };
