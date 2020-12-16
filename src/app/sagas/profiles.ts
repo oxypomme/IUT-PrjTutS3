@@ -4,6 +4,7 @@ import { rsf } from '../firebase'
 import '@firebase/database'
 
 import { getAuthId } from '../../features/accounts/accountSlice';
+import { deleteAuth } from './auth';
 
 function* getProfiles(action?) {
     try {
@@ -16,11 +17,19 @@ function* getProfiles(action?) {
 
 function* createProfile(action) {
     try {
-        //TODO: generate key
-        const key = -1;
+        const profiles = yield call(getProfiles);
+        if (profiles.type === "FETCH_PROFILES_FAILED")
+            throw new Error(profiles.payload);
+
+        let key = profiles.payload.length;
+        for (let i = 0; i < profiles.payload.length; i++) {
+            if (profiles.payload[i] === null) {
+                key = i;
+                break;
+            }
+        }
+
         yield call(rsf.database.update, '/profiles/' + key, action.payload);
-        const authid = yield select(getAuthId);
-        yield call(rsf.database.update, '/link/' + key, authid);
         /*
         action.payload = {
             age: 0,
@@ -32,6 +41,8 @@ function* createProfile(action) {
             town: ""
         }
         */
+        const authid = yield select(getAuthId);
+        yield call(rsf.database.update, '/link/' + key, authid);
         yield put({ type: "CREATE_PROFILE_SUCCEED", payload: {} });
     } catch (error) {
         yield put({ type: "CREATE_PROFILE_FAILED", payload: error.message });
@@ -61,9 +72,13 @@ function* updateProfile(action) {
 
 function* deleteProfile(action) {
     try {
+        const res = yield call(deleteAuth);
+        if (res.type === "DELETE_AUTH_FAILED") {
+            throw new Error(res.payload);
+        }
+
         yield call(rsf.database.delete, '/profiles/' + action.payload);
         yield call(rsf.database.delete, '/link/' + action.payload);
-        //TODO: delete auth. fork() ?
         yield put({ type: "DELETE_PROFILE_SUCCEED", payload: {} });
     } catch (error) {
         yield put({ type: "DELETE_PROFILE_FAILED", payload: error.message });

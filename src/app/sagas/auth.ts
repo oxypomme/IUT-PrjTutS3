@@ -60,7 +60,7 @@ function* sendPasswordReset(action) {
     }
 }
 
-function* deleteAuth(action) {
+export function* deleteAuth() {
     try {
         yield call(rsf.auth.deleteProfile)
         yield put({ type: "DELETE_AUTH_SUCCEED", payload: {} });
