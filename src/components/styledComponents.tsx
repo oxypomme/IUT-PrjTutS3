@@ -39,12 +39,13 @@ export const Button = styled.button<{ primary?: boolean }>`
   border: none;
   border-radius: 5px;
   outline: 0;
+  color: var(--background2);
   cursor: pointer;
+  transition: .5s;
 
   &:hover{
-    /*TODO: Style on hover*/
-  }
-  &:focus{
-    /*TODO: Style on click*/
+    border: 1px solid ${props => props.primary ? 'var(--accent1)' : 'var(--accent2)'};
+    color: ${props => props.primary ? 'var(--accent1)' : 'var(--accent2)'};
+    background: var(--background2);
   }
 `;
