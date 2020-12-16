@@ -3,6 +3,7 @@ import { all } from 'redux-saga/effects'
 import tagsSagas from './tags'
 import profilesSagas from './profiles'
 import authSagas from './auth';
+import storageSagas from './storage'
 
 export default function* rootSaga() {
     // https://redux-saga.js.org/
@@ -10,6 +11,7 @@ export default function* rootSaga() {
     yield all([
         tagsSagas(),
         profilesSagas(),
-        authSagas()
+        authSagas(),
+        storageSagas(),
     ]);
 }
