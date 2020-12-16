@@ -1,7 +1,9 @@
-import { call, put, takeLatest, take } from 'redux-saga/effects'
+import { call, put, takeLatest, take, select } from 'redux-saga/effects'
 
 import { rsf } from '../firebase'
 import '@firebase/database'
+
+import { getAuthId } from '../../features/accounts/accountSlice';
 
 function* getProfiles(action?) {
     try {
@@ -17,13 +19,13 @@ function* createProfile(action) {
         //TODO: generate key
         const key = -1;
         yield call(rsf.database.update, '/profiles/' + key, action.payload);
-        yield call(rsf.database.update, '/link/' + key, action.payload.mail);
+        const authid = yield select(getAuthId);
+        yield call(rsf.database.update, '/link/' + key, authid);
         /*
         action.payload = {
             age: 0,
             desc: "",
             imageURL: "",
-            mail: "",
             name: "",
             orientation: 0/1/2,
             tags: [0],
@@ -45,7 +47,6 @@ function* updateProfile(action) {
             age: 0,
             desc: "",
             imageURL: "",
-            mail: "",
             name: "",
             orientation: 0/1/2,
             tags: [0],

@@ -6,6 +6,7 @@ import { Button, TextBox, HiddenLabel } from '../../../components/styledComponen
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
+import { setConnected } from '../accountSlice';
 
 const PasswdRecoveryLink = styled.a`
     color: gray;
@@ -34,6 +35,8 @@ const SignIn = (): JSX.Element => {
                     passwd: passwd
                 }
             });
+            // TODO: ERRORS
+            dispatch(setConnected("authid"));
             // TODO: message de connexion
         }
     }
