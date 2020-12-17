@@ -26,11 +26,11 @@ const SignUp = (): JSX.Element => {
         event.preventDefault();
         let errors = [];
 
-        if (email === undefined || email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.([a-zA-Z0-9-]+){2,4}$/) === null)
+        if (!email || email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.([a-zA-Z0-9-]+){2,4}$/) === null)
             errors = [...errors, { component: "email", label: "L'email n'est pas valide." } as IError];
-        if (passwd === undefined)
+        if (!passwd)
             errors = [...errors, { component: "passwd", label: "Veuillez entrer un mot de passe." } as IError];
-        if (secondPasswd === undefined || passwd !== secondPasswd)
+        if (!secondPasswd || passwd !== secondPasswd)
             errors = [...errors, { component: "secondPasswd", label: "Les mots de passes ne correspondent pas." } as IError];
 
         setGlobalErrors(errors);

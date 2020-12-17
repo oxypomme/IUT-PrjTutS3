@@ -14,7 +14,7 @@ export const TextBox = styled.div<{ borderColor?: string }>`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  margin: 0;
+  margin: 0 auto;
   width: 200px;
   border: 1px solid ${props => props.borderColor && props.borderColor != 'default' ? props.borderColor : 'lightgray'};
   border-radius: 5px;
