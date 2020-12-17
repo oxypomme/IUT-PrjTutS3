@@ -6,13 +6,17 @@ import { Button, TextBox, HiddenLabel } from '../../../components/styledComponen
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
-import { setConnected } from '../accountSlice';
 
 const PasswdRecoveryLink = styled.a`
-    color: gray;
+    color: hsl(0, 0%, 50%);
     font-size: 8pt;
     display: block;
     text-align: right;
+    transition: color 0.25s;
+
+    &:hover{
+        color: hsl(0, 0%, 35%);
+    }
 `
 
 const SignIn = (): JSX.Element => {
