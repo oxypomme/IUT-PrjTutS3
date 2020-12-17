@@ -7,22 +7,7 @@ import { Counter } from '../../features/counter/Counter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
-
-//import firebase from 'firebase/app';
-//import '@firebase/database'
-
 export function Home(): JSX.Element {
-    /*const db = firebase.database();
-    try {
-        const logTest = async () => {
-            const test = await db.ref('/profiles').once('value');
-            console.log(test.val());
-        }
-        logTest();
-    } catch (error) {
-        console.log("no app");
-    }
-    */
     return (
         <div className="App">
             <header>
