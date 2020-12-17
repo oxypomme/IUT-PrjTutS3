@@ -6,6 +6,7 @@ import { Button, TextBox, HiddenLabel } from '../../../components/styledComponen
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 const PasswdRecoveryLink = styled.a`
     color: hsl(0, 0%, 50%);
@@ -21,6 +22,7 @@ const PasswdRecoveryLink = styled.a`
 
 const SignIn = (): JSX.Element => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const [email, setEmail] = React.useState();
     const [passwd, setPasswd] = React.useState();
 
@@ -39,6 +41,7 @@ const SignIn = (): JSX.Element => {
                     passwd: passwd
                 }
             });
+            history.push('/');
             // TODO: ERRORS
             // TODO: message de connexion
         }
