@@ -13,18 +13,17 @@ export function Login(): JSX.Element {
     // Return to Home if the user already connected
     return <Redirect to='/' />;
   }
-  else {
-    return (
-      <div className='App login'>
-        <div>
-          <h2>Connexion</h2>
-          <SignIn />
-        </div>
-        <div>
-          <h2>Inscription</h2>
-          <SignUp />
-        </div>
+  return (
+    <div className='App login'>
+      <div>
+        <h2>Connexion</h2>
+        <SignIn />
       </div>
-    );
-  }
+      <div>
+        <h2>Inscription</h2>
+        <SignUp />
+      </div>
+    </div>
+  );
+
 }

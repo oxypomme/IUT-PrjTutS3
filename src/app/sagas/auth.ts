@@ -2,6 +2,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects'
 import { getAuthId } from '../../features/accounts/accountSlice';
 
 import { rsf } from '../firebase'
+import '@firebase/auth'
 
 function* createEmailAuth(action) {
     try {
@@ -15,7 +16,7 @@ function* createEmailAuth(action) {
 function* logInMail(action) {
     try {
         const data = yield call(rsf.auth.signInWithEmailAndPassword, action.payload.email, action.payload.passwd);
-        yield put({ type: "LOGIN-EMAIL_AUTH_SUCCEED", payload: data });
+        yield put({ type: "LOGIN-EMAIL_AUTH_SUCCEED", payload: {} });
     } catch (error) {
         yield put({ type: "LOGIN-EMAIL_AUTH_FAILED", payload: error.message });
     }
