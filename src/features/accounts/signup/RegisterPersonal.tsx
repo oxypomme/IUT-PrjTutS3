@@ -8,12 +8,14 @@ import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { isNonNullChain } from "typescript";
 import { Tags } from './Tags';
 import { addAge, addCity, addName } from "../accountSlice";
+import { useHistory } from "react-router-dom";
 
 const RegisterPersonal = (): JSX.Element => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const [name, setName] = React.useState();
     const [hasError, setHasError] = React.useState(false);
-    const [age, setAge] = React.useState();
+    const [age, setAge] = React.useState<number>();
     const [town, setTown] = React.useState();
 
 
@@ -23,8 +25,7 @@ const RegisterPersonal = (): JSX.Element => {
         setHasError(name !== isNonNullChain);
     };
 
-    //TODO: convert to number
-    const handleSetAgeOnChange = (event) => setAge(event.target.value);
+    const handleSetAgeOnChange = (event) => setAge(parseInt(event.target.value));
 
     //TODO: use a proper thing, not a simple textbox
     const handleSetTownOnChange = (event) => setTown(event.target.value);
@@ -36,7 +37,7 @@ const RegisterPersonal = (): JSX.Element => {
             dispatch(addName(name));
             dispatch(addAge(age));
             dispatch(addCity(town));
-            //TODO: Redirection, prochain formulaire
+            history.push('SignUp/2');
         }
     }
 
@@ -53,7 +54,7 @@ const RegisterPersonal = (): JSX.Element => {
                 />
                 <HiddenLabel htmlFor="name">
                     Name
-        </HiddenLabel>
+                </HiddenLabel>
             </TextBox>
 
             <TextBox>
@@ -61,13 +62,13 @@ const RegisterPersonal = (): JSX.Element => {
                 <input
                     value={age}
                     onChange={handleSetAgeOnChange}
-                    type='age'
+                    type='number'
                     name='age'
                     placeholder='Age'
                 />
                 <HiddenLabel htmlFor='age'>
                     Age
-        </HiddenLabel>
+                </HiddenLabel>
             </TextBox>
             <TextBox >
                 <FontAwesomeIcon icon={faLock} />
@@ -80,7 +81,7 @@ const RegisterPersonal = (): JSX.Element => {
                 />
                 <HiddenLabel htmlFor='town'>
                     Town
-        </HiddenLabel>
+                </HiddenLabel>
             </TextBox>
 
             <Button>Suivant</Button>

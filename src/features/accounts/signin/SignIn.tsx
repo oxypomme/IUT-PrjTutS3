@@ -36,6 +36,7 @@ const SignIn = (): JSX.Element => {
                 }
             });
             // TODO: ERRORS
+            // TODO: real authid
             dispatch(setConnected("authid"));
             // TODO: message de connexion
         }

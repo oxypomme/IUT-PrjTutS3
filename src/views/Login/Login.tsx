@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Redirect } from 'react-router-dom'
-import firebase from "firebase/app";
-import 'firebase/auth';
+import { useSelector } from "react-redux";
+import { getConnection } from "../../features/accounts/accountSlice";
 
 import "./Login.css";
 
@@ -9,16 +9,8 @@ import SignIn from '../../features/accounts/signin/SignIn';
 import SignUp from '../../features/accounts/signup/SignUp';
 
 export function Login(): JSX.Element {
-  const guser = firebase.auth().currentUser;
-
-  const [, setRerender] = useState(0);
-  firebase.auth().onAuthStateChanged(function (user) {
-    if (user && !guser) {
-      setRerender(value => ++value);
-    }
-  });
-
-  if (guser) {
+  if (useSelector(getConnection)) {
+    // Return to Home if the user already connected
     return <Redirect to='/' />;
   }
   else {

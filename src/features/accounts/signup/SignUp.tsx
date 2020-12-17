@@ -6,11 +6,13 @@ import { Button, Spacer, TextBox, HiddenLabel, ErrorLabel } from '../../../compo
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { addMail } from "../accountSlice";
+import { useHistory } from "react-router-dom";
 
 export interface IError { component: string, label: string; }
 
 const SignUp = (): JSX.Element => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const [email, setEmail] = React.useState<string>();
     const [passwd, setPasswd] = React.useState();
     const [secondPasswd, setSecondPasswd] = React.useState();
@@ -45,11 +47,10 @@ const SignUp = (): JSX.Element => {
                 passwd: passwd
               }
             });*/
-            //TODO: Redirection, prochain formulaire
+            history.push('SignUp/1');
         }
     };
 
-    // TODO red border for the textboxs that contain an error
     return (
         <form onSubmit={handleOnSubmit}>
             {globalErrors.length > 0 &&
