@@ -1,10 +1,12 @@
 import { call, put, takeLatest, take } from "redux-saga/effects";
 import { rsf } from "../firebase";
 import "@firebase/database";
+
 import {
   fetchTags,
   fetchTagsSuccess,
-} from "../../features/accounts/accountSlice";
+  fetchTagsFailed
+} from "../../features/accounts/tagSlice";
 
 function* getTags(action) {
   try {
@@ -16,7 +18,7 @@ function* getTags(action) {
     );
     yield put(fetchTagsSuccess(tags));
   } catch (error) {
-    yield put({ type: "FETCH_TAGS_FAILED", payload: error.message });
+    yield put(fetchTagsFailed(error.message));
   }
 }
 

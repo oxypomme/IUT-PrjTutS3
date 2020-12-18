@@ -1,22 +1,9 @@
-import { createAction, createSelector, createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 export interface IError {
   component: string;
   label: string;
 }
-
-export const fetchTags = createAction(
-  "FETCH_TAGS_REQUESTED",
-  (params = {}) => ({
-    payload: {
-      request: {
-        type: "read",
-        url: "/tags",
-        params,
-      },
-    },
-  })
-);
 
 export const accountSlice = createSlice({
   name: "account",
@@ -31,22 +18,9 @@ export const accountSlice = createSlice({
       tags: new Array<number>(0),
       town: "",
     },
-    uid: "",
-    tags: [],
-    isFetching: false,
-  },
-  extraReducers: {
-    [fetchTags.type]: (state) => ({
-      ...state,
-      isFetching: true,
-    }),
+    uid: ""
   },
   reducers: {
-    fetchTagsSuccess: (state, { payload: tags }) => ({
-      ...state,
-      isFetching: false,
-      tags,
-    }),
     addAge: (state, action) => {
       // The payload must be the age
       state.new.age = action.payload;
@@ -115,8 +89,6 @@ export const {
   addDesc,
   addPhoto,
   setConnected,
-  // tests
-  fetchTagsSuccess,
 } = accountSlice.actions;
 
 export const getNewState = state => state.account.new;
@@ -167,8 +139,8 @@ export const getPublicInfos = createSelector(
   getDesc,
   (imageURL, desc) => {
     return {
-      imageURL: imageURL,
-      desc: desc,
+      imageURL,
+      desc,
     };
   }
 );
@@ -177,13 +149,7 @@ export const getInfos = createSelector(
   getPersonalInfos,
   getPrefsInfos,
   getPublicInfos,
-  (persInfos, prefsInfo, publicInfos) => {
-    return { ...persInfos, ...prefsInfo, ...publicInfos };
-  }
-);
-
-export const getAllTags = createSelector(getState, (state) =>
-  state.tags.map((tag) => ({ value: tag, label: tag }))
+  (persInfos, prefsInfo, publicInfos) => ({ ...persInfos, ...prefsInfo, ...publicInfos })
 );
 
 export default accountSlice.reducer;

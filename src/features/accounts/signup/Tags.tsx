@@ -2,7 +2,7 @@ import React from "react";
 import Creatable from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { components, MenuProps } from "react-select";
-import { fetchTags, getAllTags } from "../accountSlice";
+import { fetchTags, getAllTags } from "../tagSlice";
 
 export interface ITag {
   value: string;
@@ -16,8 +16,8 @@ const Menu = (props: MenuProps<ITag, true>) => {
       {optionSelectedLength < 5 ? ( //? max amount of selectable props
         props.children
       ) : (
-        <div style={{ margin: 15 }}>Max limit achieved</div>
-      )}
+          <div style={{ margin: 15 }}>Max limit achieved</div>
+        )}
     </components.Menu>
   );
 };
