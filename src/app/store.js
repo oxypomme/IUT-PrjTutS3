@@ -3,6 +3,7 @@ import createSagaMiddleware from 'redux-saga'
 
 import counterReducer from '../features/counter/counterSlice';
 import accountReducer from '../features/accounts/accountSlice';
+import tagsReducer from '../features/accounts/tagSlice';
 
 import rootSaga from './sagas';
 
@@ -13,6 +14,7 @@ export default () => {
     reducer: {
       counter: counterReducer,
       account: accountReducer,
+      tags: tagsReducer,
     },
     middleware: [...getDefaultMiddleware({thunk: false}), sagaMiddleware]
   });

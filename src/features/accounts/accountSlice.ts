@@ -182,4 +182,8 @@ export const getInfos = createSelector(
   }
 );
 
+export const getAllTags = createSelector(getState, (state) =>
+  state.tags.map((tag) => ({ value: tag, label: tag }))
+);
+
 export default accountSlice.reducer;
