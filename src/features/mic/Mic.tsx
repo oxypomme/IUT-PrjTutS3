@@ -1,7 +1,18 @@
 import React from "react";
-// import Webcam from "react-webcam";
-// import Select from "react-select";
+import styled from '@emotion/styled';
+
 import { ReactMic, ReactMicStopEvent } from 'react-mic';
+
+export const MicCircle = styled(ReactMic) <{ backgroundColor?: string, strokeColor?: string }>`
+  width: 100px;
+  height: 50px;
+  border: 1px solid ${props => props.strokeColor};
+  border-radius: 5%;
+  padding: 0;
+  margin: 8px;
+  background-color: ${props => props.backgroundColor};
+`;
+
 
 export function Mic(): JSX.Element {
     const [recording, setRecording] = React.useState<boolean>();
@@ -15,10 +26,16 @@ export function Mic(): JSX.Element {
 
     return (
         <div>
-            <ReactMic
+            <MicCircle
                 record={recording}
                 onStop={onStop}
-                strokeColor='magenta'
+                echoCancellation={false}
+                autoGainControl={false}
+                noiseSuppression={false}
+                channelCount={2}
+                visualSetting="sinewave" // sinewave or frequencyBars
+                mimeType="audio/webm"
+                strokeColor='var(--accent2)'
                 backgroundColor='#bbbbbb'
             />
             <button onClick={() => setRecording(!recording)} type='button'>{recording ? 'Stop' : 'Start'}</button>
