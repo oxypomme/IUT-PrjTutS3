@@ -1,9 +1,90 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { createAction, createSelector, createSlice } from "@reduxjs/toolkit";
 
 export interface IError {
   component: string;
   label: string;
 }
+
+export const createAccount = createAction(
+  'CREATE-EMAIL_AUTH_REQUESTED',
+  (params = {}) => ({
+    payload: {
+      request: {
+        type: "createUserWithEmailAndPassword",
+        email: params.email,
+        passwd: params.passwd
+      }
+    }
+  })
+)
+export const loginAccount = createAction(
+  'LOGIN-EMAIL_AUTH_REQUESTED',
+  (params = {}) => ({
+    payload: {
+      request: {
+        type: "signInWithEmailAndPassword",
+        email: params.email,
+        passwd: params.passwd
+      }
+    }
+  })
+)
+export const logoutAccount = createAction(
+  'LOGIN-LOGOUT_AUTH_REQUESTED',
+  (params = {}) => ({
+    payload: {
+      request: {
+        type: "signOut",
+        email: params.email,
+        passwd: params.passwd
+      }
+    }
+  })
+)
+export const updateEmailAccount = createAction(
+  'UPDATE-EMAIL_AUTH_REQUESTED',
+  (params = {}) => ({
+    payload: {
+      request: {
+        type: "updateEmail",
+        email: params.email
+      }
+    }
+  })
+)
+export const updatePasswordAccount = createAction(
+  'UPDATE-PASSWORD_AUTH_REQUESTED',
+  (params = {}) => ({
+    payload: {
+      request: {
+        type: "updatePassword",
+        passwd: params.passwd
+      }
+    }
+  })
+)
+export const resetPasswordAccount = createAction(
+  'RESET-PASSWORD_AUTH_REQUESTED',
+  (params = {}) => ({
+    payload: {
+      request: {
+        type: "sendPasswordResetEmail",
+        email: params.email,
+        actionCodeSettings: null
+      }
+    }
+  })
+)
+export const deleteAccount = createAction(
+  'DELETE_AUTH_REQUESTED',
+  () => ({
+    payload: {
+      request: {
+        type: "deleteProfile"
+      }
+    }
+  })
+)
 
 export const accountSlice = createSlice({
   name: "account",
@@ -18,9 +99,119 @@ export const accountSlice = createSlice({
       tags: new Array<number>(0),
       town: "",
     },
-    uid: ""
+    uid: "",
+    isWorking: false,
+    error: ""
+  },
+  extraReducers: {
+    [createAccount.type]: (state) => ({
+      ...state,
+      isWorking: true,
+      error: ""
+    }),
+    [loginAccount.type]: (state) => ({
+      ...state,
+      isWorking: true,
+      error: ""
+    }),
+    [logoutAccount.type]: (state) => ({
+      ...state,
+      isWorking: true,
+      error: ""
+    }),
+    [updateEmailAccount.type]: (state) => ({
+      ...state,
+      isWorking: true,
+      error: ""
+    }),
+    [updatePasswordAccount.type]: (state) => ({
+      ...state,
+      isWorking: true,
+      error: ""
+    }),
+    [resetPasswordAccount.type]: (state) => ({
+      ...state,
+      isWorking: true,
+      error: ""
+    }),
+    [deleteAccount.type]: (state) => ({
+      ...state,
+      isWorking: true,
+      error: ""
+    }),
   },
   reducers: {
+    createAccountSuccess: (state) => ({
+      ...state,
+      isWorking: false,
+      error: ""
+    }),
+    createAccountFailed: (state, { payload: message }) => ({
+      ...state,
+      isWorking: false,
+      error: message
+    }),
+    loginAccountSuccess: (state) => ({
+      ...state,
+      isWorking: false,
+      error: ""
+    }),
+    loginAccountFailed: (state, { payload: message }) => ({
+      ...state,
+      isWorking: false,
+      error: message
+    }),
+    logoutAccountSuccess: (state) => ({
+      ...state,
+      isWorking: false,
+      error: ""
+    }),
+    logoutAccountFailed: (state, { payload: message }) => ({
+      ...state,
+      isWorking: false,
+      error: message
+    }),
+    updateEmailAccountSuccess: (state) => ({
+      ...state,
+      isWorking: false,
+      error: ""
+    }),
+    updateEmailAccountFailed: (state, { payload: message }) => ({
+      ...state,
+      isWorking: false,
+      error: message
+    }),
+    updatePasswordAccountSuccess: (state) => ({
+      ...state,
+      isWorking: false,
+      error: ""
+    }),
+    updatePasswordAccountFailed: (state, { payload: message }) => ({
+      ...state,
+      isWorking: false,
+      error: message
+    }),
+    resetPasswordAccountSuccess: (state) => ({
+      ...state,
+      isWorking: false,
+      error: ""
+    }),
+    resetPasswordAccountFailed: (state, { payload: message }) => ({
+      ...state,
+      isWorking: false,
+      error: message
+    }),
+    deleteAccountSuccess: (state) => ({
+      ...state,
+      isWorking: false,
+      error: ""
+    }),
+    deleteAccountFailed: (state, { payload: message }) => ({
+      ...state,
+      isWorking: false,
+      error: message
+    }),
+
     addAge: (state, action) => {
       // The payload must be the age
       state.new.age = action.payload;
@@ -89,6 +280,21 @@ export const {
   addDesc,
   addPhoto,
   setUid,
+
+  createAccountFailed,
+  createAccountSuccess,
+  loginAccountFailed,
+  loginAccountSuccess,
+  logoutAccountSuccess,
+  logoutAccountFailed,
+  updateEmailAccountFailed,
+  updateEmailAccountSuccess,
+  updatePasswordAccountFailed,
+  updatePasswordAccountSuccess,
+  resetPasswordAccountFailed,
+  resetPasswordAccountSuccess,
+  deleteAccountFailed,
+  deleteAccountSuccess,
 } = accountSlice.actions;
 
 export const getNewState = state => state.account.new;
@@ -151,5 +357,7 @@ export const getInfos = createSelector(
   getPublicInfos,
   (persInfos, prefsInfo, publicInfos) => ({ ...persInfos, ...prefsInfo, ...publicInfos })
 );
+
+export const getAccountError = createSelector(getState, (state) => state.error)
 
 export default accountSlice.reducer;

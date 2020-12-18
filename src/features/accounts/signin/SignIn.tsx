@@ -5,9 +5,9 @@ import { Button, TextBox, HiddenLabel, ErrorLabel } from '../../../components/st
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { IError } from '../accountSlice';
+import { getAccountError, IError, loginAccount } from '../accountSlice';
 
 const PasswdRecoveryLink = styled.a`
     color: hsl(0, 0%, 50%);
@@ -23,6 +23,7 @@ const PasswdRecoveryLink = styled.a`
 const SignIn = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const loginError = useSelector(getAccountError);
     const [email, setEmail] = React.useState();
     const [passwd, setPasswd] = React.useState();
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
@@ -41,16 +42,18 @@ const SignIn = (): JSX.Element => {
 
         setGlobalErrors(errors);
         if (errors.length < 1) {
-            dispatch({
-                type: 'LOGIN-EMAIL_AUTH_REQUESTED',
-                payload: {
-                    email: email,
-                    passwd: passwd
-                }
-            });
-            history.push('/');
-            // TODO: ERRORS
-            // TODO: message de connexion
+            //React.useEffect(() => {
+            dispatch(loginAccount({ email, passwd }));
+            //}, []);
+            /*
+            if (loginError !== "") {
+                alert("Erreur de connexion : \n" + loginError);
+            }
+            else {
+                alert("Vous êtes connecté")
+                //history.push('/');
+            }
+            */
         }
     }
 

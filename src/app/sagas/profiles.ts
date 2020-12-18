@@ -3,7 +3,7 @@ import { call, put, takeLatest, take, select } from 'redux-saga/effects'
 import { rsf } from '../firebase'
 import '@firebase/database'
 
-import { getAuthId } from '../../features/accounts/accountSlice';
+import { deleteAccount, getAuthId } from '../../features/accounts/accountSlice';
 import { deleteAuth } from './auth';
 
 function* getProfiles(action?) {
@@ -72,7 +72,7 @@ function* updateProfile(action) {
 
 function* deleteProfile(action) {
     try {
-        const res = yield call(deleteAuth);
+        const res = yield call(deleteAccount);
         if (res.type === "DELETE_AUTH_FAILED") {
             throw new Error(res.payload);
         }
