@@ -119,23 +119,18 @@ export const {
   fetchTagsSuccess,
 } = accountSlice.actions;
 
-export const getState = (state) => state.account;
+export const getNewState = state => state.account.new;
 
-export const getAllTags = createSelector(getState, (state) =>
-  state.tags.map((tag) => ({ value: tag, label: tag }))
-);
+const getAge = createSelector(getNewState, (state) => state.age);
+const getDesc = createSelector(getNewState, (state) => state.desc);
+const getImageURL = createSelector(getNewState, (state) => state.imageURL);
+export const getMail = createSelector(getNewState, (state) => state.mail);
+const getName = createSelector(getNewState, (state) => state.name);
+const getOrientation = createSelector(getNewState, (state) => state.orientation);
+const getTags = createSelector(getNewState, (state) => state.tags);
+const getTown = createSelector(getNewState, (state) => state.town);
 
-const getAge = createSelector(getState, (state) => state.new.age);
-const getDesc = createSelector(getState, (state) => state.new.desc);
-const getImageURL = createSelector(getState, (state) => state.new.imageURL);
-export const getMail = createSelector(getState, (state) => state.new.mail);
-const getName = createSelector(getState, (state) => state.new.name);
-const getOrientation = createSelector(
-  getState,
-  (state) => state.new.orientation
-);
-const getTags = createSelector(getState, (state) => state.new.tags);
-const getTown = createSelector(getState, (state) => state.new.town);
+export const getState = state => state.account;
 
 export const getAuthId = createSelector(getState, (state) => state.uid);
 export const getConnection = createSelector(
