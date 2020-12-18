@@ -6,7 +6,7 @@ import "@firebase/auth";
 import firebaseApp from "./app/firebase";
 
 import { Navbar } from "./features/navbar/Navbar";
-import { getConnection, setConnected } from "./features/accounts/accountSlice";
+import { getIsConnected, setUid } from "./features/accounts/accountSlice";
 
 import { Home } from "./views/Home/Home";
 import { Login } from "./views/Login/Login";
@@ -16,16 +16,15 @@ import { Camera } from "./../src/features/camera/Camera";
 import CreateProfile from "./views/createprofile/CreateProfile";
 
 import "./App.css";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
-  const isConnected = useSelector(getConnection);
+  const isConnected = useSelector(getIsConnected);
 
   React.useEffect(() => {
     firebaseApp.auth().onAuthStateChanged(function (user) {
       if (user) {
-        dispatch(setConnected(user.uid));
+        dispatch(setUid(user.uid));
       }
     });
   }, []);
@@ -33,26 +32,23 @@ function App(): JSX.Element {
   return (
     <Router>
       <Navbar />
-      <Switch>
-        {
-          !isConnected ? (
-            <Route exact path='/' component={PublicHome} />
-          ) : (
-            <Route exact path='/' component={Home} />
-          )
-          // Maybe not the correct way
-        }
-        <Route exact path='/camera' component={Camera} />
-        <ProtectedRoute exact path='/profile' component={NotFound} />
-        <ProtectedRoute onlyUnlogged exact path='/login' component={Login} />
-        <ProtectedRoute
-          onlyUnlogged
-          exact
-          path='/SignUp/1'
-          component={CreateProfile}
-        />
-        <Route component={NotFound} />
-      </Switch>
+      { isConnected &&
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route exact path='/profile' component={NotFound} />
+          <Route exact path='/camera' component={Camera} />
+          <Route component={NotFound} />
+        </Switch>
+      }
+      { !isConnected &&
+        <Switch>
+          <Route exact path='/' component={PublicHome} />
+          <Route exact path='/login' component={Login} />
+          <Route exact path='/SignUp/1' component={CreateProfile} />
+          <Route exact path='/camera' component={Camera} />
+          <Route component={NotFound} />
+        </Switch>
+      }
     </Router>
   );
 }

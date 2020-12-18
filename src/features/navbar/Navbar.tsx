@@ -5,7 +5,7 @@ import logo from '../../logo.svg';
 import styled from '@emotion/styled';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getConnection, setConnected } from '../accounts/accountSlice';
+import { getIsConnected, setUid } from '../accounts/accountSlice';
 
 const NavBar = styled.nav``;
 const NavList = styled.ul`
@@ -46,12 +46,12 @@ const NavItem = styled.li<{ floatRight?: boolean }>`
 
 export const Navbar = (): JSX.Element => {
     const dispatch = useDispatch();
-    const guser = useSelector(getConnection);
+    const isConnected = useSelector(getIsConnected);
 
     const handleLogout = async (event) => {
         event.preventDefault();
         dispatch({ type: 'LOGOUT_AUTH_REQUESTED' });
-        dispatch(setConnected(''));
+        dispatch(setUid(''));
     }
 
     return (
@@ -63,16 +63,17 @@ export const Navbar = (): JSX.Element => {
                 <NavItem>
                     <NavLink exact to="/">Accueil</NavLink>
                 </NavItem>
-                {guser &&
+                {isConnected &&
                     <NavItem floatRight={true}>
                         <NavLink to="/profile">Mon profil</NavLink>
                     </NavItem>
                 }
-                {guser ?
+                {isConnected &&
                     <NavItem floatRight={true}>
                         <a href="#" onClick={handleLogout}>Déconnexion</a>
                     </NavItem>
-                    :
+                }
+                {!isConnected &&
                     <NavItem floatRight={true}>
                         <NavLink to="/login">Connexion</NavLink>
                     </NavItem>

@@ -71,7 +71,7 @@ export const accountSlice = createSlice({
       // The payload must be the city
       state.new.town = action.payload;
     },
-    setConnected: (state, action) => {
+    setUid: (state, action) => {
       // The payload must be the uid
       state.uid = action.payload;
     },
@@ -88,7 +88,7 @@ export const {
   removeTag,
   addDesc,
   addPhoto,
-  setConnected,
+  setUid,
 } = accountSlice.actions;
 
 export const getNewState = state => state.account.new;
@@ -105,7 +105,7 @@ const getTown = createSelector(getNewState, (state) => state.town);
 export const getState = state => state.account;
 
 export const getAuthId = createSelector(getState, (state) => state.uid);
-export const getConnection = createSelector(
+export const getIsConnected = createSelector(
   getState,
   (state) => state.uid !== ""
 );
