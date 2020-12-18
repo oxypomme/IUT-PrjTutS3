@@ -5,10 +5,8 @@ import { Button, Spacer, TextBox, HiddenLabel, ErrorLabel } from '../../../compo
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-import { addMail } from "../accountSlice";
+import { addMail, IError } from "../accountSlice";
 import { useHistory } from "react-router-dom";
-
-export interface IError { component: string, label: string; }
 
 const SignUp = (): JSX.Element => {
     const dispatch = useDispatch();

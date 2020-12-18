@@ -1,5 +1,6 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 
+export interface IError { component: string, label: string; }
 export const accountSlice = createSlice({
     name: 'account',
     initialState: {

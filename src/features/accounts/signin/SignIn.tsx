@@ -1,12 +1,13 @@
 import React from 'react';
 
 import styled from '@emotion/styled';
-import { Button, TextBox, HiddenLabel } from '../../../components/styledComponents';
+import { Button, TextBox, HiddenLabel, ErrorLabel } from '../../../components/styledComponents';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { IError } from '../accountSlice';
 
 const PasswdRecoveryLink = styled.a`
     color: hsl(0, 0%, 50%);
@@ -19,12 +20,12 @@ const PasswdRecoveryLink = styled.a`
         color: hsl(0, 0%, 35%);
     }
 `
-
 const SignIn = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [email, setEmail] = React.useState();
     const [passwd, setPasswd] = React.useState();
+    const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const handleSetEmailOnChange = (event) => setEmail(event.target.value);
 
@@ -32,8 +33,14 @@ const SignIn = (): JSX.Element => {
 
     const handleOnSubmit = async (event) => {
         event.preventDefault();
-        const canSubmit = email && passwd;
-        if (canSubmit) {
+        let errors = [];
+        if (!email)
+            errors = [...errors, { component: "email", label: "L'email doit être remplie." } as IError];
+        if (!passwd)
+            errors = [...errors, { component: "passwd", label: "Le mot de passe doit être remplie." } as IError];
+
+        setGlobalErrors(errors);
+        if (errors.length < 1) {
             dispatch({
                 type: 'LOGIN-EMAIL_AUTH_REQUESTED',
                 payload: {
@@ -59,7 +66,17 @@ const SignIn = (): JSX.Element => {
 
     return (
         <form onSubmit={handleOnSubmit}>
-            <TextBox>
+            {globalErrors.length > 0 &&
+                <ErrorLabel>
+                    {globalErrors.map((error, index) => (
+                        <div key={index}>
+                            <FontAwesomeIcon icon={faExclamationTriangle} />
+                            {error.label}
+                        </div>
+                    ))}
+                </ErrorLabel>
+            }
+            <TextBox borderColor={globalErrors.some(e => e.component === "email") ? 'red' : 'default'}>
                 <FontAwesomeIcon icon={faUser} />
                 <input
                     type="text"
@@ -70,7 +87,7 @@ const SignIn = (): JSX.Element => {
                 />
                 <HiddenLabel htmlFor="email">Email</HiddenLabel>
             </TextBox>
-            <TextBox>
+            <TextBox borderColor={globalErrors.some(e => e.component === "passwd") ? 'red' : 'default'}>
                 <FontAwesomeIcon icon={faLock} />
                 <input
                     type="password"
