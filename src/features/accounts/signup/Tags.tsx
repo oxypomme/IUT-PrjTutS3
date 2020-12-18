@@ -2,6 +2,7 @@ import React from "react";
 
 import Creatable from "react-select";
 import { components, MenuProps } from "react-select";
+import { useDispatch } from 'react-redux';
 
 export interface ITag { value: string, label: string; }
 
@@ -19,7 +20,16 @@ const Menu = (props: MenuProps<ITag, true>) => {
 };
 
 export const Tags = (): JSX.Element => {
+    const dispatch = useDispatch();
+
     const [selectedTags, setSelectedTags] = React.useState<Array<ITag>>();
+
+
+    React.useEffect(() => {
+        dispatch({
+            type: 'FETCH_TAGS_REQUESTED'
+        });
+    }, [0]);
 
     const tags = [
         { value: 'chocolate', label: 'Chocolate' },
