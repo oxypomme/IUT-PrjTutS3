@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { isNonNullChain } from "typescript";
 import { Tags } from './Tags';
+import { Gender } from './Gender';
 import { addAge, addCity, addName } from "../accountSlice";
 import { useHistory } from "react-router-dom";
 
@@ -85,7 +86,6 @@ const RegisterPersonal = (): JSX.Element => {
             </TextBox>
 
             <Button>Suivant</Button>
-            <Tags />
         </form >
     );
 };
