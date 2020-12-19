@@ -3,6 +3,8 @@ import Creatable from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { components, MenuProps } from "react-select";
 import { fetchTags, getAllTags } from "../tagSlice";
+import { useHistory } from "react-router-dom";
+import { Button } from '../../../components/styledComponents';
 
 export interface ITag {
   value: string;
@@ -24,6 +26,7 @@ const Menu = (props: MenuProps<ITag, true>) => {
 
 export const Tags = (): JSX.Element => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const tags: Array<ITag> = useSelector(getAllTags);
 
   const [selectedTags, setSelectedTags] = React.useState<Array<ITag>>();
@@ -32,11 +35,19 @@ export const Tags = (): JSX.Element => {
     dispatch(fetchTags());
   }, []);
 
+  const handleOnSubmit = (event) => {
+    event.preventDefault();
+    const canSubmit = tags;
+    if (canSubmit) {
+      dispatch(fetchTags());
+      history.push('SignUp/3');
+    }
+  }
   const isValidNewOption = (inputValue, selectValue) =>
     inputValue.length > 0 && selectValue.length < 5;
 
   return (
-    <form>
+    <form onSubmit={handleOnSubmit}>
       <Creatable
         components={{ Menu }}
         isMulti
@@ -47,6 +58,7 @@ export const Tags = (): JSX.Element => {
         onChange={(mytags) => setSelectedTags(mytags as ITag[])}
         options={tags}
       />
+      <Button>Suivant</Button>
     </form>
   );
 };

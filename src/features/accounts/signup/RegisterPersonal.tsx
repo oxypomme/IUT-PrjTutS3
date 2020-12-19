@@ -6,8 +6,6 @@ import { Button, TextBox, HiddenLabel } from '../../../components/styledComponen
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { isNonNullChain } from "typescript";
-import { Tags } from './Tags';
-import { Gender } from './Gender';
 import { addAge, addCity, addName } from "../accountSlice";
 import { useHistory } from "react-router-dom";
 
