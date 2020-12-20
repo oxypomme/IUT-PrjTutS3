@@ -3,14 +3,8 @@ import React from "react";
 import { useDispatch } from 'react-redux';
 import Select from "react-select";
 
-enum EOrientation {
-    Other = 0,
-    Bisexual,
-    Homosexual,
-    Heterosexual
-}
-
-export interface IOrientation { value: number, label: string; }
+import { IOrientation } from "../../../include/IOrientation";
+import { EOrientation } from "../../../include/EOrientation";
 
 export const Orientation = (): JSX.Element => {
     const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IOrientation>>();

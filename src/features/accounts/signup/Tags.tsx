@@ -6,11 +6,7 @@ import { fetchTags, getAllTags } from "../tagSlice";
 import { useHistory } from "react-router-dom";
 import { Button } from '../../../components/styledComponents';
 import { addTag } from "../accountSlice";
-
-export interface ITag {
-    value: string;
-    label: string;
-}
+import { ITag } from "../../../include/ITag";
 
 const Menu = (props: MenuProps<ITag, true>) => {
     const optionSelectedLength = props.getValue().length || 0;

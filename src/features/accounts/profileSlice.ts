@@ -1,4 +1,5 @@
 import { createAction, createSelector, createSlice } from "@reduxjs/toolkit";
+import { IProfile } from "../../include/IProfile";
 
 export const fetchProfiles = createAction(
     "FETCH_PROFILES_REQUESTED",
@@ -63,17 +64,6 @@ export const deleteProfile = createAction(
         }
     })
 )
-
-export interface IProfile {
-    age: number,
-    desc: string,
-    imageURL: string,
-    name: string,
-    orientation: number,
-    sex: number,
-    tags: string[],
-    town: string
-}
 
 export const profileSlice = createSlice({
     name: "profiles",

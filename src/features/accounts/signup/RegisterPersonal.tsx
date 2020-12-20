@@ -6,8 +6,10 @@ import { Button, TextBox, HiddenLabel, ErrorLabel } from '../../../components/st
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCalendarAlt, faBuilding, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { isNonNullChain } from "typescript";
-import { addAge, addCity, addName, IError } from "../accountSlice";
+import { addAge, addCity, addName } from "../accountSlice";
 import { useHistory } from "react-router-dom";
+
+import { IError } from "../../../include/IError";
 
 const RegisterPersonal = (): JSX.Element => {
     const dispatch = useDispatch();

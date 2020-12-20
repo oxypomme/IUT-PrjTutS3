@@ -3,13 +3,8 @@ import React from "react";
 import { useDispatch } from 'react-redux';
 import Select from "react-select";
 
-enum EGender {
-    NonBinary = 0,
-    Women,
-    Men
-}
-
-export interface IGender { value: number, label: string; }
+import { IGender } from "../../../include/IGender";
+import { EGender } from "../../../include/EGender";
 
 export const Gender = (): JSX.Element => {
     const [selectedGender, setSelectedGender] = React.useState<Array<IGender>>();
