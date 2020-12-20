@@ -1,28 +1,24 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 
-import { Button, TextBox, HiddenLabel } from '../../../components/styledComponents';
+import { Button, TextBox, HiddenLabel, ErrorLabel } from '../../../components/styledComponents';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faCalendarAlt, faBuilding, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { isNonNullChain } from "typescript";
-import { addAge, addCity, addName } from "../accountSlice";
+import { addAge, addCity, addName, IError } from "../accountSlice";
 import { useHistory } from "react-router-dom";
 
 const RegisterPersonal = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [name, setName] = React.useState();
-    const [hasError, setHasError] = React.useState(false);
     const [age, setAge] = React.useState<number>();
     const [town, setTown] = React.useState();
+    const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
 
-    const handleOnChange = ({ target }) => {
-        const { value: newName } = target;
-        setName(newName);
-        setHasError(name !== isNonNullChain);
-    };
+    const handleOnChange = (event) => setName(event.target.value);
 
     const handleSetAgeOnChange = (event) => setAge(parseInt(event.target.value));
 
@@ -31,8 +27,19 @@ const RegisterPersonal = (): JSX.Element => {
 
     const handleOnSubmit = (event) => {
         event.preventDefault();
-        const canSubmit = name && age && town && !hasError;
-        if (canSubmit) {
+        let errors = [];
+
+        if (!name || (name && name !== isNonNullChain))
+            errors = [...errors, { component: "name", label: "Veuillez spécifier votre nom." } as IError];
+        if (!age)
+            errors = [...errors, { component: "age", label: "Veuillez spécifier votre age." } as IError];
+        else if (age && age < 18)
+            errors = [...errors, { component: "age", label: "L'âge doit etre supérieur à 18 ans." } as IError];
+        if (!town || (town && town !== isNonNullChain))
+            errors = [...errors, { component: "town", label: "Veuillez spécifier votre ville." } as IError];
+
+        setGlobalErrors(errors);
+        if (errors.length < 1) {
             dispatch(addName(name));
             dispatch(addAge(age));
             dispatch(addCity(town));
@@ -42,35 +49,46 @@ const RegisterPersonal = (): JSX.Element => {
 
     return (
         <form onSubmit={handleOnSubmit}>
-            <TextBox borderColor={hasError ? 'red' : 'default'}>
+            {globalErrors.length > 0 &&
+                <ErrorLabel>
+                    {globalErrors.map((error, index) => (
+                        <div key={index}>
+                            <FontAwesomeIcon icon={faExclamationTriangle} />
+                            {error.label}
+                        </div>
+                    ))}
+                </ErrorLabel>
+            }
+            <TextBox borderColor={globalErrors.some(e => e.component === "name") ? 'red' : 'default'}>
                 <FontAwesomeIcon icon={faUser} />
                 <input
                     type='name'
                     value={name}
                     onChange={handleOnChange}
                     name='name'
-                    placeholder='Nom'
+                    placeholder='Prénom'
                 />
                 <HiddenLabel htmlFor="name">
                     Name
                 </HiddenLabel>
             </TextBox>
 
-            <TextBox>
-                <FontAwesomeIcon icon={faLock} />
+            <TextBox borderColor={globalErrors.some(e => e.component === "age") ? 'red' : 'default'}>
+                <FontAwesomeIcon icon={faCalendarAlt} />
                 <input
                     value={age}
                     onChange={handleSetAgeOnChange}
                     type='number'
                     name='age'
                     placeholder='Age'
+                    min={18}
                 />
                 <HiddenLabel htmlFor='age'>
                     Age
                 </HiddenLabel>
             </TextBox>
-            <TextBox >
-                <FontAwesomeIcon icon={faLock} />
+            <TextBox borderColor={globalErrors.some(e => e.component === "town") ? 'red' : 'default'}>
+                <FontAwesomeIcon icon={faBuilding} />
                 <input
                     value={town}
                     onChange={handleSetTownOnChange}
