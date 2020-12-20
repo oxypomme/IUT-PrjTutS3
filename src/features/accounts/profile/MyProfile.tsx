@@ -29,8 +29,10 @@ const MyProfile = (): JSX.Element => {
     const dispatch = useDispatch();
     const profile: IProfile = useSelector(getCurrProfile);
     const tags: Array<ITag> = useSelector(getAllTags);
-    let gender = faUser;
-    let orientation = faNeuter;
+    let genderIcon = faUser;
+    let gender = "$gender";
+    let orientationIcon = faNeuter;
+    let orientation = "$orientation";
 
     React.useEffect(() => {
         dispatch(fetchTags());
@@ -40,13 +42,16 @@ const MyProfile = (): JSX.Element => {
 
     switch (profile?.sex) {
         case EGender.NonBinary:
-            gender = faGenderless;
+            genderIcon = faGenderless;
+            gender = "Non-binaire";
             break;
         case EGender.Men:
-            gender = faHorse; // faMale
+            genderIcon = faHorse; // faMale
+            gender = "Poney"; //Homme
             break;
         case EGender.Women:
-            gender = faHelicopter; // faFemale
+            genderIcon = faHelicopter; // faFemale
+            gender = "Hélicoptère"; //Femme
             break;
         default:
             break;
@@ -54,15 +59,19 @@ const MyProfile = (): JSX.Element => {
 
     switch (profile?.orientation) {
         case EOrientation.Bisexual:
-            orientation = faTransgender;
+            orientationIcon = faTransgender;
+            orientation = "Bisexuel"
             break;
         case EOrientation.Homosexual:
-            orientation = profile?.sex === 1 ? faMarsDouble : faVenusDouble;
+            orientationIcon = profile?.sex === EGender.Men ? faMarsDouble : faVenusDouble;
+            orientation = "Homosexuel"
             break;
         case EOrientation.Heterosexual:
-            orientation = faVenusMars;
+            orientationIcon = faVenusMars;
+            orientation = "Hétérosexuel"
             break;
         default:
+            orientation = "Autre"
             break;
     }
 
@@ -71,8 +80,8 @@ const MyProfile = (): JSX.Element => {
             <p><FontAwesomeIcon icon={faUser} /> {profile?.name || "[No profile found]"}</p>
             <ProfilePicture source={profile?.imageURL} />
             <p><FontAwesomeIcon icon={faCalendarAlt} /> {profile?.age || "[No profile found]"}</p>
-            <p>Genre : <FontAwesomeIcon icon={gender} /></p>
-            <p>Orientation : <FontAwesomeIcon icon={orientation} /></p>
+            <p>Genre : <FontAwesomeIcon icon={genderIcon} /> {gender}</p>
+            <p>Orientation : <FontAwesomeIcon icon={orientationIcon} /> {orientation}</p>
             <p><FontAwesomeIcon icon={faBuilding} /> {profile?.town || "[No profile found]"}</p>
             <ul>
                 {profile?.tags?.map((tag, index) => (
