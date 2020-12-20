@@ -5,6 +5,7 @@ import { components, MenuProps } from "react-select";
 import { fetchTags, getAllTags } from "../tagSlice";
 import { useHistory } from "react-router-dom";
 import { Button } from '../../../components/styledComponents';
+import { addTag } from "../accountSlice";
 
 export interface ITag {
   value: string;
@@ -39,7 +40,7 @@ export const Tags = (): JSX.Element => {
     event.preventDefault();
     const canSubmit = !!tags;
     if (canSubmit) {
-      //TODO: add tags to account.neww
+      dispatch(addTag(selectedTags.map((tag) => tag.value)))
       history.push('SignUp/3');
     }
   }
