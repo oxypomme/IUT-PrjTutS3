@@ -41,10 +41,6 @@ function* getProfiles(action) {
 
 function* getCurrProfile(action) {
     try {
-        yield call(fetchProfiles);
-        const profileError = yield select(getProfileError);
-        if (profileError !== "")
-            throw new Error(profileError);
         const id = yield select(getAuthId);
 
         const { request } = action.payload;

@@ -163,6 +163,10 @@ export const profileSlice = createSlice({
             isWorking: false,
             error: message
         }),
+
+        resetCurrProfile: (state) => {
+            state.currentId = -1;
+        }
     }
 });
 
@@ -176,15 +180,19 @@ export const {
     updateProfileSuccess,
     updateProfileFailed,
     deleteProfileSuccess,
-    deleteProfileFailed
+    deleteProfileFailed,
+
+    resetCurrProfile
 } = profileSlice.actions;
 
 export const getState = state => state.tags;
 
 export const getAllProfiles = createSelector(getState, state => state.profiles);
 export const getCurrProfile = createSelector(getState, state => {
-    if (state.profiles) return state.profiles[state.currentId];
-    else return null;
+    if (state.profiles)
+        return state.profiles[state.currentId];
+    else
+        return null;
 })
 export const getProfileError = createSelector(getState, state => state.error);
 

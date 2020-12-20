@@ -51,7 +51,6 @@ export const Navbar = (): JSX.Element => {
     const handleLogout = async (event) => {
         event.preventDefault();
         dispatch(logoutAccount());
-        dispatch(setUid(''));
     }
 
     return (

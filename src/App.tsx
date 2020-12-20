@@ -17,6 +17,7 @@ import { Profile } from "./views/Profile";
 import { CreateProfile } from "./views/CreateProfile";
 
 import "./App.css";
+import { fetchCurrProfile, resetCurrProfile } from "./features/accounts/profileSlice";
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -26,6 +27,10 @@ function App(): JSX.Element {
     firebaseApp.auth().onAuthStateChanged(function (user) {
       if (user) {
         dispatch(setUid(user.uid));
+        dispatch(fetchCurrProfile());
+      } else {
+        dispatch(setUid(''));
+        dispatch(resetCurrProfile());
       }
     });
   }, []);
