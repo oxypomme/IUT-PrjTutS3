@@ -1,5 +1,5 @@
 import { createAction, createSelector, createSlice } from "@reduxjs/toolkit";
-import { IProfile } from "../../include/IProfile";
+import IProfile from "../../include/IProfile";
 
 export const fetchProfiles = createAction(
     "FETCH_PROFILES_REQUESTED",

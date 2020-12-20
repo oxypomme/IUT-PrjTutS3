@@ -9,7 +9,7 @@ import { isNonNullChain } from "typescript";
 import { addAge, addCity, addName } from "../accountSlice";
 import { useHistory } from "react-router-dom";
 
-import { IError } from "../../../include/IError";
+import IError from "../../../include/IError";
 
 const RegisterPersonal = (): JSX.Element => {
     const dispatch = useDispatch();

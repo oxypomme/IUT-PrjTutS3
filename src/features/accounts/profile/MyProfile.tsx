@@ -2,7 +2,6 @@ import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 
 import styled from '@emotion/styled';
-import { Button, TextBox, HiddenLabel, ErrorLabel } from '../../../components/styledComponents';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHorse, faCalendarAlt, faBuilding, faGenderless, faVenusMars, faVenusDouble, faNeuter, faHelicopter, faMarsDouble, faTransgender } from '@fortawesome/free-solid-svg-icons';
@@ -10,8 +9,10 @@ import { faUser, faHorse, faCalendarAlt, faBuilding, faGenderless, faVenusMars, 
 import { fetchCurrProfile, fetchProfiles, getCurrProfile } from '../profileSlice';
 import { fetchTags, getAllTags } from '../tagSlice';
 
-import { IProfile } from '../../../include/IProfile';
-import { ITag } from '../../../include/ITag';
+import IProfile from '../../../include/IProfile';
+import ITag from '../../../include/ITag';
+import EGender from '../../../include/EGender';
+import EOrientation from '../../../include/EOrientation';
 
 const ProfilePicture = styled.img <{ source?: string }> `
     width: 200px;
@@ -38,10 +39,13 @@ const MyProfile = (): JSX.Element => {
     }, [dispatch]);
 
     switch (profile?.sex) {
-        case 1:
+        case EGender.NonBinary:
+            gender = faGenderless;
+            break;
+        case EGender.Men:
             gender = faHorse; // faMale
             break;
-        case 2:
+        case EGender.Women:
             gender = faHelicopter; // faFemale
             break;
         default:
@@ -49,13 +53,13 @@ const MyProfile = (): JSX.Element => {
     }
 
     switch (profile?.orientation) {
-        case 1:
+        case EOrientation.Bisexual:
             orientation = faTransgender;
             break;
-        case 2:
+        case EOrientation.Homosexual:
             orientation = profile?.sex === 1 ? faMarsDouble : faVenusDouble;
             break;
-        case 3:
+        case EOrientation.Heterosexual:
             orientation = faVenusMars;
             break;
         default:

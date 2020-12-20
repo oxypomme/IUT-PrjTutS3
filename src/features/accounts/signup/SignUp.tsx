@@ -8,7 +8,7 @@ import { faUser, faLock, faExclamationTriangle } from "@fortawesome/free-solid-s
 import { addMail } from "../accountSlice";
 import { useHistory } from "react-router-dom";
 
-import { IError } from "../../../include/IError";
+import IError from "../../../include/IError";
 
 const SignUp = (): JSX.Element => {
     const dispatch = useDispatch();
