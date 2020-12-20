@@ -15,8 +15,8 @@ export const Gender = (): JSX.Element => {
     const [selectedGender, setSelectedGender] = React.useState<Array<IGender>>();
 
     const genders = [
-        { value: EGender.Men, label: 'Homme' },
-        { value: EGender.Women, label: 'Femme' },
+        { value: EGender.Men, label: 'Poney' },
+        { value: EGender.Women, label: 'Hélicoptère' },
         { value: EGender.NonBinary, label: 'Non-binaire' }
     ] as IGender[]
 
