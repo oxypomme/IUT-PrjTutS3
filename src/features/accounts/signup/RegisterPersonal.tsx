@@ -29,13 +29,13 @@ const RegisterPersonal = (): JSX.Element => {
         event.preventDefault();
         let errors = [];
 
-        if (!name || (name && name !== isNonNullChain))
+        if (!name || (name && name === isNonNullChain))
             errors = [...errors, { component: "name", label: "Veuillez spécifier votre nom." } as IError];
         if (!age)
             errors = [...errors, { component: "age", label: "Veuillez spécifier votre age." } as IError];
         else if (age && age < 18)
             errors = [...errors, { component: "age", label: "L'âge doit etre supérieur à 18 ans." } as IError];
-        if (!town || (town && town !== isNonNullChain))
+        if (!town || (town && town === isNonNullChain))
             errors = [...errors, { component: "town", label: "Veuillez spécifier votre ville." } as IError];
 
         setGlobalErrors(errors);
@@ -43,7 +43,7 @@ const RegisterPersonal = (): JSX.Element => {
             dispatch(addName(name));
             dispatch(addAge(age));
             dispatch(addCity(town));
-            history.push('SignUp/2');
+            history.push('/SignUp/2');
         }
     }
 
