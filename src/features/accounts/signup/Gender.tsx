@@ -3,25 +3,29 @@ import React from "react";
 import { useDispatch } from 'react-redux';
 import Select from "react-select";
 
-export interface IGender { value: string, label: string; }
-export interface IOrientation { value: string, label: string; }
+const enum EGender {
+    NonBinary = 0,
+    Women,
+    Men
+}
+
+const enum EOrientation {
+    Other = 0,
+    Bisexual,
+    Homosexual,
+    Heterosexual
+}
+
+export interface IGender { value: number, label: string; }
+export interface IOrientation { value: number, label: string; }
 
 export const Gender = (): JSX.Element => {
-    const dispatch = useDispatch();
-
     const [selectedGender, setSelectedGender] = React.useState<Array<IGender>>();
 
-
-    React.useEffect(() => {
-        dispatch({
-            type: 'FETCH_GENDER_REQUESTED'
-        });
-    }, [0]);
-
     const genders = [
-        { value: 'men', label: 'Homme' },
-        { value: 'women', label: 'Femme' },
-        { value: 'non_binary', label: 'Non-binaire' }
+        { value: EGender.Men, label: 'Homme' },
+        { value: EGender.Women, label: 'Femme' },
+        { value: EGender.NonBinary, label: 'Non-binaire' }
     ] as IGender[]
 
     return (
@@ -37,21 +41,13 @@ export const Gender = (): JSX.Element => {
     );
 }
 export const Orientation = (): JSX.Element => {
-    const dispatch = useDispatch();
-
     const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IGender>>();
 
-
-    React.useEffect(() => {
-        dispatch({
-            type: 'FETCH_ORIENTATION_REQUESTED'
-        });
-    }, [0]);
-
     const orientations = [
-        { value: 'homosexuel', label: 'Homosexuel' },
-        { value: 'heterosexual', label: 'Hétérosexuel' },
-        { value: 'bisexual', label: 'Bisexuel' }
+        { value: EOrientation.Homosexual, label: 'Homosexuel' },
+        { value: EOrientation.Heterosexual, label: 'Hétérosexuel' },
+        { value: EOrientation.Bisexual, label: 'Bisexuel' },
+        { value: EOrientation.Other, label: 'Autre' }
     ] as IOrientation[]
 
     return (

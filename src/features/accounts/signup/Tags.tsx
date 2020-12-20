@@ -37,7 +37,7 @@ export const Tags = (): JSX.Element => {
 
   const handleOnSubmit = (event) => {
     event.preventDefault();
-    const canSubmit = tags;
+    const canSubmit = !!tags;
     if (canSubmit) {
       dispatch(fetchTags());
       history.push('SignUp/3');
