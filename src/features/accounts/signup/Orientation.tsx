@@ -3,7 +3,7 @@ import React from "react";
 import { useDispatch } from 'react-redux';
 import Select from "react-select";
 
-const enum EOrientation {
+enum EOrientation {
     Other = 0,
     Bisexual,
     Homosexual,
