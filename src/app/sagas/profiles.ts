@@ -81,8 +81,8 @@ function* createProfileSaga(action) {
         const authid = yield select(getAuthId);
         yield call(
             rsf.database[request.type],
-            request.urlL + '/' + authid,
-            key
+            request.urlL + '/' + key,
+            authid
         );
         yield put(createProfileSuccess());
     } catch (error) {

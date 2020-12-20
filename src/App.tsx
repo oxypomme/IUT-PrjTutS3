@@ -14,7 +14,7 @@ import { NotFound } from "./views/Errors/NotFound";
 import { PublicHome } from "./views/Home/PublicHome";
 import { Camera } from "./../src/features/camera/Camera";
 import { Profile } from "./views/Profile";
-import { CreateProfile } from "./views/CreateProfile";
+import { CreatePersonal, CreatePreferences } from "./views/CreateProfile";
 
 import "./App.css";
 import { fetchCurrProfile, resetCurrProfile } from "./features/accounts/profileSlice";
@@ -50,7 +50,8 @@ function App(): JSX.Element {
         <Switch>
           <Route exact path='/' component={PublicHome} />
           <Route exact path='/login' component={Login} />
-          <Route exact path='/SignUp/1' component={CreateProfile} />
+          <Route exact path='/SignUp/1' component={CreatePersonal} />
+          <Route exact path='/SignUp/2' component={CreatePreferences} />
           <Route exact path='/camera' component={Camera} />
           <Route component={NotFound} />
         </Switch>

@@ -3,7 +3,7 @@ import React from "react";
 import { useDispatch } from 'react-redux';
 import Select from "react-select";
 
-const enum EGender {
+enum EGender {
     NonBinary = 0,
     Women,
     Men
@@ -21,7 +21,6 @@ export const Gender = (): JSX.Element => {
     ] as IGender[]
 
     return (
-
         <form>
             <Select
                 isSearchable={true}
