@@ -9,10 +9,6 @@ import SignIn from '../../features/accounts/signin/SignIn';
 import SignUp from '../../features/accounts/signup/SignUp';
 
 export function Login(): JSX.Element {
-  if (useSelector(getIsConnected)) {
-    // Return to Home if the user already connected
-    return <Redirect to='/' />;
-  }
   return (
     <div className='App login'>
       <div>

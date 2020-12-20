@@ -1,7 +1,7 @@
 import { call, put, takeLatest, take, select } from 'redux-saga/effects'
-import { useSelector } from 'react-redux';
 
 import { rsf } from '../firebase'
+import firebase from 'firebase/app'
 import '@firebase/database'
 
 import { deleteAccount, getAccountError, getAuthId } from '../../features/accounts/accountSlice';
@@ -12,6 +12,9 @@ import {
     createProfileSuccess,
     deleteProfile,
     deleteProfileFailed,
+    fetchCurrProfile,
+    fetchCurrProfilesFailed,
+    fetchCurrProfilesSuccess,
     fetchProfiles,
     fetchProfilesFailed,
     fetchProfilesSuccess,
@@ -22,9 +25,9 @@ import {
     updateProfileSuccess
 } from '../../features/accounts/profileSlice';
 
-function* getProfiles(action?) {
+function* getProfiles(action) {
     try {
-        const { request } = action.request;
+        const { request } = action.payload;
         const profiles = yield call(
             rsf.database[request.type],
             request.url,
@@ -36,13 +39,33 @@ function* getProfiles(action?) {
     }
 }
 
+function* getCurrProfile(action) {
+    try {
+        yield call(fetchProfiles);
+        const profileError = yield select(getProfileError);
+        if (profileError !== "")
+            throw new Error(profileError);
+        const id = yield select(getAuthId);
+
+        const { request } = action.payload;
+        const profile = yield call(
+            rsf.database[request.type],
+            request.url + '/' + id,
+            request.params
+        );
+        yield put(fetchCurrProfilesSuccess(profile));
+    } catch (error) {
+        yield put(fetchCurrProfilesFailed(error.message));
+    }
+}
+
 function* createProfileSaga(action) {
     try {
         yield call(fetchProfiles);
-        const profileError = useSelector(getProfileError);
+        const profileError = yield select(getProfileError);
         if (profileError !== "")
             throw new Error(profileError);
-        const profiles = useSelector(getAllProfiles);
+        const profiles = yield select(getAllProfiles);
 
         let key = profiles.length;
         for (let i = 0; i < profiles.length; i++) {
@@ -62,8 +85,8 @@ function* createProfileSaga(action) {
         const authid = yield select(getAuthId);
         yield call(
             rsf.database[request.type],
-            request.urlL + '/' + key,
-            authid
+            request.urlL + '/' + authid,
+            key
         );
         yield put(createProfileSuccess());
     } catch (error) {
@@ -87,11 +110,12 @@ function* updateProfileSaga(action) {
 function* deleteProfileSaga(action) {
     try {
         yield call(deleteAccount);
-        const accountError = useSelector(getAccountError);
+        const accountError = yield select(getAccountError);
         if (accountError !== "") {
             throw new Error(accountError);
         }
 
+        const authid = yield select(getAuthId);
         const { request } = action.payload;
         yield call(
             rsf.database[request.type],
@@ -99,7 +123,7 @@ function* deleteProfileSaga(action) {
         );
         yield call(
             rsf.database[request.type],
-            request.urlL + '/' + request.params
+            request.urlL + '/' + authid
         );
         yield put(createProfileSuccess());
     } catch (error) {
@@ -109,6 +133,7 @@ function* deleteProfileSaga(action) {
 
 export default function* profilesSagas() {
     yield takeLatest(fetchProfiles.type, getProfiles);
+    yield takeLatest(fetchCurrProfile.type, getCurrProfile);
     yield takeLatest(createProfile.type, createProfileSaga);
     yield takeLatest(updateProfile.type, updateProfileSaga);
     yield takeLatest(deleteProfile.type, deleteProfileSaga);

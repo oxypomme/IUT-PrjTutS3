@@ -8,12 +8,13 @@ import firebaseApp from "./app/firebase";
 import { Navbar } from "./features/navbar/Navbar";
 import { getIsConnected, setUid } from "./features/accounts/accountSlice";
 
-import { Home } from "./views/Home/Home";
+import { Home } from "./views/Home";
 import { Login } from "./views/Login/Login";
 import { NotFound } from "./views/Errors/NotFound";
 import { PublicHome } from "./views/Home/PublicHome";
 import { Camera } from "./../src/features/camera/Camera";
-import CreateProfile from "./views/createprofile/CreateProfile";
+import { Profile } from "./views/Profile";
+import { CreateProfile } from "./views/CreateProfile";
 
 import "./App.css";
 
@@ -35,7 +36,7 @@ function App(): JSX.Element {
       { isConnected &&
         <Switch>
           <Route exact path='/' component={Home} />
-          <Route exact path='/profile' component={NotFound} />
+          <Route exact path='/profile' component={Profile} />
           <Route exact path='/camera' component={Camera} />
           <Route component={NotFound} />
         </Switch>

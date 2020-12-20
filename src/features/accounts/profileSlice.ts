@@ -12,6 +12,18 @@ export const fetchProfiles = createAction(
         }
     })
 )
+export const fetchCurrProfile = createAction(
+    "FETCH-CURRENT_PROFILE_REQUESTED",
+    (params = {}) => ({
+        payload: {
+            request: {
+                type: "read",
+                url: "/link",
+                params
+            }
+        }
+    })
+)
 export const createProfile = createAction(
     "CREATE_PROFILE_REQUESTED",
     (params: IProfile) => ({
@@ -66,12 +78,18 @@ export interface IProfile {
 export const profileSlice = createSlice({
     name: "profiles",
     initialState: {
-        profiles: new Array<any>(),
+        profiles: new Array<IProfile>(),
+        currentId: -1,
         isWorking: false,
         error: ""
     },
     extraReducers: {
         [fetchProfiles.type]: (state) => ({
+            ...state,
+            isWorking: true,
+            error: ""
+        }),
+        [fetchCurrProfile.type]: (state) => ({
             ...state,
             isWorking: true,
             error: ""
@@ -100,6 +118,17 @@ export const profileSlice = createSlice({
             profiles
         }),
         fetchProfilesFailed: (state, { payload: message }) => ({
+            ...state,
+            isWorking: false,
+            error: message
+        }),
+        fetchCurrProfilesSuccess: (state, { payload: currentId }) => ({
+            ...state,
+            isWorking: false,
+            error: "",
+            currentId
+        }),
+        fetchCurrProfilesFailed: (state, { payload: message }) => ({
             ...state,
             isWorking: false,
             error: message
@@ -140,6 +169,8 @@ export const profileSlice = createSlice({
 export const {
     fetchProfilesSuccess,
     fetchProfilesFailed,
+    fetchCurrProfilesSuccess,
+    fetchCurrProfilesFailed,
     createProfileSuccess,
     createProfileFailed,
     updateProfileSuccess,
@@ -150,8 +181,11 @@ export const {
 
 export const getState = state => state.tags;
 
-export const getAllProfiles = createSelector(getState, (state) => state.profiles);
-
+export const getAllProfiles = createSelector(getState, state => state.profiles);
+export const getCurrProfile = createSelector(getState, state => {
+    if (state.profiles) return state.profiles[state.currentId];
+    else return null;
+})
 export const getProfileError = createSelector(getState, state => state.error);
 
 export default profileSlice.reducer;

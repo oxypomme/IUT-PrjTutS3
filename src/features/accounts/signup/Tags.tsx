@@ -33,13 +33,13 @@ export const Tags = (): JSX.Element => {
 
   React.useEffect(() => {
     dispatch(fetchTags());
-  }, []);
+  }, [dispatch]);
 
   const handleOnSubmit = (event) => {
     event.preventDefault();
     const canSubmit = !!tags;
     if (canSubmit) {
-      dispatch(fetchTags());
+      //TODO: add tags to account.neww
       history.push('SignUp/3');
     }
   }

@@ -1,7 +1,7 @@
 import React from "react";
 import RegisterPersonal from '../../features/accounts/signup/RegisterPersonal';
 
-export default function CreateProfile(): JSX.Element {
+export function CreateProfile(): JSX.Element {
     return (
         <div className='App'>
             <div>
