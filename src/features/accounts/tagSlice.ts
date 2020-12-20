@@ -15,8 +15,6 @@ export const fetchTags = createAction(
     })
 );
 
-//TODO: fetchTag = createAction
-
 export const tagSlice = createSlice({
     name: 'tags',
     initialState: {

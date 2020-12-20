@@ -5,6 +5,7 @@ import counterReducer from '../features/counter/counterSlice';
 import accountReducer from '../features/accounts/accountSlice';
 import tagsReducer from '../features/accounts/tagSlice';
 import profilesReducer from '../features/accounts/profileSlice';
+import storageReducer from '../features/firestorage/storageSlice';
 
 import rootSaga from './sagas';
 
@@ -17,6 +18,7 @@ export default () => {
       account: accountReducer,
       tags: tagsReducer,
       profiles: profilesReducer,
+      storage: storageReducer,
     },
     middleware: [...getDefaultMiddleware({thunk: false}), sagaMiddleware]
   });

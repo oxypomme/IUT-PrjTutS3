@@ -4,9 +4,16 @@ import { call, put, takeLatest, take } from 'redux-saga/effects'
 import { rsf } from '../firebase'
 import '@firebase/storage'
 
-function* uploadFile(action) {
+import {
+    uploadFile,
+    uploadFileFailed,
+    uploadFileSucess
+} from '../../features/firestorage/storageSlice';
+
+function* uploadFileSaga(action) {
     try {
-        const task = rsf.storage.uploadFile(action.path, action.file);
+        const { request } = action.payload;
+        const task = rsf.storage[request.type](request.url, request.file);
 
         const channel = eventChannel(emit => task.on('state_changed', emit));
 
@@ -15,15 +22,15 @@ function* uploadFile(action) {
         // Wait for upload to complete
         yield task
 
-        const dlUrl = yield call(rsf.storage.getDownloadURL, action.path);
+        const dlUrl = yield call(rsf.storage.getDownloadURL, request.url);
 
-        yield put({ type: "UPLOAD_FILE_SUCCEED", payload: dlUrl });
+        yield put(uploadFileSucess(dlUrl));
     } catch (error) {
-        yield put({ type: "UPLOAD_FILE_FAILED", payload: error.message });
+        yield put(uploadFileFailed(error.message));
     }
 
 }
 
 export default function* storageSagas() {
-    yield takeLatest('UPLOAD_FILE_REQUESTED', uploadFile);
+    yield takeLatest(uploadFile.type, uploadFileSaga);
 }
