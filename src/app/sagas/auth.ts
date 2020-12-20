@@ -20,7 +20,7 @@ import {
 
 function* createEmailAuth(action) {
     try {
-        const request = action.payload;
+        const { request } = action.payload;
         yield call(
             rsf.auth[request.type],
             request.email,
@@ -34,9 +34,7 @@ function* createEmailAuth(action) {
 
 function* logInMail(action) {
     try {
-        const request = action.payload;
-        //BUG: request.type is signInWithEmailAndPassword and undefined at the same time
-        console.log(request.type);
+        const { request } = action.payload;
         yield call(
             rsf.auth[request.type],
             request.email,
@@ -50,7 +48,7 @@ function* logInMail(action) {
 
 function* logOut(action) {
     try {
-        const request = action.payload;
+        const { request } = action.payload;
         yield call(
             rsf.auth[request.type]
         );
@@ -62,7 +60,7 @@ function* logOut(action) {
 
 function* updateEmail(action) {
     try {
-        const request = action.payload;
+        const { request } = action.payload;
         yield call(
             rsf.auth[request.type],
             request.email
@@ -75,7 +73,7 @@ function* updateEmail(action) {
 
 function* updatePassword(action) {
     try {
-        const request = action.payload;
+        const { request } = action.payload;
         yield call(
             rsf.auth[request.type],
             request.passwd
@@ -88,7 +86,7 @@ function* updatePassword(action) {
 
 function* sendPasswordReset(action) {
     try {
-        const request = action.payload;
+        const { request } = action.payload;
         yield call(
             rsf.auth[request.type],
             request.email
@@ -101,7 +99,7 @@ function* sendPasswordReset(action) {
 
 export function* deleteAuth(action) {
     try {
-        const request = action.payload;
+        const { request } = action.payload;
         yield call(
             rsf.auth[request.type]
         );

@@ -5,7 +5,7 @@ import logo from '../../logo.svg';
 import styled from '@emotion/styled';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getIsConnected, setUid } from '../accounts/accountSlice';
+import { getIsConnected, logoutAccount, setUid } from '../accounts/accountSlice';
 
 const NavBar = styled.nav``;
 const NavList = styled.ul`
@@ -50,7 +50,7 @@ export const Navbar = (): JSX.Element => {
 
     const handleLogout = async (event) => {
         event.preventDefault();
-        dispatch({ type: 'LOGOUT_AUTH_REQUESTED' });
+        dispatch(logoutAccount());
         dispatch(setUid(''));
     }
 

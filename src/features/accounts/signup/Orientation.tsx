@@ -13,7 +13,7 @@ const enum EOrientation {
 export interface IOrientation { value: number, label: string; }
 
 export const Orientation = (): JSX.Element => {
-    const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IGender>>();
+    const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IOrientation>>();
 
     const orientations = [
         { value: EOrientation.Homosexual, label: 'Homosexuel' },

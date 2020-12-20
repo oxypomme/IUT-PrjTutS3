@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { getAccountError, IError, loginAccount } from '../accountSlice';
+import { getAccountError, IError, loginAccount, resetPasswordAccount } from '../accountSlice';
 
 const PasswdRecoveryLink = styled.a`
     color: hsl(0, 0%, 50%);
@@ -42,9 +42,7 @@ const SignIn = (): JSX.Element => {
 
         setGlobalErrors(errors);
         if (errors.length < 1) {
-            //React.useEffect(() => {
             dispatch(loginAccount({ email, passwd }));
-            //}, []);
             /*
             if (loginError !== "") {
                 alert("Erreur de connexion : \n" + loginError);
@@ -59,11 +57,12 @@ const SignIn = (): JSX.Element => {
 
     const handleResetPassword = async (event) => {
         event.preventDefault();
-        if (email) {
-            dispatch({
-                type: 'RESET-PASSWORD_AUTH_REQUESTED',
-                payload: email
-            });
+        let errors = [];
+        if (!email)
+            errors = [...errors, { component: "email", label: "L'email doit être remplie." } as IError];
+        setGlobalErrors(errors);
+        if (errors.length < 1) {
+            dispatch(resetPasswordAccount(email));
         }
     }
 
