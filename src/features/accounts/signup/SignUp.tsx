@@ -38,15 +38,6 @@ const SignUp = (): JSX.Element => {
         setGlobalErrors(errors);
         if (errors.length < 1) {
             dispatch(addMail(email));
-            //DEBUG
-            /*
-            dispatch({
-              type: 'CREATE-EMAIL_AUTH_REQUESTED',
-              payload: {
-                email: email,
-                passwd: passwd
-              }
-            });*/
             history.push('SignUp/1');
         }
     };

@@ -45,6 +45,7 @@ const SignIn = (): JSX.Element => {
         setGlobalErrors(errors);
         if (errors.length < 1) {
             dispatch(loginAccount({ email, passwd }));
+            //TODO: If success, history.goBack(); + message
             /*
             if (loginError !== "") {
                 alert("Erreur de connexion : \n" + loginError);
