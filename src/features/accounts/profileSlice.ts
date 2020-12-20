@@ -75,6 +75,21 @@ export const profileSlice = createSlice({
             ...state,
             isWorking: true,
             error: ""
+        }),
+        [createProfile.type]: (state) => ({
+            ...state,
+            isWorking: true,
+            error: ""
+        }),
+        [updateProfile.type]: (state) => ({
+            ...state,
+            isWorking: true,
+            error: ""
+        }),
+        [deleteProfile.type]: (state) => ({
+            ...state,
+            isWorking: true,
+            error: ""
         })
     },
     reducers: {
