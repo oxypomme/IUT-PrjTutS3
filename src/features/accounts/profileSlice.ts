@@ -185,7 +185,7 @@ export const {
     resetCurrProfile
 } = profileSlice.actions;
 
-export const getState = state => state.tags;
+export const getState = state => state.profiles;
 
 export const getAllProfiles = createSelector(getState, state => state.profiles);
 export const getCurrProfile = createSelector(getState, state => {
