@@ -5,7 +5,7 @@ import { TextBox, HiddenLabel } from '../../../components/styledComponents';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
-import { addDescription } from "../accountSlice";
+import { addDesc } from "../accountSlice";
 
 import IError from "../../../include/IError";
 
