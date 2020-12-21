@@ -7,13 +7,14 @@ import '@firebase/storage'
 import {
     uploadFile,
     uploadFileFailed,
-    uploadFileSucess
+    uploadFileSucess,
+    uploadStringFile
 } from '../../features/firestorage/storageSlice';
 
 function* uploadFileSaga(action) {
     try {
         const { request } = action.payload;
-        const task = rsf.storage[request.type](request.url, request.file);
+        const task = rsf.storage[request.type](request.url, request.file, ...request.params);
 
         const channel = eventChannel(emit => task.on('state_changed', emit));
 
@@ -33,4 +34,5 @@ function* uploadFileSaga(action) {
 
 export default function* storageSagas() {
     yield takeLatest(uploadFile.type, uploadFileSaga);
+    yield takeLatest(uploadStringFile.type, uploadFileSaga);
 }

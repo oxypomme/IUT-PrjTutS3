@@ -2,6 +2,8 @@ import React from "react";
 import styled from '@emotion/styled';
 
 import { ReactMic, ReactMicStopEvent } from 'react-mic';
+import { useDispatch } from "react-redux";
+import { uploadFile } from "../firestorage/storageSlice";
 
 export const MicCircle = styled(ReactMic) <{ backgroundColor?: string, strokeColor?: string }>`
   width: 100px;
@@ -15,12 +17,15 @@ export const MicCircle = styled(ReactMic) <{ backgroundColor?: string, strokeCol
 
 
 export function Mic(): JSX.Element {
+    const dispatch = useDispatch();
+
     const [recording, setRecording] = React.useState<boolean>();
     const [micRecords, setMicRecords] = React.useState<Array<ReactMicStopEvent>>([]);
 
     const onStop = React.useCallback((recordedBlob: ReactMicStopEvent) => {
         // console.log('recordedBlob is: ', recordedBlob);
         setMicRecords([...micRecords, recordedBlob]);
+        // dispatch(uploadFile("/messages/audios/1", recordedBlob.blob));
     }, [recording, setRecording]);
 
 

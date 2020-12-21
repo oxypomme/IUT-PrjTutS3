@@ -3,9 +3,13 @@ import styles from "./Camera.module.css";
 import Webcam from "react-webcam";
 import Select from "react-select";
 import { Mic } from '../mic/Mic';
+import { useDispatch } from "react-redux";
+import { uploadFile, uploadStringFile } from "../firestorage/storageSlice";
 
 export interface ICam { value: string, label: string; }
 export function Camera(): JSX.Element {
+    const dispatch = useDispatch();
+
     const webcamRef = React.useRef<Webcam>();
     const [devices, setDevices] = React.useState<Array<ICam>>([]);
     const [cam, setCam] = React.useState<string>();
@@ -23,20 +27,25 @@ export function Camera(): JSX.Element {
     }, [setDevices]);
 
     const snap = React.useCallback(() => {
-        setImages([...images, webcamRef.current.getScreenshot()]);
-        console.log(images);
+        const imageUrl = webcamRef.current.getScreenshot();
+        setImages([...images, imageUrl]);
+        // console.log(images);
+        // dispatch(uploadStringFile("profiles/2", imageUrl));
     }, [images, setImages]);
 
-    const uploadFile = React.useCallback((event) => {
+    const uploadLocalFile = React.useCallback((event) => {
         const file = event.target.files[0];
-        if (file == undefined || !file.name.match(/.(jpg|jpeg|png|gif|jfif|pjpeg|.pjp)$/i))
+        if (file == undefined || !file.name.match(/.(jpg|jpeg|png|jfif|pjpeg|.pjp)$/i))
             return;
+        // dispatch(uploadFile("profiles/2", file));
+
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = (e) => {
             setImages([...images, e.target.result as string]);
         }
     }, [images, setImages]);
+
     return (
         <div>
             <div style={{ width: 320, padding: '8px' }}>
@@ -54,7 +63,7 @@ export function Camera(): JSX.Element {
                 className={styles.video}
             />
             <button onClick={snap}>Snap</button>
-            <input type="file" onChange={uploadFile} accept="image/png, image/jpeg, image/gif" style={{ display: 'block' }} />
+            <input type="file" onChange={uploadLocalFile} accept="image/png, image/jpeg, image/gif" style={{ display: 'block' }} />
             {images.map((image, index) => (
                 <img src={image} key={index} style={{ width: 320, border: '1px dashed magenta' }} />
             ))}

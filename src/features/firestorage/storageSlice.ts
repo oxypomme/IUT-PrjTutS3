@@ -2,12 +2,27 @@ import { createAction, createSelector, createSlice } from "@reduxjs/toolkit";
 
 export const uploadFile = createAction(
     "UPLOAD_FILE_REQUESTED",
-    (url: string, file: File) => ({
+    (url: string, file: any) => ({
         payload: {
             request: {
                 type: "uploadFile",
                 url,
-                file
+                file,
+                params: []
+            }
+        }
+    })
+)
+
+export const uploadStringFile = createAction(
+    "UPLOAD_STRING_FILE_REQUESTED",
+    (url: string, file: string) => ({
+        payload: {
+            request: {
+                type: "uploadString",
+                url,
+                file,
+                params: ["data_url"]
             }
         }
     })
