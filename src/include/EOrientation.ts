@@ -1,6 +1,5 @@
 enum EOrientation {
-    Other = 0,
-    Bisexual,
+    Bisexual = 0,
     Homosexual,
     Heterosexual
 }

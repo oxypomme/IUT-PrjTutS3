@@ -12,8 +12,7 @@ export const Orientation = (): JSX.Element => {
     const orientations = [
         { value: EOrientation.Homosexual, label: 'Homosexuel' },
         { value: EOrientation.Heterosexual, label: 'Hétérosexuel' },
-        { value: EOrientation.Bisexual, label: 'Bisexuel' },
-        { value: EOrientation.Other, label: 'Autre' }
+        { value: EOrientation.Bisexual, label: 'Bisexuel' }
     ] as IComboBoxItem[]
 
     return (
