@@ -2,10 +2,9 @@ import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 
 import styled from '@emotion/styled';
-import { Button, TextBox, HiddenLabel, ErrorLabel } from '../../../components/styledComponents';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faHorse, faCalendarAlt, faBuilding, faGenderless, faVenusMars, faVenusDouble, faNeuter, faHelicopter, faMarsDouble, faTransgender } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faHorse, faCalendarAlt, faBuilding, faVenusMars, faVenusDouble, faNeuter, faHelicopter, faMarsDouble, faTransgender } from '@fortawesome/free-solid-svg-icons';
 
 import { fetchCurrProfile, fetchProfiles, getCurrProfile, IProfile } from '../profileSlice';
 import { fetchTags, getAllTags, ITag } from '../tagSlice';
