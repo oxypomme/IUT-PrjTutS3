@@ -7,7 +7,7 @@ import '@firebase/storage'
 import {
     uploadFile,
     uploadFileFailed,
-    uploadFileSucess,
+    uploadFileSuccess,
     uploadStringFile
 } from '../../features/firestorage/storageSlice';
 
@@ -25,7 +25,7 @@ function* uploadFileSaga(action) {
 
         const dlUrl = yield call(rsf.storage.getDownloadURL, request.url);
 
-        yield put(uploadFileSucess(dlUrl));
+        yield put(uploadFileSuccess(dlUrl));
     } catch (error) {
         yield put(uploadFileFailed(error.message));
     }

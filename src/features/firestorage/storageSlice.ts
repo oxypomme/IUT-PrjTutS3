@@ -42,7 +42,7 @@ export const storageSlice = createSlice({
         }),
     },
     reducers: {
-        uploadFileSucess: (state, { payload: dlURL }) => ({
+        uploadFileSuccess: (state, { payload: dlURL }) => ({
             ...state,
             isWorking: false,
             error: ""
@@ -56,7 +56,7 @@ export const storageSlice = createSlice({
 });
 
 export const {
-    uploadFileSucess,
+    uploadFileSuccess,
     uploadFileFailed,
 } = storageSlice.actions;
 
