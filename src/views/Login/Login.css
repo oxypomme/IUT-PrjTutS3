@@ -2,13 +2,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: calc(100vh - 49px);
 }
 
 .App.login > * {
     padding: 100px;
 }
 
-.App.login > :first-child {
+.App.login:not(.only) > :first-child {
     border-right: 1px solid var(--background2);
 }

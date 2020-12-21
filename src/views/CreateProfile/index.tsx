@@ -7,7 +7,7 @@ import { Tags } from "../../features/accounts/signup/Tags";
 
 export function CreatePersonal(): JSX.Element {
     return (
-        <div className='App'>
+        <div className='App login only'>
             <div>
                 <h2>Formulaire</h2>
                 <RegisterPersonal />
@@ -18,7 +18,7 @@ export function CreatePersonal(): JSX.Element {
 
 export function CreatePreferences(): JSX.Element {
     return (
-        <div className='App'>
+        <div className='App login only'>
             <div>
                 <h2>Formulaire</h2>
                 <Gender />
