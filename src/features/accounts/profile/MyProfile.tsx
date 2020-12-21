@@ -13,10 +13,12 @@ import IProfile from '../../../include/IProfile';
 import ITag from '../../../include/ITag';
 import EGender from '../../../include/EGender';
 import EOrientation from '../../../include/EOrientation';
+import { WaitingForData } from '../../../components/styledComponents';
 
-const ProfilePicture = styled.img <{ source?: string }> `
-    width: 200px;
-    height: 280px;
+const ProfilePicture = styled.div <{ source?: string }> `
+    width: 100%;
+    min-width: 300px;
+    height: 700px;
     border: 2px solid var(--accent1);
     background-color: var(--accent2);
     background-image: url(${props => props.source || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Ornithorhynchus.jpg/290px-Ornithorhynchus.jpg"});
@@ -24,15 +26,37 @@ const ProfilePicture = styled.img <{ source?: string }> `
     background-size: 100% auto;
 `
 
+const Profile = styled.div`
+    border: 1px solid #888888;
+    background-color: var(--background2);
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+
+    & > div {
+        flex-grow: 2;
+        box-sizing: border-box;
+
+        &:last-child {
+            flex-grow: 1;
+            padding: 10px;
+        }
+    }
+
+    & * {
+        text-align: left;
+    }
+`
 
 const MyProfile = (): JSX.Element => {
     const dispatch = useDispatch();
     const profile: IProfile = useSelector(getCurrProfile);
     const tags: Array<ITag> = useSelector(getAllTags);
     let genderIcon = faUser;
-    let gender = "$gender";
+    let gender = null;
     let orientationIcon = faNeuter;
-    let orientation = "$orientation";
+    let orientation = null;
 
     React.useEffect(() => {
         dispatch(fetchTags());
@@ -71,24 +95,27 @@ const MyProfile = (): JSX.Element => {
             orientation = "Hétérosexuel"
             break;
         default:
-            orientation = "Autre"
             break;
     }
 
     return (
-        <div>
-            <p><FontAwesomeIcon icon={faUser} /> {profile?.name || "[No profile found]"}</p>
-            <ProfilePicture source={profile?.imageURL} />
-            <p><FontAwesomeIcon icon={faCalendarAlt} /> {profile?.age || "[No profile found]"}</p>
-            <p>Genre : <FontAwesomeIcon icon={genderIcon} /> {gender}</p>
-            <p>Orientation : <FontAwesomeIcon icon={orientationIcon} /> {orientation}</p>
-            <p><FontAwesomeIcon icon={faBuilding} /> {profile?.town || "[No profile found]"}</p>
-            <ul>
-                {profile?.tags?.map((tag, index) => (
-                    <li key={index}>- {tags.find(t => t.value === tag).label}</li>
-                ))}
-            </ul>
-        </div >
+        <Profile>
+            <div>
+                <ProfilePicture source={profile?.imageURL} />
+            </div>
+            <div>
+                <p><FontAwesomeIcon icon={faUser} /> {profile?.name || <WaitingForData length={16} />}</p>
+                <p><FontAwesomeIcon icon={faCalendarAlt} /> {profile?.age || <WaitingForData length={2} />} ans</p>
+                <p>Genre : <FontAwesomeIcon icon={genderIcon} /> {gender || <WaitingForData length={8} />}</p>
+                <p>Orientation : <FontAwesomeIcon icon={orientationIcon} /> {orientation || <WaitingForData length={8} />}</p>
+                <p><FontAwesomeIcon icon={faBuilding} /> {profile?.town || <WaitingForData length={16} />}</p>
+                <ul>
+                    {profile?.tags?.map((tag, index) => (
+                        <li key={index}>{tags.find(t => t.value === tag).label}</li>
+                    ))}
+                </ul>
+            </div>
+        </Profile>
     );
 }
 

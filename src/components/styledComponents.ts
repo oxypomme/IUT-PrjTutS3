@@ -59,3 +59,17 @@ export const ErrorLabel = styled.div`
     margin-right: 8px;
   }
 `;
+
+
+export const WaitingForData = styled.div<{ length?: number }>`
+    background-color: #00000030;
+    color: #00000000;
+    border-radius: 2px;
+    width: ${({ length }) => (length || 8) * 8 + "px"};
+    display: inline-block;
+    margin: 0 2px;
+
+    &: before {
+        content: "_";
+    }
+`;
