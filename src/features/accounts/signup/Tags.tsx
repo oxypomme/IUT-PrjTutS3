@@ -3,7 +3,7 @@ import Creatable from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTags, getAllTags } from "../tagSlice";
 import { useHistory } from "react-router-dom";
-import { Button } from '../../../components/styledComponents';
+import { Button, Spacer } from '../../../components/styledComponents';
 import { addTag } from "../accountSlice";
 
 import ITag from "../../../include/ITag";
