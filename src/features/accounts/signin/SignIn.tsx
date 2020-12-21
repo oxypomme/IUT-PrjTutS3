@@ -7,7 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { getAccountError, IError, loginAccount, resetPasswordAccount } from '../accountSlice';
+import { getAccountError, loginAccount, resetPasswordAccount } from '../accountSlice';
+
+import IError from '../../../include/IError';
 
 const PasswdRecoveryLink = styled.a`
     color: hsl(0, 0%, 50%);
@@ -43,6 +45,7 @@ const SignIn = (): JSX.Element => {
         setGlobalErrors(errors);
         if (errors.length < 1) {
             dispatch(loginAccount({ email, passwd }));
+            //TODO: If success, history.goBack(); + message
             /*
             if (loginError !== "") {
                 alert("Erreur de connexion : \n" + loginError);

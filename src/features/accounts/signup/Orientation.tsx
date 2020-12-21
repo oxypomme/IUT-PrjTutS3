@@ -3,31 +3,25 @@ import React from "react";
 import { useDispatch } from 'react-redux';
 import Select from "react-select";
 
-enum EOrientation {
-    Other = 0,
-    Bisexual,
-    Homosexual,
-    Heterosexual
-}
-
-export interface IOrientation { value: number, label: string; }
+import IComboBoxItem from "../../../include/IComboBoxItem";
+import EOrientation from "../../../include/EOrientation";
 
 export const Orientation = (): JSX.Element => {
-    const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IOrientation>>();
+    const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IComboBoxItem>>();
 
     const orientations = [
         { value: EOrientation.Homosexual, label: 'Homosexuel' },
         { value: EOrientation.Heterosexual, label: 'Hétérosexuel' },
         { value: EOrientation.Bisexual, label: 'Bisexuel' },
         { value: EOrientation.Other, label: 'Autre' }
-    ] as IOrientation[]
+    ] as IComboBoxItem[]
 
     return (
         <form>
             <Select
                 isSearchable={true}
                 isClearable={true}
-                onChange={myorientation => setSelectedOrientation([myorientation as IOrientation])}
+                onChange={myorientation => setSelectedOrientation([myorientation as IComboBoxItem])}
                 options={orientations}
             />
         </form>

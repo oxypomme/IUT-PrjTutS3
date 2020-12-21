@@ -1,7 +1,5 @@
 import { createAction, createSelector, createSlice } from "@reduxjs/toolkit";
 
-export interface ITag { value: string, label: string; }
-
 export const fetchTags = createAction(
     "FETCH_TAGS_REQUESTED",
     (params = {}) => ({

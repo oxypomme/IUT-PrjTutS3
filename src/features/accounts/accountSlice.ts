@@ -1,10 +1,5 @@
 import { createAction, createSelector, createSlice } from "@reduxjs/toolkit";
 
-export interface IError {
-  component: string;
-  label: string;
-}
-
 export const createAccount = createAction(
   'CREATE-EMAIL_AUTH_REQUESTED',
   (params = {}) => ({
