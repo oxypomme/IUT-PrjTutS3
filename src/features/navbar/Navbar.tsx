@@ -20,6 +20,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { getIsConnected, logoutAccount } from '../accounts/accountSlice';
 
+//TODO: RIP Mobile users
 const NavBar = styled.nav`
     position: fixed;
     top: 0;
