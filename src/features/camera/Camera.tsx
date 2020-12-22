@@ -63,7 +63,7 @@ export function Camera(): JSX.Element {
                 className={styles.video}
             />
             <button onClick={snap}>Snap</button>
-            <input type="file" onChange={uploadLocalFile} accept="image/png, image/jpeg, image/gif" style={{ display: 'block' }} />
+            <input type="file" onChange={uploadLocalFile} accept="image/png, image/jpeg" style={{ display: 'block' }} />
             {images.map((image, index) => (
                 <img src={image} key={index} style={{ width: 320, border: '1px dashed magenta' }} />
             ))}
