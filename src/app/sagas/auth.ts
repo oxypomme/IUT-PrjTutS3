@@ -26,6 +26,7 @@ import {
     deleteAccountSuccess,
     deleteAccountFailed
 } from '../../features/accounts/accountSlice';
+import { withCallback } from 'redux-saga-callback';
 
 function* createEmailAuth(action) {
     try {
@@ -50,10 +51,9 @@ function* logInMail(action) {
             request.passwd
         );
         yield put(loginAccountSuccess());
-        // J'ai vomi
-        action.payload.history.goBack();
     } catch (error) {
         yield put(loginAccountFailed(error.message));
+        throw Error(error.message);
     }
 }
 
@@ -64,10 +64,9 @@ function* logOut(action) {
             rsf.auth[request.type]
         );
         yield put(logoutAccountSuccess());
-        // J'ai vomi
-        action.payload.history.push('/');
     } catch (error) {
         yield put(logoutAccountFailed(error.message));
+        throw Error(error.message);
     }
 }
 
@@ -124,8 +123,8 @@ export function* deleteAuth(action) {
 
 export default function* authSagas() {
     yield takeLatest(createAccount.type, createEmailAuth);
-    yield takeLatest(loginAccount.type, logInMail);
-    yield takeLatest(logoutAccount.type, logOut);
+    yield takeLatest(loginAccount.type, withCallback(logInMail));
+    yield takeLatest(logoutAccount.type, withCallback(logOut));
     yield takeLatest(updateEmailAccount.type, updateEmail);
     yield takeLatest(updatePasswordAccount.type, updatePassword);
     yield takeLatest(resetPasswordAccount.type, sendPasswordReset);

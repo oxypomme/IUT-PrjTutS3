@@ -12,30 +12,20 @@ export const createAccount = createAction(
     }
   })
 )
-export const loginAccount = createAction(
-  'LOGIN-EMAIL_AUTH_REQUESTED',
-  (params = {}, history) => ({
-    payload: {
-      request: {
-        type: "signInWithEmailAndPassword",
-        email: params.email,
-        passwd: params.passwd
-      },
-      history
-    }
-  })
-)
-export const logoutAccount = createAction(
-  'LOGIN-LOGOUT_AUTH_REQUESTED',
-  (history) => ({
-    payload: {
-      request: {
-        type: "signOut"
-      },
-      history
-    }
-  })
-)
+/**
+ * Only used for type reference.
+ * 
+ * Must have this payload :
+ * request: { type: "signInWithEmailAndPassword", email, passwd }
+ */
+export const loginAccount = createAction('LOGIN-EMAIL_AUTH_REQUESTED')
+/**
+ * Only used for type reference.
+ * 
+ * Must have this payload :
+ * request: { type: "signOut" }
+ */
+export const logoutAccount = createAction('LOGIN-LOGOUT_AUTH_REQUESTED')
 export const updateEmailAccount = createAction(
   'UPDATE-EMAIL_AUTH_REQUESTED',
   (params = {}) => ({

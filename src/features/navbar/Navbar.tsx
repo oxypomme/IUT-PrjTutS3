@@ -83,10 +83,28 @@ export const Navbar = (): JSX.Element => {
     //TODO: support for multiple dropdown
     const [dropdownArrow, setDropdownArrow] = useState(faCaretDown);
 
+    const onUnlogged = ({ error, cancelled, data }) => {
+        if (error) {
+            alert("ERREUR : " + error.message);
+        }
+        else {
+            alert('Vous êtes déconnecté.')
+            history.push('/');
+        }
+    }
+
     const handleLogout = async (event) => {
         event.preventDefault();
-        dispatch(logoutAccount(history));
-        //TODO: If success message
+
+        dispatch({
+            type: logoutAccount.type,
+            payload: {
+                request: {
+                    type: "signOut"
+                },
+            },
+            onComplete: onUnlogged
+        });
     }
 
     const handleDropdown = (event) => {

@@ -34,6 +34,16 @@ const SignIn = (): JSX.Element => {
 
     const handleSetPasswordOnChange = (event) => setPasswd(event.target.value);
 
+    const onLogged = ({ error, cancelled, data }) => {
+        if (error) {
+            alert("ERREUR : " + error.message);
+        }
+        else {
+            alert('Vous êtes connecté.')
+            history.goBack();
+        }
+    }
+
     const handleOnSubmit = async (event) => {
         event.preventDefault();
         let errors = [];
@@ -44,7 +54,17 @@ const SignIn = (): JSX.Element => {
 
         setGlobalErrors(errors);
         if (errors.length < 1) {
-            dispatch(loginAccount({ email, passwd }, history));
+            dispatch({
+                type: loginAccount.type,
+                payload: {
+                    request: {
+                        type: "signInWithEmailAndPassword",
+                        email,
+                        passwd
+                    }
+                },
+                onComplete: onLogged
+            });
             //TODO: If success, message
             /*
             if (loginError !== "") {
