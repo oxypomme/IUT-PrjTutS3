@@ -71,3 +71,4 @@ export function Camera(): JSX.Element {
         </div>
     );
 }
+
