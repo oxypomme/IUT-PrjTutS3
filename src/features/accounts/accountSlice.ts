@@ -14,25 +14,25 @@ export const createAccount = createAction(
 )
 export const loginAccount = createAction(
   'LOGIN-EMAIL_AUTH_REQUESTED',
-  (params = {}) => ({
+  (params = {}, history) => ({
     payload: {
       request: {
         type: "signInWithEmailAndPassword",
         email: params.email,
         passwd: params.passwd
-      }
+      },
+      history
     }
   })
 )
 export const logoutAccount = createAction(
   'LOGIN-LOGOUT_AUTH_REQUESTED',
-  (params = {}) => ({
+  (history) => ({
     payload: {
       request: {
-        type: "signOut",
-        email: params.email,
-        passwd: params.passwd
-      }
+        type: "signOut"
+      },
+      history
     }
   })
 )

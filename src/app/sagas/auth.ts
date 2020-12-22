@@ -2,6 +2,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects'
 
 import { rsf } from '../firebase'
 import '@firebase/auth'
+
 import {
     createAccount,
     createAccountSuccess,
@@ -49,6 +50,8 @@ function* logInMail(action) {
             request.passwd
         );
         yield put(loginAccountSuccess());
+        // J'ai vomi
+        action.payload.history.goBack();
     } catch (error) {
         yield put(loginAccountFailed(error.message));
     }
@@ -61,6 +64,8 @@ function* logOut(action) {
             rsf.auth[request.type]
         );
         yield put(logoutAccountSuccess());
+        // J'ai vomi
+        action.payload.history.push('/');
     } catch (error) {
         yield put(logoutAccountFailed(error.message));
     }

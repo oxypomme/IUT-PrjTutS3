@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import logo from '../../logo.svg';
 
 import styled from '@emotion/styled';
@@ -78,14 +78,15 @@ const NavDropdownContainer = styled.ul`
 
 export const Navbar = (): JSX.Element => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const isConnected = useSelector(getIsConnected);
     //TODO: support for multiple dropdown
     const [dropdownArrow, setDropdownArrow] = useState(faCaretDown);
 
     const handleLogout = async (event) => {
         event.preventDefault();
-        dispatch(logoutAccount());
-        //TODO: If success, history.push('/'); + message
+        dispatch(logoutAccount(history));
+        //TODO: If success message
     }
 
     const handleDropdown = (event) => {
