@@ -10,7 +10,7 @@ import { fetchCurrProfile, getCurrProfile } from '../profileSlice';
 import { fetchTags, getAllTags } from '../tagSlice';
 
 import IProfile from '../../../include/IProfile';
-import ITag from '../../../include/ITag';
+import IComboBoxItem from '../../../include/IComboBoxItem';
 import EGender from '../../../include/EGender';
 import EOrientation from '../../../include/EOrientation';
 import { WaitingForData } from '../../../components/styledComponents';
@@ -89,7 +89,7 @@ const Tags = styled.ul`
 const MyProfile = (): JSX.Element => {
     const dispatch = useDispatch();
     const profile: IProfile = useSelector(getCurrProfile);
-    const tags: Array<ITag> = useSelector(getAllTags);
+    const tags: Array<IComboBoxItem> = useSelector(getAllTags);
     let genderIcon = faUser;
     let gender = null;
     let orientationIcon = faNeuter;

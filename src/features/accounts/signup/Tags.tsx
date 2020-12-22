@@ -6,14 +6,14 @@ import { useHistory } from "react-router-dom";
 import { Button, Spacer } from '../../../components/styledComponents';
 import { addTag } from "../accountSlice";
 
-import ITag from "../../../include/ITag";
+import IComboBoxItem from '../../../include/IComboBoxItem';
 
 export const Tags = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const tags: Array<ITag> = useSelector(getAllTags);
+    const tags: Array<IComboBoxItem> = useSelector(getAllTags);
 
-    const [selectedTags, setSelectedTags] = React.useState<Array<ITag>>();
+    const [selectedTags, setSelectedTags] = React.useState<Array<IComboBoxItem>>();
 
     React.useEffect(() => {
         dispatch(fetchTags());
@@ -36,7 +36,7 @@ export const Tags = (): JSX.Element => {
                 isSearchable={true}
                 isClearable={true}
                 isValidNewOption={isValidNewOption}
-                onChange={(mytags) => setSelectedTags(mytags as ITag[])}
+                onChange={(mytags) => setSelectedTags(mytags as IComboBoxItem[])}
                 options={tags}
             />
             <Button>Suivant</Button>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { WaitingForData } from '../../../components/styledComponents';
-import IProfile from '../../../include/IProfile';
+import IProfile, { instanceOfIProfile } from '../../../include/IProfile';
 
 import filterProfiles from '../../../tests/FilterProfiles';
 import { fetchProfile, getAllProfiles, getCurrProfile, getCurrProfileId } from '../profileSlice';
@@ -11,8 +11,8 @@ const SelectionProfiles = (): JSX.Element => {
     const dispatch = useDispatch();
     const [profilesToShow, setProfilesToShow] = useState<Array<{ key: number, score: number }>>();
     const [loading, setLoading] = useState<boolean | null>(false);
-    const { sex: mySex, orientation: myOrientation, tags: myTags } = useSelector(getCurrProfile);
-    const myProfileId = useSelector(getCurrProfileId);
+    const currProfile: IProfile | Record<string, never> = useSelector(getCurrProfile);
+    const myProfileId: number = useSelector(getCurrProfileId);
 
     const profiles: IProfile[] = useSelector(getAllProfiles);
 
@@ -20,8 +20,10 @@ const SelectionProfiles = (): JSX.Element => {
         (async function getProfiles() {
             try {
                 setLoading(true);
-                if (mySex != undefined) {
-                    const profiles = await filterProfiles(mySex, myOrientation, myTags, myProfileId);
+                console.log(currProfile)
+                if (instanceOfIProfile(currProfile)) {
+                    console.log(currProfile)
+                    const profiles = await filterProfiles(currProfile.sex, currProfile.orientation, currProfile.tags, myProfileId);
                     //setProfilesToShow(profiles);
                     if (profiles?.length > 0) {
                         profiles.forEach(({ key }) => {
