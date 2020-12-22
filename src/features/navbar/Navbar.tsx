@@ -80,8 +80,34 @@ export const Navbar = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
     const isConnected = useSelector(getIsConnected);
-    //TODO: support for multiple dropdown
-    const [dropdownArrow, setDropdownArrow] = useState(faCaretDown);
+
+    const [dropdowns, setDropdowns] = useState<boolean[]>([false]);
+
+    const Dropdown = ({ dataId, icon, label, children }: any): JSX.Element => {
+        const handleDropdown = (event) => {
+            event.preventDefault();
+
+            const drops = dropdowns;
+            drops[dataId] = !drops[dataId];
+
+            // BUG: Not updating ???
+            setDropdowns(drops);
+
+            console.log(dropdowns[dataId]);
+        }
+
+        const isOpened = dropdowns[dataId];
+        return (
+            <NavItem>
+                <a href="#" className={isOpened ? "active" : ""} onClick={handleDropdown}>
+                    <FontAwesomeIcon icon={icon} />{label} <FontAwesomeIcon icon={isOpened ? faCaretUp : faCaretDown} />
+                </a>
+                <NavDropdownContainer data-id={dataId} style={{ display: isOpened ? "block" : "none" }}>
+                    {children}
+                </NavDropdownContainer>
+            </NavItem>
+        )
+    }
 
     const onUnlogged = ({ error, cancelled, data }) => {
         if (error) {
@@ -107,23 +133,6 @@ export const Navbar = (): JSX.Element => {
         });
     }
 
-    const handleDropdown = (event) => {
-        event.preventDefault();
-        event.target.classList.toggle("active");
-        setDropdownArrow(dropdownArrow == faCaretDown ? faCaretUp : faCaretDown);
-
-        const container = event.target.nextElementSibling;
-
-        if (container == null) {
-            return;
-        }
-        if (container.style.display === "block") {
-            container.style.display = "none";
-        } else {
-            container.style.display = "block";
-        }
-    }
-
     return (
         <NavBar>
             <NavList>
@@ -137,22 +146,17 @@ export const Navbar = (): JSX.Element => {
                     <NavLink to="/camera">Test caméra</NavLink>
                 </NavItem>
                 {isConnected &&
-                    <NavItem>
-                        <a href="#" onClick={handleDropdown}>
-                            <FontAwesomeIcon icon={faUsers} />NomADefinir <FontAwesomeIcon icon={dropdownArrow} />
-                        </a>
-                        <NavDropdownContainer>
-                            <NavItem>
-                                <NavLink to="/TODO"><FontAwesomeIcon icon={faHeart} />Mes matchs</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink to="/surprise"><FontAwesomeIcon icon={faGift} />Tinder Surprise</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink to="/chat"><FontAwesomeIcon icon={faCommentAlt} />Mes Conversations</NavLink>
-                            </NavItem>
-                        </NavDropdownContainer>
-                    </NavItem>
+                    <Dropdown dataId={0} isOpened={dropdowns[0]} icon={faUsers} label={"NomADefinir"}>
+                        <NavItem>
+                            <NavLink to="/TODO"><FontAwesomeIcon icon={faHeart} />Mes matchs</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink to="/surprise"><FontAwesomeIcon icon={faGift} />Tinder Surprise</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink to="/chat"><FontAwesomeIcon icon={faCommentAlt} />Mes Conversations</NavLink>
+                        </NavItem>
+                    </Dropdown>
                 }
                 {isConnected &&
                     <NavItem stickToBottom={true}>
