@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHorse, faCalendarAlt, faBuilding, faVenusMars, faVenusDouble, faNeuter, faHelicopter, faMarsDouble, faTransgender, faGenderless } from '@fortawesome/free-solid-svg-icons';
 
-import { fetchCurrProfile, getCurrProfile } from '../profileSlice';
+import { fetchCurrProfile, fetchProfile, getAllProfiles, getCurrProfile } from '../profileSlice';
 import { fetchTags, getAllTags } from '../tagSlice';
 
 import IProfile from '../../../include/IProfile';
@@ -29,7 +29,7 @@ const ProfilePicture = styled.img <{ source?: string }> `
     box-sizing: border-box;
 `
 
-const Profile = styled.div`
+const ProfileCard = styled.div`
     border: 1px solid #888888;
     background-color: var(--background2);
     min-height: 80vh;
@@ -75,7 +75,6 @@ const Tags = styled.ul`
     list-style-type: none;
     padding: 0;
 
-    & > p,
     & > li {
         margin: 0;
         padding: 0;
@@ -85,10 +84,12 @@ const Tags = styled.ul`
     }
 `
 
-
-const MyProfile = (): JSX.Element => {
+const MyProfile = ({ id }: any): JSX.Element => {
     const dispatch = useDispatch();
-    const profile: IProfile = useSelector(getCurrProfile);
+    const currProfile: IProfile = useSelector(getCurrProfile);
+    const profiles: IProfile[] = useSelector(getAllProfiles);
+    const profile: IProfile = profiles?.find(p => p.key === id) || currProfile;
+
     const tags: Array<IComboBoxItem> = useSelector(getAllTags);
     let genderIcon = faUser;
     let gender = null;
@@ -97,7 +98,7 @@ const MyProfile = (): JSX.Element => {
 
     React.useEffect(() => {
         dispatch(fetchTags());
-        dispatch(fetchCurrProfile());
+        dispatch(id != undefined ? fetchProfile(id) : fetchCurrProfile());
     }, [dispatch]);
 
     switch (profile?.sex) {
@@ -135,12 +136,12 @@ const MyProfile = (): JSX.Element => {
     }
 
     return (
-        <Profile>
+        <ProfileCard>
             <div>
                 <ProfilePicture source={profile?.imageURL} />
             </div>
             <div>
-                <h1>{profile?.name || <WaitingForData length={16} />}</h1>
+                <h1>{profile?.key} {profile?.name || <WaitingForData length={16} />}</h1>
                 <Infos>
                     <li><FontAwesomeIcon icon={faCalendarAlt} /> {profile?.age || <WaitingForData length={2} />} ans</li>
                     <li><FontAwesomeIcon icon={genderIcon} /> {gender || <WaitingForData length={8} />}</li>
@@ -149,14 +150,14 @@ const MyProfile = (): JSX.Element => {
                 </Infos>
                 <p>{profile?.desc || <WaitingForData length={32} />}</p>
 
+                <p>Tags :</p>
                 <Tags>
-                    <p>Tags :</p>
                     {profile?.tags?.map((tag, index) => (
                         <li key={index}>- {tags.find(t => t.value === tag)?.label}</li>
                     )) || <WaitingForData length={16} />}
                 </Tags>
             </div>
-        </Profile>
+        </ProfileCard>
     );
 }
 
