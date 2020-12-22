@@ -1,13 +1,13 @@
 import React from "react";
 
-import MyProfile from "../../features/accounts/profile/MyProfile";
+import ProfileCard from "../../features/accounts/profile/ProfileCard";
 
 export function Profile(): JSX.Element {
     return (
         <div className='App'>
             <div>
                 <h2>Mon Profil</h2>
-                <MyProfile />
+                <ProfileCard />
             </div>
         </div>
     );

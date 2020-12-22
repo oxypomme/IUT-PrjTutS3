@@ -29,7 +29,7 @@ const ProfilePicture = styled.img <{ source?: string }> `
     box-sizing: border-box;
 `
 
-const ProfileCard = styled.div`
+const Profile = styled.div`
     border: 1px solid #888888;
     background-color: var(--background2);
     min-height: 80vh;
@@ -84,7 +84,7 @@ const Tags = styled.ul`
     }
 `
 
-const MyProfile = ({ id }: any): JSX.Element => {
+const ProfileCard = ({ id }: any): JSX.Element => {
     const dispatch = useDispatch();
     const currProfile: IProfile = useSelector(getCurrProfile);
     const profiles: IProfile[] = useSelector(getAllProfiles);
@@ -136,7 +136,7 @@ const MyProfile = ({ id }: any): JSX.Element => {
     }
 
     return (
-        <ProfileCard>
+        <Profile>
             <div>
                 <ProfilePicture source={profile?.imageURL} />
             </div>
@@ -157,8 +157,8 @@ const MyProfile = ({ id }: any): JSX.Element => {
                     )) || <WaitingForData length={16} />}
                 </Tags>
             </div>
-        </ProfileCard>
+        </Profile>
     );
 }
 
-export default MyProfile;
+export default ProfileCard;
