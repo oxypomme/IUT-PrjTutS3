@@ -25,7 +25,7 @@ function* uploadFileSaga(action) {
 
         const dlUrl = yield call(rsf.storage.getDownloadURL, request.url);
 
-        yield put(uploadFileSuccess(dlUrl));
+        yield put(uploadFileSuccess({ url: request.url, dlUrl }));
     } catch (error) {
         yield put(uploadFileFailed(error.message));
     }

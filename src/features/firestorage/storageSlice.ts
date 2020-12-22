@@ -32,7 +32,8 @@ export const storageSlice = createSlice({
     name: "storage",
     initialState: {
         isWorking: false,
-        error: ""
+        error: "",
+        uploads: new Array<{ url, dlUrl }>()
     },
     extraReducers: {
         [uploadFile.type]: (state) => ({
@@ -42,10 +43,11 @@ export const storageSlice = createSlice({
         }),
     },
     reducers: {
-        uploadFileSuccess: (state, { payload: dlURL }) => ({
+        uploadFileSuccess: (state, { payload: upContent }) => ({
             ...state,
             isWorking: false,
-            error: ""
+            error: "",
+            uploads: [...state.uploads, upContent]
         }),
         uploadFileFailed: (state, { payload: message }) => ({
             ...state,
