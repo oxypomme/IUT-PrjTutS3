@@ -14,7 +14,8 @@ import {
     faSignInAlt,
     faCaretDown,
     faCaretUp,
-    faUsers
+    faUsers,
+    faGift
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -122,6 +123,9 @@ export const Navbar = (): JSX.Element => {
                         <NavDropdownContainer>
                             <NavItem>
                                 <NavLink to="/TODO"><FontAwesomeIcon icon={faHeart} />Mes matchs</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink to="/surprise"><FontAwesomeIcon icon={faGift} />Tinder Surprise</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink to="/chat"><FontAwesomeIcon icon={faCommentAlt} />Mes Conversations</NavLink>
