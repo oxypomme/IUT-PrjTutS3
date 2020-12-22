@@ -1,7 +1,7 @@
 import EGender from "./EGender";
 import EOrientation from "./EOrientation";
 
-class ProfileClass {
+interface IProfile {
     age: number;
     desc: string;
     imageURL: string;
@@ -12,4 +12,4 @@ class ProfileClass {
     town: string;
 }
 
-export default ProfileClass;
+export default IProfile;

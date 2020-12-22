@@ -2,8 +2,6 @@ import React from 'react';
 
 import logo from '../../logo.svg';
 
-import { Counter } from '../../features/counter/Counter';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 

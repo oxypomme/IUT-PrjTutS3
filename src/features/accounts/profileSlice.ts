@@ -1,5 +1,6 @@
 import { createAction, createSelector, createSlice, current } from "@reduxjs/toolkit";
-import ProfileClass from "../../include/ProfileClass";
+
+import IProfile from "../../include/IProfile";
 
 export const fetchProfile = createAction(
     "FETCH_PROFILE_REQUESTED",
@@ -29,7 +30,7 @@ export const fetchCurrProfile = createAction(
 )
 export const createProfile = createAction(
     "CREATE_PROFILE_REQUESTED",
-    (params: ProfileClass) => ({
+    (params: IProfile) => ({
         payload: {
             request: {
                 type: "update",
@@ -42,7 +43,7 @@ export const createProfile = createAction(
 )
 export const updateProfile = createAction(
     "EDIT_PROFILE_REQUESTED",
-    (key: number, params: ProfileClass) => ({
+    (key: number, params: IProfile) => ({
         payload: {
             request: {
                 type: "update",
@@ -70,9 +71,9 @@ export const deleteProfile = createAction(
 export const profileSlice = createSlice({
     name: "profiles",
     initialState: {
-        profiles: new Array<ProfileClass>(),
+        profiles: new Array<IProfile>(),
         current: {
-            profile: new ProfileClass(),
+            profile: {},
             id: -1
         },
         isWorking: false,
@@ -167,7 +168,7 @@ export const profileSlice = createSlice({
             isWorking: false,
             error: "",
             current: {
-                profile: new ProfileClass(),
+                profile: {},
                 id: -1
             },
         }),

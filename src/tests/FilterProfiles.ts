@@ -3,9 +3,7 @@ import '@firebase/database'
 
 import EGender from '../include/EGender';
 import EOrientation from '../include/EOrientation';
-import { getCurrProfile, getCurrProfileId } from '../features/accounts/profileSlice';
-import { useSelector } from 'react-redux';
-import ProfileClass from '../include/ProfileClass';
+import IProfile from '../include/IProfile';
 
 const db = firebase.database();
 const ref = db.ref('/profiles');
@@ -15,11 +13,11 @@ const ref = db.ref('/profiles');
  * @param mySex The sex of the current profile
  * @param myOrientation The orrientation of the current profile
  * @param myTags The tags IDs of the current profile
+ * @param myProfileId The id to exclude
  */
-const filterProfiles = async (): Promise<{ key: number, score: number }[]> => {
+const filterProfiles = async (mySex: EGender, myOrientation: EOrientation, myTags: number[], myProfileId: number): Promise<{ key: number, score: number }[]> => {
     //TODO: Move to SAGA ?
     const profiles = (await ref.once('value')).val();
-    const { sex: mySex, orientation: myOrientation, tags: myTags } = useSelector(getCurrProfile);
 
     const profilesScore = [];
 
@@ -33,8 +31,7 @@ const filterProfiles = async (): Promise<{ key: number, score: number }[]> => {
         return Math.floor((commonTags / myTags.length) * 100);
     }
 
-    const myProfileId = useSelector(getCurrProfileId)
-    profiles.forEach((profile: ProfileClass, key: number) => {
+    profiles.forEach((profile: IProfile, key: number) => {
         if (myProfileId != key) {
             const score = calcScore(profile);
             if (score > 10) {

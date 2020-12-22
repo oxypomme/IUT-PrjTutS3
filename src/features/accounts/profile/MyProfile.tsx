@@ -9,7 +9,7 @@ import { faUser, faHorse, faCalendarAlt, faBuilding, faVenusMars, faVenusDouble,
 import { fetchCurrProfile, getCurrProfile } from '../profileSlice';
 import { fetchTags, getAllTags } from '../tagSlice';
 
-import ProfileClass from '../../../include/ProfileClass';
+import IProfile from '../../../include/IProfile';
 import ITag from '../../../include/ITag';
 import EGender from '../../../include/EGender';
 import EOrientation from '../../../include/EOrientation';
@@ -88,7 +88,7 @@ const Tags = styled.ul`
 
 const MyProfile = (): JSX.Element => {
     const dispatch = useDispatch();
-    const profile: ProfileClass = useSelector(getCurrProfile);
+    const profile: IProfile = useSelector(getCurrProfile);
     const tags: Array<ITag> = useSelector(getAllTags);
     let genderIcon = faUser;
     let gender = null;
