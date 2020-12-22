@@ -1,11 +1,10 @@
 import { call, put, takeLatest, take, select } from 'redux-saga/effects'
 
 import { rsf } from '../firebase'
-import firebase from 'firebase/app'
 import '@firebase/database'
 
 import { deleteAccount, getAccountError, getAuthId } from '../../features/accounts/accountSlice';
-import { deleteAuth } from './auth';
+
 import {
     createProfile,
     createProfileFailed,
@@ -15,25 +14,23 @@ import {
     fetchCurrProfile,
     fetchCurrProfilesFailed,
     fetchCurrProfilesSuccess,
-    fetchProfiles,
+    fetchProfile,
     fetchProfilesFailed,
     fetchProfilesSuccess,
-    getAllProfiles,
-    getProfileError,
     updateProfile,
     updateProfileFailed,
     updateProfileSuccess
 } from '../../features/accounts/profileSlice';
 
-function* getProfiles(action) {
+function* getProfile(action) {
     try {
         const { request } = action.payload;
-        const profiles = yield call(
+        const profile: [] = yield call(
             rsf.database[request.type],
-            request.url,
+            request.url + '/' + request.key,
             request.params
         );
-        yield put(fetchProfilesSuccess(profiles));
+        yield put(fetchProfilesSuccess(profile));
     } catch (error) {
         yield put(fetchProfilesFailed(error.message));
     }
@@ -44,12 +41,17 @@ function* getCurrProfile(action) {
         const id = yield select(getAuthId);
 
         const { request } = action.payload;
-        const profile = yield call(
+        const key: number = yield call(
             rsf.database[request.type],
-            request.url + '/' + id,
+            request.urlL + '/' + id,
             request.params
         );
-        yield put(fetchCurrProfilesSuccess(profile));
+        const profile = yield call(
+            rsf.database[request.type],
+            request.urlP + '/' + key,
+            request.params
+        )
+        yield put(fetchCurrProfilesSuccess({ profile, key }));
     } catch (error) {
         yield put(fetchCurrProfilesFailed(error.message));
     }
@@ -57,13 +59,13 @@ function* getCurrProfile(action) {
 
 function* createProfileSaga(action) {
     try {
-        yield call(fetchProfiles);
-        const profileError = yield select(getProfileError);
-        if (profileError !== "")
-            throw new Error(profileError);
-        const profiles = yield select(getAllProfiles);
+        const { request } = action.payload;
+        const profiles: [] = yield call(
+            rsf.database.read,
+            request.urlP
+        );
 
-        let key = profiles.length;
+        let key: number = profiles.length;
         for (let i = 0; i < profiles.length; i++) {
             if (profiles[i] === null) {
                 key = i;
@@ -71,7 +73,6 @@ function* createProfileSaga(action) {
             }
         }
 
-        const { request } = action.payload;
         yield call(
             rsf.database[request.type],
             request.urlP + '/' + key,
@@ -81,8 +82,8 @@ function* createProfileSaga(action) {
         const authid = yield select(getAuthId);
         yield call(
             rsf.database[request.type],
-            request.urlL + '/' + key,
-            authid
+            request.urlL + '/' + authid,
+            key
         );
         yield put(createProfileSuccess());
     } catch (error) {
@@ -128,7 +129,7 @@ function* deleteProfileSaga(action) {
 }
 
 export default function* profilesSagas() {
-    yield takeLatest(fetchProfiles.type, getProfiles);
+    yield takeLatest(fetchProfile.type, getProfile);
     yield takeLatest(fetchCurrProfile.type, getCurrProfile);
     yield takeLatest(createProfile.type, createProfileSaga);
     yield takeLatest(updateProfile.type, updateProfileSaga);

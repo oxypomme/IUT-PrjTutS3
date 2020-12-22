@@ -6,10 +6,10 @@ import styled from '@emotion/styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHorse, faCalendarAlt, faBuilding, faVenusMars, faVenusDouble, faNeuter, faHelicopter, faMarsDouble, faTransgender, faGenderless } from '@fortawesome/free-solid-svg-icons';
 
-import { fetchCurrProfile, fetchProfiles, getCurrProfile } from '../profileSlice';
+import { fetchCurrProfile, getCurrProfile } from '../profileSlice';
 import { fetchTags, getAllTags } from '../tagSlice';
 
-import IProfile from '../../../include/IProfile';
+import ProfileClass from '../../../include/ProfileClass';
 import ITag from '../../../include/ITag';
 import EGender from '../../../include/EGender';
 import EOrientation from '../../../include/EOrientation';
@@ -88,7 +88,7 @@ const Tags = styled.ul`
 
 const MyProfile = (): JSX.Element => {
     const dispatch = useDispatch();
-    const profile: IProfile = useSelector(getCurrProfile);
+    const profile: ProfileClass = useSelector(getCurrProfile);
     const tags: Array<ITag> = useSelector(getAllTags);
     let genderIcon = faUser;
     let gender = null;
@@ -97,7 +97,6 @@ const MyProfile = (): JSX.Element => {
 
     React.useEffect(() => {
         dispatch(fetchTags());
-        dispatch(fetchProfiles());
         dispatch(fetchCurrProfile());
     }, [dispatch]);
 

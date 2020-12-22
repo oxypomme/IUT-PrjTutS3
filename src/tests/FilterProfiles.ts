@@ -3,6 +3,9 @@ import '@firebase/database'
 
 import EGender from '../include/EGender';
 import EOrientation from '../include/EOrientation';
+import { getCurrProfile, getCurrProfileId } from '../features/accounts/profileSlice';
+import { useSelector } from 'react-redux';
+import ProfileClass from '../include/ProfileClass';
 
 const db = firebase.database();
 const ref = db.ref('/profiles');
@@ -13,13 +16,12 @@ const ref = db.ref('/profiles');
  * @param myOrientation The orrientation of the current profile
  * @param myTags The tags IDs of the current profile
  */
-const filterProfiles = async (mySex: EGender, myOrientation: EOrientation, myTags: number[]): Promise<{ key: number, score: number }[]> => {
+const filterProfiles = async (): Promise<{ key: number, score: number }[]> => {
     //TODO: Move to SAGA ?
-    //TODO: Auto get curr profile ? Or pass it in params ?
     const profiles = (await ref.once('value')).val();
+    const { sex: mySex, orientation: myOrientation, tags: myTags } = useSelector(getCurrProfile);
 
     const profilesScore = [];
-    let count = 0;
 
     const calcScore = (profile): number => {
         let commonTags = 0;
@@ -31,46 +33,47 @@ const filterProfiles = async (mySex: EGender, myOrientation: EOrientation, myTag
         return Math.floor((commonTags / myTags.length) * 100);
     }
 
-    profiles.forEach(profile => {
-        const score = calcScore(profile);
-        if (score > 10) {
-            if (mySex == EGender.NonBinary) {
-                if (profile.sex == EGender.NonBinary) {
-                    profilesScore.push({ key: count, score });
+    const myProfileId = useSelector(getCurrProfileId)
+    profiles.forEach((profile: ProfileClass, key: number) => {
+        if (myProfileId != key) {
+            const score = calcScore(profile);
+            if (score > 10) {
+                if (mySex == EGender.NonBinary) {
+                    if (profile.sex == EGender.NonBinary) {
+                        profilesScore.push({ key, score });
+                    }
                 }
-            }
-            else { // Men or Women
-                if (myOrientation == EOrientation.Bisexual) {
-                    if (profile.orientation == EOrientation.Homosexual) {
-                        if (mySex == profile.sex) {
-                            profilesScore.push({ key: count, score });
+                else { // Men or Women
+                    if (myOrientation == EOrientation.Bisexual) {
+                        if (profile.orientation == EOrientation.Homosexual) {
+                            if (mySex == profile.sex) {
+                                profilesScore.push({ key, score });
+                            }
                         }
-                    }
-                    else if (profile.orientation == EOrientation.Heterosexual) {
+                        else if (profile.orientation == EOrientation.Heterosexual) {
+                            if (mySex != profile.sex) {
+                                profilesScore.push({ key, score });
+                            }
+                        }
+                        else { // profile is Bi
+                            profilesScore.push({ key, score });
+                        }
+                    } else if (myOrientation == EOrientation.Heterosexual) {
                         if (mySex != profile.sex) {
-                            profilesScore.push({ key: count, score });
+                            if (profile.orientation != EOrientation.Homosexual) {
+                                profilesScore.push({ key, score });
+                            }
                         }
-                    }
-                    else { // profile is Bi
-                        profilesScore.push({ key: count, score });
-                    }
-                } else if (myOrientation == EOrientation.Heterosexual) {
-                    if (mySex != profile.sex) {
-                        if (profile.orientation != EOrientation.Homosexual) {
-                            profilesScore.push({ key: count, score });
-                        }
-                    }
-                } else { // if (myOrientation == EOrientation.Homosexual)
-                    if (mySex == profile.sex) {
-                        if (profile.orientation != EOrientation.Heterosexual) {
-                            profilesScore.push({ key: count, score });
+                    } else { // if (myOrientation == EOrientation.Homosexual)
+                        if (mySex == profile.sex) {
+                            if (profile.orientation != EOrientation.Heterosexual) {
+                                profilesScore.push({ key, score });
+                            }
                         }
                     }
                 }
             }
         }
-
-        count++;
     });
     return profilesScore.sort((a, b) => a.score - b.score);
 }
