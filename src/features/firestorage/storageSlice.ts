@@ -64,6 +64,7 @@ export const {
 
 export const getState = state => state.storage;
 
+export const getUploadedFiles = createSelector(getState, state => state.uploads);
 export const getStorageError = createSelector(getState, (state) => state.error)
 
 export default storageSlice.reducer

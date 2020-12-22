@@ -3,8 +3,8 @@ import styles from "./Camera.module.css";
 import Webcam from "react-webcam";
 import Select from "react-select";
 import { Mic } from '../mic/Mic';
-import { useDispatch } from "react-redux";
-import { uploadFile, uploadStringFile } from "../firestorage/storageSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getUploadedFiles, uploadFile, uploadFileSuccess, uploadStringFile } from "../firestorage/storageSlice";
 
 export interface ICam { value: string, label: string; }
 export function Camera(): JSX.Element {
@@ -14,6 +14,14 @@ export function Camera(): JSX.Element {
     const [devices, setDevices] = React.useState<Array<ICam>>([]);
     const [cam, setCam] = React.useState<string>();
     const [images, setImages] = React.useState<Array<string>>([]);
+
+    const [pendingUploadUrl, setPendingUploadUrl] = React.useState<string>();
+    const uploadedLinks = useSelector(getUploadedFiles);
+    let mylink;
+    if ((mylink = uploadedLinks.find(u => u.url === pendingUploadUrl)) !== undefined) {
+        setPendingUploadUrl(undefined);
+        console.log(mylink, mylink.dlUrl);
+    }
 
     React.useEffect(() => {
         const getDevices = async () => {
@@ -37,7 +45,8 @@ export function Camera(): JSX.Element {
         const file = event.target.files[0];
         if (file == undefined || !file.name.match(/.(jpg|jpeg|png|jfif|pjpeg|.pjp)$/i))
             return;
-        // dispatch(uploadFile("profiles/2", file));
+        setPendingUploadUrl("profiles/1");
+        // dispatch(uploadFile("profiles/1", file));
 
         const reader = new FileReader();
         reader.readAsDataURL(file);
