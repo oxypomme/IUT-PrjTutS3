@@ -73,8 +73,7 @@ export const profileSlice = createSlice({
     initialState: {
         profiles: new Array<IProfile>(),
         current: {
-            profile: {},
-            id: -1
+            profile: {}
         },
         isWorking: false,
         error: ""
@@ -118,13 +117,12 @@ export const profileSlice = createSlice({
             isWorking: false,
             error: message
         }),
-        fetchCurrProfilesSuccess: (state, { payload }) => ({
+        fetchCurrProfilesSuccess: (state, { payload: profile }) => ({
             ...state,
             isWorking: false,
             error: "",
             current: {
-                profile: payload.profile,
-                id: payload.key
+                profile
             }
         }),
         fetchCurrProfilesFailed: (state, { payload: message }) => ({
@@ -168,8 +166,7 @@ export const profileSlice = createSlice({
             isWorking: false,
             error: "",
             current: {
-                profile: {},
-                id: -1
+                profile: {}
             },
         }),
     }
@@ -194,7 +191,6 @@ export const getState = state => state.profiles;
 
 export const getAllProfiles = createSelector(getState, state => state.profiles);
 export const getCurrProfile = createSelector(getState, state => state.current.profile)
-export const getCurrProfileId = createSelector(getState, state => state.current.id)
 export const getProfileError = createSelector(getState, state => state.error);
 
 export default profileSlice.reducer;

@@ -30,7 +30,7 @@ function* getProfile(action) {
             request.url + '/' + request.key,
             request.params
         );
-        yield put(fetchProfilesSuccess(profile));
+        yield put(fetchProfilesSuccess({ ...profile, key: request.key }));
     } catch (error) {
         yield put(fetchProfilesFailed(error.message));
     }
@@ -51,7 +51,7 @@ function* getCurrProfile(action) {
             request.urlP + '/' + key,
             request.params
         )
-        yield put(fetchCurrProfilesSuccess({ profile, key }));
+        yield put(fetchCurrProfilesSuccess({ ...profile, key }));
     } catch (error) {
         yield put(fetchCurrProfilesFailed(error.message));
     }

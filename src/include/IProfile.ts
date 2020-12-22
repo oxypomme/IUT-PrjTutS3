@@ -10,6 +10,7 @@ interface IProfile {
     sex: EGender;
     tags: number[];
     town: string;
+    key: number;
 }
 
 export const instanceOfIProfile = (object: any): object is IProfile => {
@@ -20,7 +21,8 @@ export const instanceOfIProfile = (object: any): object is IProfile => {
         && 'orientation' in object
         && 'sex' in object
         && 'tags' in object
-        && 'town' in object;
+        && 'town' in object
+        && 'key' in object;
 }
 
 export default IProfile;

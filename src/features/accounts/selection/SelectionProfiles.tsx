@@ -5,14 +5,13 @@ import { WaitingForData } from '../../../components/styledComponents';
 import IProfile, { instanceOfIProfile } from '../../../include/IProfile';
 
 import filterProfiles from '../../../tests/FilterProfiles';
-import { fetchProfile, getAllProfiles, getCurrProfile, getCurrProfileId } from '../profileSlice';
+import { fetchProfile, getAllProfiles, getCurrProfile } from '../profileSlice';
 
 const SelectionProfiles = (): JSX.Element => {
     const dispatch = useDispatch();
     const [profilesToShow, setProfilesToShow] = useState<Array<{ key: number, score: number }>>();
     const [loading, setLoading] = useState<boolean | null>(false);
     const currProfile: IProfile | Record<string, never> = useSelector(getCurrProfile);
-    const myProfileId: number = useSelector(getCurrProfileId);
 
     const profiles: IProfile[] = useSelector(getAllProfiles);
 
@@ -23,7 +22,7 @@ const SelectionProfiles = (): JSX.Element => {
                 console.log(currProfile)
                 if (instanceOfIProfile(currProfile)) {
                     console.log(currProfile)
-                    const profiles = await filterProfiles(currProfile.sex, currProfile.orientation, currProfile.tags, myProfileId);
+                    const profiles = await filterProfiles(currProfile.sex, currProfile.orientation, currProfile.tags, currProfile.key);
                     //setProfilesToShow(profiles);
                     if (profiles?.length > 0) {
                         profiles.forEach(({ key }) => {
