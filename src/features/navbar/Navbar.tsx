@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import logo from '../../logo.svg';
 
 import styled from '@emotion/styled';
@@ -14,7 +14,8 @@ import {
     faSignInAlt,
     faCaretDown,
     faCaretUp,
-    faUsers
+    faUsers,
+    faGift
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -64,7 +65,9 @@ const NavItem = styled.li<{ stickToBottom?: boolean }>`
         margin-right: 5px;
     }
 `;
-const NavDropdownContainer = styled.div`
+const NavDropdownContainer = styled.ul`
+    list-style-type: none;
+    padding: 0;
     display: none;
     background-color: #262626;
 
@@ -75,14 +78,15 @@ const NavDropdownContainer = styled.div`
 
 export const Navbar = (): JSX.Element => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const isConnected = useSelector(getIsConnected);
     //TODO: support for multiple dropdown
     const [dropdownArrow, setDropdownArrow] = useState(faCaretDown);
 
     const handleLogout = async (event) => {
         event.preventDefault();
-        dispatch(logoutAccount());
-        //TODO: If success, history.push('/'); + message
+        dispatch(logoutAccount(history));
+        //TODO: If success message
     }
 
     const handleDropdown = (event) => {
@@ -122,6 +126,9 @@ export const Navbar = (): JSX.Element => {
                         <NavDropdownContainer>
                             <NavItem>
                                 <NavLink to="/TODO"><FontAwesomeIcon icon={faHeart} />Mes matchs</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink to="/surprise"><FontAwesomeIcon icon={faGift} />Tinder Surprise</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink to="/chat"><FontAwesomeIcon icon={faCommentAlt} />Mes Conversations</NavLink>

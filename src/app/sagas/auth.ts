@@ -2,6 +2,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects'
 
 import { rsf } from '../firebase'
 import '@firebase/auth'
+
 import {
     createAccount,
     createAccountSuccess,
@@ -13,9 +14,17 @@ import {
     logoutAccountSuccess,
     logoutAccountFailed,
     updateEmailAccount,
+    updateEmailAccountSuccess,
+    updateEmailAccountFailed,
     updatePasswordAccount,
+    updatePasswordAccountSuccess,
+    updatePasswordAccountFailed,
     resetPasswordAccount,
-    deleteAccount
+    resetPasswordAccountSuccess,
+    resetPasswordAccountFailed,
+    deleteAccount,
+    deleteAccountSuccess,
+    deleteAccountFailed
 } from '../../features/accounts/accountSlice';
 
 function* createEmailAuth(action) {
@@ -41,6 +50,8 @@ function* logInMail(action) {
             request.passwd
         );
         yield put(loginAccountSuccess());
+        // J'ai vomi
+        action.payload.history.goBack();
     } catch (error) {
         yield put(loginAccountFailed(error.message));
     }
@@ -53,6 +64,8 @@ function* logOut(action) {
             rsf.auth[request.type]
         );
         yield put(logoutAccountSuccess());
+        // J'ai vomi
+        action.payload.history.push('/');
     } catch (error) {
         yield put(logoutAccountFailed(error.message));
     }
@@ -65,9 +78,9 @@ function* updateEmail(action) {
             rsf.auth[request.type],
             request.email
         );
-        yield put(logoutAccountSuccess());
+        yield put(updateEmailAccountSuccess());
     } catch (error) {
-        yield put(logoutAccountFailed(error.message));
+        yield put(updateEmailAccountFailed(error.message));
     }
 }
 
@@ -78,9 +91,9 @@ function* updatePassword(action) {
             rsf.auth[request.type],
             request.passwd
         );
-        yield put(logoutAccountSuccess());
+        yield put(updatePasswordAccountSuccess());
     } catch (error) {
-        yield put(logoutAccountFailed(error.message));
+        yield put(updatePasswordAccountFailed(error.message));
     }
 }
 
@@ -91,9 +104,9 @@ function* sendPasswordReset(action) {
             rsf.auth[request.type],
             request.email
         );
-        yield put(logoutAccountSuccess());
+        yield put(resetPasswordAccountSuccess());
     } catch (error) {
-        yield put(logoutAccountFailed(error.message));
+        yield put(resetPasswordAccountFailed(error.message));
     }
 }
 
@@ -103,9 +116,9 @@ export function* deleteAuth(action) {
         yield call(
             rsf.auth[request.type]
         );
-        yield put(logoutAccountSuccess());
+        yield put(deleteAccountSuccess());
     } catch (error) {
-        yield put(logoutAccountFailed(error.message));
+        yield put(deleteAccountFailed(error.message));
     }
 }
 

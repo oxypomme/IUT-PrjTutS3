@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { TextBox, HiddenLabel } from '../../../components/styledComponents';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { isNonNullChain } from "typescript";
 import { useHistory } from "react-router-dom";
 import { addDesc } from "../accountSlice";
 
@@ -12,7 +13,7 @@ import IError from "../../../include/IError";
 export const Description = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const [description, setDescription] = React.useState<string>();
+    const [description, setDescription] = React.useState();
 
     const handleSetDescriptionOnChange = (event) => setDescription(event.target.value);
 
@@ -20,8 +21,8 @@ export const Description = (): JSX.Element => {
         event.preventDefault();
         let errors = [];
 
-        if (!description || description.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.([a-zA-Z0-9-]+){2,4}$/) === null)
-            errors = [...errors, { component: "description", label: "L'email n'est pas valide." } as IError];
+        if (!description || (description && description === isNonNullChain))
+            errors = [...errors, { component: "description", label: "Veuillez spécifier votre description." } as IError];
 
     };
 
