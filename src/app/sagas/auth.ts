@@ -60,7 +60,7 @@ function* logOut(action) {
         yield call(
             rsf.auth[request.type]
         );
-        yield put(logoutAccountSuccess(request.cb));
+        yield put(logoutAccountSuccess());
     } catch (error) {
         yield put(logoutAccountFailed(error.message));
     }
