@@ -1,57 +1,104 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../../logo.svg';
 
 import styled from '@emotion/styled';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { getIsConnected, logoutAccount, setUid } from '../accounts/accountSlice';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faUser,
+    faSignOutAlt,
+    faHeart,
+    faHome,
+    faCommentAlt,
+    faSignInAlt,
+    faCaretDown,
+    faCaretUp,
+    faUsers
+} from "@fortawesome/free-solid-svg-icons";
 
-const NavBar = styled.nav``;
-const NavList = styled.ul`
+import { useDispatch, useSelector } from 'react-redux';
+import { getIsConnected, logoutAccount } from '../accounts/accountSlice';
+
+const NavBar = styled.nav`
     position: fixed;
     top: 0;
-    width: 100%;
-    list-style-type: none;
+    left: 0;
+    height: 100%;
+    width: 16%;
+    min-width: 205px;
+    overflow: auto;
     margin: 0;
     padding: 0;
-    overflow: hidden;
     background-color: #333;
-    height: 49px;
     z-index: 9999;
+`;
+const NavList = styled.ul`
+    list-style-type: none;
+    padding: 0;
 `;
 const NavLogo = styled.img`
     height: 32px;
-    padding: 8px 8px 0px 16px;
 `;
-const NavItem = styled.li<{ floatRight?: boolean }>`
-    float: ${props => props.floatRight ? 'right' : 'left'};
+const NavItem = styled.li<{ stickToBottom?: boolean }>`
+    /*TODO: stick to bottom*/
 
-    & > a {
+    &:hover {
+        background-color: #111;
+    }
+
+    & > a, & > button {
         display: block;
         color: white;
-        text-align: center;
+        text-align: left;
         padding: 14px 16px;
         text-decoration: none;
     }
     
-    & > a:hover {
-        background-color: #111;
-    }
-    
     & > a.active {
         background-color: #111;
+    }
+
+    & svg {
+        margin-right: 5px;
+    }
+`;
+const NavDropdownContainer = styled.div`
+    display: none;
+    background-color: #262626;
+
+    & > li {
+        padding-left: 16px;
     }
 `;
 
 export const Navbar = (): JSX.Element => {
     const dispatch = useDispatch();
     const isConnected = useSelector(getIsConnected);
+    //TODO: support for multiple dropdown
+    const [dropdownArrow, setDropdownArrow] = useState(faCaretDown);
 
     const handleLogout = async (event) => {
         event.preventDefault();
         dispatch(logoutAccount());
         //TODO: If success, history.push('/'); + message
+    }
+
+    const handleDropdown = (event) => {
+        event.preventDefault();
+        event.target.classList.toggle("active");
+        setDropdownArrow(dropdownArrow == faCaretDown ? faCaretUp : faCaretDown);
+
+        const container = event.target.nextElementSibling;
+
+        if (container == null) {
+            return;
+        }
+        if (container.style.display === "block") {
+            container.style.display = "none";
+        } else {
+            container.style.display = "block";
+        }
     }
 
     return (
@@ -61,27 +108,42 @@ export const Navbar = (): JSX.Element => {
                     <NavLogo src={logo} alt="logo" />
                 </NavItem>
                 <NavItem>
-                    <NavLink exact to="/">Accueil</NavLink>
+                    <NavLink exact to="/"><FontAwesomeIcon icon={faHome} />Accueil</NavLink>
                 </NavItem>
-                {isConnected &&
-                    <NavItem floatRight={true}>
-                        <NavLink to="/profile">Mon profil</NavLink>
-                    </NavItem>
-                }
-                {isConnected &&
-                    <NavItem floatRight={true}>
-                        <a href="#" onClick={handleLogout}>Déconnexion</a>
-                    </NavItem>
-                }
-                {!isConnected &&
-                    <NavItem floatRight={true}>
-                        <NavLink to="/login">Connexion</NavLink>
-                    </NavItem>
-                }
                 <NavItem>
                     <NavLink to="/camera">Test caméra</NavLink>
                 </NavItem>
+                {isConnected &&
+                    <NavItem>
+                        <a href="#" onClick={handleDropdown}>
+                            <FontAwesomeIcon icon={faUsers} />NomADefinir <FontAwesomeIcon icon={dropdownArrow} />
+                        </a>
+                        <NavDropdownContainer>
+                            <NavItem>
+                                <NavLink to="/TODO"><FontAwesomeIcon icon={faHeart} />Mes matchs</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink to="/chat"><FontAwesomeIcon icon={faCommentAlt} />Mes Conversations</NavLink>
+                            </NavItem>
+                        </NavDropdownContainer>
+                    </NavItem>
+                }
+                {isConnected &&
+                    <NavItem stickToBottom={true}>
+                        <NavLink to="/profile"><FontAwesomeIcon icon={faUser} />Mon profil</NavLink>
+                    </NavItem>
+                }
+                {isConnected &&
+                    <NavItem stickToBottom={true}>
+                        <a href="#" onClick={handleLogout}><FontAwesomeIcon icon={faSignOutAlt} />Déconnexion</a>
+                    </NavItem>
+                }
+                {!isConnected &&
+                    <NavItem stickToBottom={true}>
+                        <NavLink to="/login"><FontAwesomeIcon icon={faSignInAlt} />Connexion</NavLink>
+                    </NavItem>
+                }
             </NavList>
-        </NavBar>
+        </NavBar >
     );
 }
