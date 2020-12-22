@@ -65,7 +65,9 @@ const NavItem = styled.li<{ stickToBottom?: boolean }>`
         margin-right: 5px;
     }
 `;
-const NavDropdownContainer = styled.div`
+const NavDropdownContainer = styled.ul`
+    list-style-type: none;
+    padding: 0;
     display: none;
     background-color: #262626;
 
