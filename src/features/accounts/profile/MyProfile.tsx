@@ -44,10 +44,10 @@ const Profile = styled.div`
             border-right: 1px solid #888888;
         }
 
-        &:first-child {
+        &:first-of-type {
             width: 60%;
         }
-        &:last-child {
+        &:last-of-type {
             padding: 10px;
             width: 40%;
             text-align: left;
@@ -152,7 +152,7 @@ const MyProfile = (): JSX.Element => {
                 <Tags>
                     <p>Tags :</p>
                     {profile?.tags?.map((tag, index) => (
-                        <li key={index}>- {tags.find(t => t.value === tag).label}</li>
+                        <li key={index}>- {tags.find(t => t.value === tag)?.label}</li>
                     )) || <WaitingForData length={16} />}
                 </Tags>
             </div>
