@@ -5,14 +5,13 @@ import { TextBox, HiddenLabel } from '../../../components/styledComponents';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { isNonNullChain } from "typescript";
-import { useHistory } from "react-router-dom";
 import { addDesc } from "../accountSlice";
 
 import IError from "../../../include/IError";
 
 export const Description = (): JSX.Element => {
     const dispatch = useDispatch();
-    const history = useHistory();
+
     const [description, setDescription] = React.useState();
 
     const handleSetDescriptionOnChange = (event) => setDescription(event.target.value);
