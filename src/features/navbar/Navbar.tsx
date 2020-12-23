@@ -81,7 +81,7 @@ export const Navbar = (): JSX.Element => {
     const history = useHistory();
     const isConnected = useSelector(getIsConnected);
 
-    const Dropdown = ({ dataId, icon, defaultValue, label, children }: any): JSX.Element => {
+    const Dropdown = React.useCallback(({ dataId, icon, defaultValue, label, children }: any): JSX.Element => {
         const [isOpened, setIsOpened] = useState<boolean>(!!defaultValue);
 
         const handleDropdown = (event) => {
@@ -99,7 +99,7 @@ export const Navbar = (): JSX.Element => {
                 </NavDropdownContainer>
             </NavItem>
         )
-    }
+    }, [dispatch]);
 
     const onUnlogged = ({ error, cancelled, data }) => {
         if (error) {
