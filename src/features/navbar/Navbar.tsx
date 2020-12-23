@@ -81,22 +81,14 @@ export const Navbar = (): JSX.Element => {
     const history = useHistory();
     const isConnected = useSelector(getIsConnected);
 
-    const [dropdowns, setDropdowns] = useState<boolean[]>([false]);
+    const Dropdown = ({ dataId, icon, defaultValue, label, children }: any): JSX.Element => {
+        const [isOpened, setIsOpened] = useState<boolean>(!!defaultValue);
 
-    const Dropdown = ({ dataId, icon, label, children }: any): JSX.Element => {
         const handleDropdown = (event) => {
             event.preventDefault();
-
-            const drops = dropdowns;
-            drops[dataId] = !drops[dataId];
-
-            // BUG: Not updating ???
-            setDropdowns(drops);
-
-            console.log(dropdowns[dataId]);
+            setIsOpened(!isOpened);
         }
 
-        const isOpened = dropdowns[dataId];
         return (
             <NavItem>
                 <a href="#" className={isOpened ? "active" : ""} onClick={handleDropdown}>
@@ -146,7 +138,7 @@ export const Navbar = (): JSX.Element => {
                     <NavLink to="/camera">Test caméra</NavLink>
                 </NavItem>
                 {isConnected &&
-                    <Dropdown dataId={0} isOpened={dropdowns[0]} icon={faUsers} label={"NomADefinir"}>
+                    <Dropdown dataId={0} defaultValue={false} icon={faUsers} label={"NomADefinir"}>
                         <NavItem>
                             <NavLink to="/TODO"><FontAwesomeIcon icon={faHeart} />Mes matchs</NavLink>
                         </NavItem>
