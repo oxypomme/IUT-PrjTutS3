@@ -21,13 +21,13 @@ export function CreatePersonal(): JSX.Element {
 export function CreatePreferences(): JSX.Element {
     return (
         <div className='App login only'>
-            <div>
+            <div style={{ width: "clamp(300px, 500px, 800px)" }}>
                 <h2>Formulaire</h2>
                 <Gender />
                 <Orientation />
                 <Tags />
             </div>
-        </div>
+        </div >
     );
 }
 
