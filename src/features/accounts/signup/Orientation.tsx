@@ -22,6 +22,7 @@ export const Orientation = (): JSX.Element => {
                 isClearable={true}
                 onChange={myorientation => setSelectedOrientation([myorientation as IComboBoxItem])}
                 options={orientations}
+                placeholder="Sélectionnez votre orientation"
             />
         </form>
     );

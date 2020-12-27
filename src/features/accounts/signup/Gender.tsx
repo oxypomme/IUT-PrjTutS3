@@ -22,6 +22,7 @@ export const Gender = (): JSX.Element => {
                 isClearable={true}
                 onChange={mygender => setSelectedGender([mygender as IComboBoxItem])}
                 options={genders}
+                placeholder="Sélectionnez votre genre"
             />
         </form>
     );

@@ -59,6 +59,7 @@ export function ProfPicture(): JSX.Element {
             <Select
                 onChange={device => setCam(device.value)}
                 options={devices}
+                placeholder="Sélectionnez une autre caméra"
             />
 
             <Webcam

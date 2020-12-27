@@ -1,5 +1,4 @@
 import React from "react";
-import Creatable from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTags, getAllTags } from "../tagSlice";
 import { useHistory } from "react-router-dom";
@@ -7,6 +6,7 @@ import { Button, Spacer } from '../../../components/styledComponents';
 import { addTag } from "../accountSlice";
 
 import IComboBoxItem from '../../../include/IComboBoxItem';
+import Select from "react-select";
 
 export const Tags = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -27,17 +27,16 @@ export const Tags = (): JSX.Element => {
             history.push('/SignUp/3');
         }
     }
-    const isValidNewOption = (inputValue) => inputValue.length > 0;
 
     return (
         <form onSubmit={handleOnSubmit}>
-            <Creatable
+            <Select
                 isMulti
                 isSearchable={true}
                 isClearable={true}
-                isValidNewOption={isValidNewOption}
                 onChange={(mytags) => setSelectedTags(mytags as IComboBoxItem[])}
                 options={tags}
+                placeholder="Sélectionnez vos tags"
             />
             <Button>Suivant</Button>
         </form>
