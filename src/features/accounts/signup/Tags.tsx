@@ -24,7 +24,7 @@ export const Tags = (): JSX.Element => {
         const canSubmit = selectedTags?.length >= 3; // minimum of 3 selected tags
         if (canSubmit) {
             dispatch(addTag(selectedTags.map((tag) => tag.value)))
-            history.push('SignUp/3');
+            history.push('/SignUp/3');
         }
     }
     const isValidNewOption = (inputValue) => inputValue.length > 0;
