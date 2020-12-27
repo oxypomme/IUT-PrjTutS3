@@ -37,6 +37,7 @@ export const Tags = (): JSX.Element => {
                 onChange={(mytags) => setSelectedTags(mytags as IComboBoxItem[])}
                 options={tags}
                 placeholder="Sélectionnez vos tags"
+                closeMenuOnSelect={false}
             />
             <Button>Suivant</Button>
         </form>
