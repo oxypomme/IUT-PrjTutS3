@@ -1,18 +1,19 @@
 import React from "react";
 import Webcam from "react-webcam";
 import Select from "react-select";
-import { Mic } from '../mic/Mic';
 import { useDispatch, useSelector } from "react-redux";
-import { getUploadedFiles, uploadFile, uploadFileSuccess, uploadStringFile } from "../firestorage/storageSlice";
+import { getUploadedFiles, uploadFile, uploadFileSuccess, uploadStringFile } from "../../firestorage/storageSlice";
+import { Button } from "../../../components/styledComponents";
+import { ProfilePicture } from "../profile/ProfileCard";
 
 export interface ICam { value: string, label: string; }
-export function Camera(): JSX.Element {
+export function ProfPicture(): JSX.Element {
     const dispatch = useDispatch();
 
     const webcamRef = React.useRef<Webcam>();
     const [devices, setDevices] = React.useState<Array<ICam>>([]);
     const [cam, setCam] = React.useState<string>();
-    const [images, setImages] = React.useState<Array<string>>([]);
+    const [picture, setPicture] = React.useState<string>();
 
     const [pendingUploadUrl, setPendingUploadUrl] = React.useState<string>();
     const uploadedLinks = useSelector(getUploadedFiles);
@@ -35,10 +36,9 @@ export function Camera(): JSX.Element {
 
     const snap = React.useCallback(() => {
         const imageUrl = webcamRef.current.getScreenshot();
-        setImages([...images, imageUrl]);
-        // console.log(images);
+        setPicture(imageUrl);
         // dispatch(uploadStringFile("profiles/2", imageUrl));
-    }, [images, setImages]);
+    }, [picture, setPicture]);
 
     const uploadLocalFile = React.useCallback((event) => {
         const file = event.target.files[0];
@@ -50,18 +50,16 @@ export function Camera(): JSX.Element {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = (e) => {
-            setImages([...images, e.target.result as string]);
+            setPicture(e.target.result as string);
         }
-    }, [images, setImages]);
+    }, [picture, setPicture]);
 
     return (
         <div>
-            <div style={{ width: 320, padding: '8px' }}>
-                <Select
-                    onChange={device => setCam(device.value)}
-                    options={devices}
-                />
-            </div>
+            <Select
+                onChange={device => setCam(device.value)}
+                options={devices}
+            />
 
             <Webcam
                 audio={false}
@@ -70,12 +68,13 @@ export function Camera(): JSX.Element {
                 screenshotFormat="image/jpeg"
                 style={{ display: "block", border: "2px solid black", width: 720 }}
             />
-            <button onClick={snap}>Snap</button>
+            <Button onClick={snap}>Prendre une photo</Button>
             <input type="file" onChange={uploadLocalFile} accept="image/png, image/jpeg" style={{ display: 'block' }} />
-            {images.map((image, index) => (
-                <img src={image} key={index} style={{ width: 320, border: '1px dashed magenta' }} />
-            ))}
-            <Mic />
+            {picture &&
+                <div style={{ width: 320, height: 480 }}>
+                    <ProfilePicture source={picture} />
+                </div>
+            }
         </div>
     );
 }

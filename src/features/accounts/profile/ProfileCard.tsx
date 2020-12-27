@@ -15,7 +15,7 @@ import EGender from '../../../include/EGender';
 import EOrientation from '../../../include/EOrientation';
 import { WaitingForData } from '../../../components/styledComponents';
 
-const ProfilePicture = styled.img <{ source?: string }> `
+export const ProfilePicture = styled.img <{ source?: string }> `
     width: 100%;
     height: 100%;
     background-color: var(--background1);

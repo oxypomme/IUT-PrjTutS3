@@ -4,8 +4,8 @@ import RegisterPersonal from '../../features/accounts/signup/RegisterPersonal';
 import { Gender } from "../../features/accounts/signup/Gender";
 import { Orientation } from "../../features/accounts/signup/Orientation";
 import { Tags } from "../../features/accounts/signup/Tags";
-import { Camera } from "../../features/camera/Camera";
 import { Description } from "../../features/accounts/signup/Description";
+import { ProfPicture } from "../../features/accounts/signup/ProfPicture";
 
 export function CreatePersonal(): JSX.Element {
     return (
@@ -36,7 +36,7 @@ export function CreateFinishing(): JSX.Element {
         <div className='App login only'>
             <div>
                 <h2>Finalisation</h2>
-                <Camera />
+                <ProfPicture />
                 <Description />
             </div>
         </div >
