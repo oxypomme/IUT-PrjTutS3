@@ -53,7 +53,7 @@ export const RegisterPreferences = (): JSX.Element => {
 
         setGlobalErrors(errors);
         if (errors.length < 1) {
-            dispatch(addTag(selectedTags.map((tag) => tag.value)))
+            dispatch(addTag(selectedTags.map((tag) => tag.value)));
             // dispatch(addGender(selectedGender[0].value)); // todo addGender
             dispatch(addPrefs(selectedOrientation[0].value));
             history.push('/SignUp/3');
