@@ -45,11 +45,11 @@ const NavLogo = styled.img`
 const NavItem = styled.li<{ stickToBottom?: boolean }>`
     /*TODO: stick to bottom*/
 
-    &:hover {
+    & > a:hover {
         background-color: #111;
     }
 
-    & > a, & > button {
+    & > a {
         display: block;
         color: white;
         text-align: left;
