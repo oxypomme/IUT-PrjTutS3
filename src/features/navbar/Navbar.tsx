@@ -37,6 +37,7 @@ const NavBar = styled.nav`
 `;
 const NavList = styled.ul`
     list-style-type: none;
+    margin: 5px 0;
     padding: 0;
 `;
 const NavLogo = styled.img`
@@ -128,7 +129,7 @@ export const Navbar = (): JSX.Element => {
     return (
         <NavBar>
             <NavList>
-                <NavItem>
+                <NavItem style={{ textAlign: "center" }}>
                     <NavLogo src={logo} alt="logo" />
                 </NavItem>
                 <NavItem>
