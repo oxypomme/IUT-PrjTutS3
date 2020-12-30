@@ -173,6 +173,12 @@ export const profileSlice = createSlice({
             error: message
         }),
 
+        resetProfiles: (state) => ({
+            ...state,
+            isWorking: false,
+            error: "",
+            profiles: new Array<IProfile>()
+        }),
         resetCurrProfile: (state) => ({
             ...state,
             isWorking: false,
@@ -196,6 +202,7 @@ export const {
     deleteProfileSuccess,
     deleteProfileFailed,
 
+    resetProfiles,
     resetCurrProfile,
 } = profileSlice.actions;
 
