@@ -45,16 +45,19 @@ export const Description = (): JSX.Element => {
                     ))}
                 </ErrorLabel>
             }
-            <TextBox borderColor={globalErrors.some(e => e.component === "name") ? 'red' : 'default'}>
+            <TextBox
+                borderColor={globalErrors.some(e => e.component === "name") ? 'red' : 'default'}
+                width={400}
+            >
                 <FontAwesomeIcon icon={faUser} />
-                <input
-                    type=''
+                <textarea
+                    rows={5}
                     value={description}
                     onChange={handleSetDescriptionOnChange}
                     name='description'
-                    placeholder='Description '
-                />
-                <HiddenLabel htmlFor="descriptionl">
+                    placeholder='Description'
+                ></textarea>
+                <HiddenLabel htmlFor="description">
                     Description
                 </HiddenLabel>
             </TextBox>

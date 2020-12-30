@@ -9,13 +9,13 @@ export const HiddenLabel = styled.label`
 `;
 
 
-export const TextBox = styled.div<{ borderColor?: string }>`
+export const TextBox = styled.div<{ borderColor?: string, width?: number }>`
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
   margin: 1px auto 0 auto;
-  width: 200px;
+  width: ${props => (props.width ? props.width : '200') + 'px'};
   border: 1px solid ${props => props.borderColor && props.borderColor != 'default' ? props.borderColor : 'lightgray'};
   border-radius: 5px;
   background: var(--background2);
@@ -26,6 +26,10 @@ export const TextBox = styled.div<{ borderColor?: string }>`
     outline: 0;
     height: 100%;
     background-color: transparent;
+  }
+
+  & > textarea {
+    width: 100%;
   }
 `;
 
