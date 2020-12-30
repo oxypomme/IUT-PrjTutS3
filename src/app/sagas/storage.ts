@@ -4,6 +4,8 @@ import { call, put, takeLatest, take } from 'redux-saga/effects'
 import { rsf } from '../firebase'
 import '@firebase/storage'
 
+import { withCallback } from 'redux-saga-callback';
+
 import {
     uploadFile,
     uploadFileFailed,
@@ -28,11 +30,12 @@ function* uploadFileSaga(action) {
         yield put(uploadFileSuccess({ url: request.url, dlUrl }));
     } catch (error) {
         yield put(uploadFileFailed(error.message));
+        throw error;
     }
 
 }
 
 export default function* storageSagas() {
-    yield takeLatest(uploadFile.type, uploadFileSaga);
-    yield takeLatest(uploadStringFile.type, uploadFileSaga);
+    yield takeLatest(uploadFile.type, withCallback(uploadFileSaga));
+    yield takeLatest(uploadStringFile.type, withCallback(uploadFileSaga));
 }

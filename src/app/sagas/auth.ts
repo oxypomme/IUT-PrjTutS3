@@ -53,7 +53,7 @@ function* logInMail(action) {
         yield put(loginAccountSuccess());
     } catch (error) {
         yield put(loginAccountFailed(error.message));
-        throw Error(error.message);
+        throw error;
     }
 }
 
@@ -66,7 +66,7 @@ function* logOut(action) {
         yield put(logoutAccountSuccess());
     } catch (error) {
         yield put(logoutAccountFailed(error.message));
-        throw Error(error.message);
+        throw error;
     }
 }
 
