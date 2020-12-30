@@ -44,11 +44,11 @@ export const RegisterPreferences = (): JSX.Element => {
         const canSubmit = selectedTags?.length >= 3 && selectedGender?.length > 0 && selectedOrientation?.length > 0; // minimum of 3 selected tags
         let errors = [];
 
-        if (!selectedGender || selectedGender?.length > 0)
+        if (!selectedGender || selectedGender?.length < 1)
             errors = [...errors, { component: "gender", label: "Veuillez spécifier votre genre." } as IError];
-        if (!selectedOrientation || selectedOrientation?.length > 0)
+        if (!selectedOrientation || selectedOrientation?.length < 1)
             errors = [...errors, { component: "orientation", label: "Veuillez spécifier votre orientation." } as IError];
-        if (!selectedTags || selectedTags?.length >= 3)
+        if (!selectedTags || selectedTags?.length <= 3)
             errors = [...errors, { component: "tags", label: "Veuillez séléctionner au minimum 3 tags." } as IError];
 
 
