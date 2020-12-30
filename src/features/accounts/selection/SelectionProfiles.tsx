@@ -13,7 +13,7 @@ const SelectionProfiles = (): JSX.Element => {
     const [loading, setLoading] = useState<boolean | null>(false);
     const currProfile: IProfile | Record<string, never> = useSelector(getCurrProfile);
 
-    const profile: IProfile[] = useSelector(getAllProfiles);
+    const profiles: IProfile[] = useSelector(getAllProfiles);
 
     React.useEffect(() => {
         (async function getProfiles() {
@@ -21,9 +21,10 @@ const SelectionProfiles = (): JSX.Element => {
                 setLoading(true);
 
                 if (instanceOfIProfile(currProfile)) {
-                    const profiles = await filterProfiles(currProfile.sex, currProfile.orientation, currProfile.tags, currProfile.key);
-                    if (profiles?.length > 0) {
-                        profiles.forEach(({ key }) => {
+                    const profs = await filterProfiles(currProfile.sex, currProfile.orientation, currProfile.tags, currProfile.key);
+                    console.log("[DEBUG] Matchables :", profs);
+                    if (profs?.length > 0) {
+                        profs.forEach(({ key }) => {
                             dispatch(fetchProfile(key));
                         });
                     }
@@ -38,8 +39,9 @@ const SelectionProfiles = (): JSX.Element => {
 
     return (
         <div>
-            {!loading ? profile?.map(({ key }, index) => (
-                <ProfileCard key={index} id={key} />
+            {!loading ? profiles?.map(({ key }, index) => (
+                //<ProfileCard key={index} id={key} />
+                <p key={index}>{key}</p>
             )) : (loading == null ? 'ERROR, see console for more info' : <WaitingForData length={16} />)}
         </div>
     );
