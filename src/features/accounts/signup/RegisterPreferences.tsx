@@ -2,13 +2,16 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTags, getAllTags } from "../tagSlice";
 import { useHistory } from "react-router-dom";
-import { Button, Spacer } from '../../../components/styledComponents';
+import { Button, ErrorLabel, Spacer } from '../../../components/styledComponents';
 import { addPrefs, addTag } from "../accountSlice";
 
 import IComboBoxItem from '../../../include/IComboBoxItem';
 import Select from "react-select";
 import EOrientation from "../../../include/EOrientation";
 import EGender from "../../../include/EGender";
+import IError from "../../../include/IError";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 
 export const RegisterPreferences = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -18,6 +21,7 @@ export const RegisterPreferences = (): JSX.Element => {
     const [selectedTags, setSelectedTags] = React.useState<Array<IComboBoxItem>>();
     const [selectedGender, setSelectedGender] = React.useState<Array<IComboBoxItem>>();
     const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IComboBoxItem>>();
+    const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const genders = [
         { value: EGender.Men, label: 'Poney' },
@@ -38,7 +42,18 @@ export const RegisterPreferences = (): JSX.Element => {
     const handleOnSubmit = (event) => {
         event.preventDefault();
         const canSubmit = selectedTags?.length >= 3 && selectedGender?.length > 0 && selectedOrientation?.length > 0; // minimum of 3 selected tags
-        if (canSubmit) {
+        let errors = [];
+
+        if (!selectedGender || selectedGender?.length > 0)
+            errors = [...errors, { component: "gender", label: "Veuillez spécifier votre genre." } as IError];
+        if (!selectedOrientation || selectedOrientation?.length > 0)
+            errors = [...errors, { component: "orientation", label: "Veuillez spécifier votre orientation." } as IError];
+        if (!selectedTags || selectedTags?.length >= 3)
+            errors = [...errors, { component: "tags", label: "Veuillez séléctionner au minimum 3 tags." } as IError];
+
+
+        setGlobalErrors(errors);
+        if (errors.length < 1) {
             dispatch(addTag(selectedTags.map((tag) => tag.value)))
             // dispatch(addGender(selectedGender[0].value)); // todo addGender
             dispatch(addPrefs(selectedOrientation[0].value));
@@ -48,21 +63,50 @@ export const RegisterPreferences = (): JSX.Element => {
 
     return (
         <form onSubmit={handleOnSubmit}>
-            <Select
-                isSearchable={true}
-                isClearable={true}
-                onChange={myorientation => setSelectedOrientation([myorientation as IComboBoxItem])}
-                options={orientations}
-                placeholder="Sélectionnez votre orientation"
-            />
+            {globalErrors.length > 0 &&
+                <ErrorLabel>
+                    {globalErrors.map((error, index) => (
+                        <div key={index}>
+                            <FontAwesomeIcon icon={faExclamationTriangle} />
+                            {error.label}
+                        </div>
+                    ))}
+                </ErrorLabel>
+            }
             <Select
                 isSearchable={true}
                 isClearable={true}
                 onChange={mygender => setSelectedGender([mygender as IComboBoxItem])}
                 options={genders}
                 placeholder="Sélectionnez votre genre"
+                styles={{
+                    container: base => ({
+                        ...base,
+                        backgroundColor: globalErrors.some(e => e.component === "gender") ? 'red' : 'default',
+                        borderRadius: '5px',
+                        padding: 2,
+                        marginBottom: '2px',
+                    }),
+                }}
             />
             <Select
+                isSearchable={true}
+                isClearable={true}
+                onChange={myorientation => setSelectedOrientation([myorientation as IComboBoxItem])}
+                options={orientations}
+                placeholder="Sélectionnez votre orientation"
+                styles={{
+                    container: base => ({
+                        ...base,
+                        backgroundColor: globalErrors.some(e => e.component === "orientation") ? 'red' : 'default',
+                        borderRadius: '5px',
+                        padding: 2,
+                        marginBottom: '2px',
+                    }),
+                }}
+            />
+            <Select
+                borderColor="red"
                 isMulti
                 isSearchable={true}
                 isClearable={true}
@@ -70,6 +114,14 @@ export const RegisterPreferences = (): JSX.Element => {
                 options={tags}
                 placeholder="Sélectionnez vos tags"
                 closeMenuOnSelect={false}
+                styles={{
+                    container: base => ({
+                        ...base,
+                        backgroundColor: globalErrors.some(e => e.component === "tags") ? 'red' : 'default',
+                        borderRadius: '5px',
+                        padding: 2,
+                    }),
+                }}
             />
             <Button>Suivant</Button>
         </form>
