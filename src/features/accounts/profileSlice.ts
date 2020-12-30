@@ -106,12 +106,24 @@ export const profileSlice = createSlice({
         })
     },
     reducers: {
-        fetchProfilesSuccess: (state, { payload: newProfile }) => ({
-            ...state,
-            isWorking: false,
-            error: "",
-            profiles: [...state.profiles, newProfile]
-        }),
+        fetchProfilesSuccess: (state, { payload: newProfile }) => {
+            let profiles = [...state.profiles];
+            let isDuplicate = false;
+            state.profiles.forEach(profile => {
+                if (profile.key == newProfile.key || newProfile.key == (state.current.profile as IProfile).key) {
+                    isDuplicate = true;
+                }
+            })
+
+            if (!isDuplicate)
+                profiles = [...state.profiles, newProfile]
+            return {
+                ...state,
+                isWorking: false,
+                error: "",
+                profiles
+            }
+        },
         fetchProfilesFailed: (state, { payload: message }) => ({
             ...state,
             isWorking: false,
