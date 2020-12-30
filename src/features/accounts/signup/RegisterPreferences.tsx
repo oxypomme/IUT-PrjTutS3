@@ -48,7 +48,7 @@ export const RegisterPreferences = (): JSX.Element => {
             errors = [...errors, { component: "gender", label: "Veuillez spécifier votre genre." } as IError];
         if (!selectedOrientation || selectedOrientation?.length < 1)
             errors = [...errors, { component: "orientation", label: "Veuillez spécifier votre orientation." } as IError];
-        if (!selectedTags || selectedTags?.length <= 3)
+        if (!selectedTags || selectedTags?.length < 3)
             errors = [...errors, { component: "tags", label: "Veuillez séléctionner au minimum 3 tags." } as IError];
 
 
