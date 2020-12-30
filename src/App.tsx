@@ -17,7 +17,7 @@ import { Profile } from "./views/Profile";
 import { CreatePersonal, CreatePreferences, CreateFinishing } from "./views/CreateProfile";
 
 import "./App.css";
-import { fetchCurrProfile, resetCurrProfile } from "./features/accounts/profileSlice";
+import { fetchCurrProfile, resetProfiles, resetCurrProfile } from "./features/accounts/profileSlice";
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -31,6 +31,7 @@ function App(): JSX.Element {
       } else {
         dispatch(setUid(''));
         dispatch(resetCurrProfile());
+        dispatch(resetProfiles())
       }
     });
   }, []);

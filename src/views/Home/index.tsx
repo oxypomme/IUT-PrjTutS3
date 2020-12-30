@@ -10,7 +10,6 @@ export function Home(): JSX.Element {
         <div className="App">
             <h2>Profils :</h2>
             <SelectionProfiles />
-            <ProfileCard id={0} />
         </div>
     );
 }

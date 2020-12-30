@@ -72,7 +72,7 @@ const filterProfiles = async (mySex: EGender, myOrientation: EOrientation, myTag
             }
         }
     });
-    return profilesScore.sort((a, b) => a.score - b.score);
+    return profilesScore.sort((a, b) => b.score - a.score);
 }
 
 export default filterProfiles;
