@@ -41,7 +41,6 @@ export const RegisterPreferences = (): JSX.Element => {
 
     const handleOnSubmit = (event) => {
         event.preventDefault();
-        const canSubmit = selectedTags?.length >= 3 && selectedGender?.length > 0 && selectedOrientation?.length > 0; // minimum of 3 selected tags
         let errors = [];
 
         if (!selectedGender || selectedGender?.length < 1)
