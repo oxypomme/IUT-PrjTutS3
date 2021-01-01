@@ -1,29 +1,27 @@
-import { createAction, createSelector, createSlice, current } from "@reduxjs/toolkit";
+import { createAction, createSelector, createSlice } from "@reduxjs/toolkit";
 
 import IProfile from "../../include/IProfile";
 
 export const fetchProfile = createAction(
     "FETCH_PROFILE_REQUESTED",
-    (key: number, params = {}) => ({
+    (authId: string, params = {}) => ({
         payload: {
             request: {
                 type: "read",
                 url: "/profiles",
-                key,
-                params
+                params: { authId, ...params }
             }
         }
     })
 )
 export const fetchArrayProfile = createAction(
     "FETCH_ARRAY_PROFILE_REQUESTED",
-    (keys: number[], params = {}) => ({
+    (authIds: string[], params = {}) => ({
         payload: {
             request: {
                 type: "read",
                 url: "/profiles",
-                keys,
-                params
+                params: { authIds, ...params }
             }
         }
     })
@@ -34,8 +32,7 @@ export const fetchCurrProfile = createAction(
         payload: {
             request: {
                 type: "read",
-                urlL: "/link",
-                urlP: "/profiles",
+                url: "/profiles",
                 params
             }
         }
@@ -45,32 +42,30 @@ export const fetchCurrProfile = createAction(
  * Only used for type reference.
  * 
  * Must have this payload :
- * request: { typeU: "update", typeR: "read", urlP: "/profiles", urlL: "/link" }
+ * request: { type: "update", url: "/profiles", params: {} }
  */
 export const createProfile = createAction("CREATE_PROFILE_REQUESTED");
 
 export const updateProfile = createAction(
     "EDIT_PROFILE_REQUESTED",
-    (key: number, params: IProfile) => ({
+    (profile: IProfile, params = {}) => ({
         payload: {
             request: {
                 type: "update",
                 url: "/profiles",
-                key,
-                params
+                params: { ...profile, ...params }
             }
         }
     })
 )
 export const deleteProfile = createAction(
     "DELETE_PROFILE_REQUESTED",
-    (params: number) => ({
+    (authId: string, params = {}) => ({
         payload: {
             request: {
                 type: "delete",
-                urlP: "/profiles",
-                urlL: "/link",
-                params
+                urls: ["/profiles", "/matchs"],
+                params: { authId, ...params }
             }
         }
     })
@@ -120,21 +115,21 @@ export const profileSlice = createSlice({
     },
     reducers: {
         fetchProfilesSuccess: (state, { payload: newProfile }) => {
-            let profiles = [...state.profiles];
-            let isDuplicate = false;
-            state.profiles.forEach(profile => {
-                if (profile.key == newProfile.key || newProfile.key == (state.current.profile as IProfile).key) {
-                    isDuplicate = true;
-                }
-            })
+            const profiles = [...state.profiles];
 
-            if (!isDuplicate)
-                profiles = [...state.profiles, newProfile]
+            for (let i = 0; i < state.profiles.length; i++) {
+                const profile = state.profiles[i];
+
+                if (profile.authId == newProfile.authId || newProfile.authId == (state.current.profile as IProfile).authId) {
+                    profiles.splice(i, 1);
+                }
+            }
+
             return {
                 ...state,
                 isWorking: false,
                 error: "",
-                profiles
+                profiles: [...profiles, newProfile]
             }
         },
         fetchProfilesFailed: (state, { payload: message }) => ({

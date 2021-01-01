@@ -37,9 +37,7 @@ const ResumeInfos = () => {
             type: createProfile.type,
             payload: {
                 type: "update",
-                typeR: "read",
-                urlP: "/profiles",
-                urlL: "/link"
+                url: "/profiles",
             },
             onComplete: onSigned
         });

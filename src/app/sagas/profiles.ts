@@ -38,12 +38,14 @@ import { withCallback } from 'redux-saga-callback';
 function* getProfile(action) {
     try {
         const { request } = action.payload;
-        const profile: [] = yield call(
+        const { authId, ...params } = request.params;
+
+        const profile = yield call(
             rsf.database[request.type],
-            request.url + '/' + request.key,
-            request.params
+            request.url + '/' + authId,
+            params
         );
-        yield put(fetchProfilesSuccess({ ...profile, key: request.key }));
+        yield put(fetchProfilesSuccess({ ...profile, authId }));
     } catch (error) {
         yield put(fetchProfilesFailed(error.message));
     }
@@ -53,11 +55,12 @@ function* getArrayProfile(action) {
     try {
         const { request } = action.payload;
 
-        yield all(request.keys.map((key: number) => call(getProfile, {
+        yield all(request.authIds.map((authId: number) => call(getProfile, {
             payload: {
                 request: {
-                    ...request,
-                    key
+                    type: request.type,
+                    url: request.url,
+                    params: { authId, ...request.params }
                 }
             }
         })));
@@ -68,20 +71,15 @@ function* getArrayProfile(action) {
 
 function* getCurrProfile(action) {
     try {
-        const id = yield select(getAuthId);
+        const authId = yield select(getAuthId);
 
         const { request } = action.payload;
-        const key: string = yield call(
-            rsf.database[request.type],
-            request.urlL + '/' + id,
-            request.params
-        );
         const profile = yield call(
             rsf.database[request.type],
-            request.urlP + '/' + key,
+            request.url + '/' + authId,
             request.params
         )
-        yield put(fetchCurrProfilesSuccess({ ...profile, key: parseInt(key) }));
+        yield put(fetchCurrProfilesSuccess({ ...profile, authId }));
     } catch (error) {
         yield put(fetchCurrProfilesFailed(error.message));
     }
@@ -104,31 +102,12 @@ function* createProfileSaga(action) {
         }
 
         const { request } = action.payload;
-        const profiles: [] = yield call(
-            rsf.database[request.typeR],
-            request.urlP
-        );
-
-        let key: number = profiles.length;
-        for (let i = 0; i < profiles.length; i++) {
-            if (profiles[i] === null) {
-                key = i;
-                break;
-            }
-        }
-
         const authid = yield select(getAuthId);
-        yield call(
-            rsf.database[request.typeU],
-            request.urlL + '/' + authid,
-            key.toString()
-        );
-
         const newProfile = yield select(getInfos);
         yield call(
-            rsf.database[request.typeU],
-            request.urlP + '/' + key,
-            newProfile
+            rsf.database[request.type],
+            request.url + '/' + authid,
+            { ...newProfile, ...request.params }
         );
 
         yield put(clearNewAccount());
@@ -142,9 +121,10 @@ function* createProfileSaga(action) {
 function* updateProfileSaga(action) {
     try {
         const { request } = action.payload;
+        const authid = yield select(getAuthId);
         yield call(
             rsf.database[request.type],
-            request.url + '/' + request.key,
+            request.url + '/' + authid,
             request.params);
         yield put(updateProfileSuccess());
     } catch (error) {
@@ -162,14 +142,15 @@ function* deleteProfileSaga(action) {
 
         const authid = yield select(getAuthId);
         const { request } = action.payload;
-        yield call(
-            rsf.database[request.type],
-            request.urlP + '/' + request.params
-        );
-        yield call(
-            rsf.database[request.type],
-            request.urlL + '/' + authid
-        );
+        const { authId, ...params } = request;
+        for (let i = 0; i < request.urls.length; i++) {
+            yield call(
+                rsf.database[request.type],
+                request.urls[i] + '/' + authId,
+                params
+            );
+        }
+
         yield put(deleteProfileSuccess());
     } catch (error) {
         yield put(deleteProfileFailed(error.message));
