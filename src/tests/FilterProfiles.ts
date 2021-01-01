@@ -9,6 +9,24 @@ const db = firebase.database();
 const ref = db.ref('/profiles');
 
 /**
+ * Get the tag score between 2 profiles
+ * @param profile The profile to compare with my tags
+ * @param myTags my tags
+ */
+export const getScore = (profTags: number[], myTags: number[]): number => {
+    let commonTags = 0;
+    if (profTags) {
+        profTags.forEach((tagId: number) => {
+            if (myTags.includes(tagId)) {
+                commonTags++;
+            }
+        });
+        return Math.floor((commonTags / myTags.length) * 100);
+    }
+    return -1;
+}
+
+/**
  * Get all profiles and then return the IDs of thoses one to show + their score based on the commons tags (myTags).
  * @param mySex The sex of the current profile
  * @param myOrientation The orrientation of the current profile
@@ -21,15 +39,7 @@ const filterProfiles = async (mySex: EGender, myOrientation: EOrientation, myTag
 
     const profilesScore = [];
 
-    const calcScore = (profile): number => {
-        let commonTags = 0;
-        profile.tags.forEach((tagId: number) => {
-            if (myTags.includes(tagId)) {
-                commonTags++;
-            }
-        });
-        return Math.floor((commonTags / myTags.length) * 100);
-    }
+    const calcScore = (profile) => getScore(profile.tags, myTags);
 
     profiles.forEach((profile: IProfile, key: number) => {
         if (myProfileId != key) {
