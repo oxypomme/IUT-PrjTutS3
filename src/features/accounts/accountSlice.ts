@@ -81,6 +81,7 @@ export const accountSlice = createSlice({
       mail: "",
       name: "",
       orientation: 0,
+      gender: 0,
       tags: new Array<number>(0),
       town: "",
     },
@@ -247,6 +248,10 @@ export const accountSlice = createSlice({
       // The payload must be the city
       state.new.town = action.payload;
     },
+    addGender: (state, action) => {
+      // The payload must be the gender
+      state.new.gender = action.payload;
+    },
     setUid: (state, action) => {
       // The payload must be the uid
       state.uid = action.payload;
@@ -264,6 +269,7 @@ export const {
   removeTag,
   addDesc,
   addPhoto,
+  addGender,
   setUid,
 
   createAccountFailed,
@@ -292,6 +298,7 @@ const getName = createSelector(getNewState, (state) => state.name);
 const getOrientation = createSelector(getNewState, (state) => state.orientation);
 const getTags = createSelector(getNewState, (state) => state.tags);
 const getTown = createSelector(getNewState, (state) => state.town);
+const getGender = createSelector(getNewState, (state) => state.gender);
 
 export const getState = state => state.account;
 
@@ -315,6 +322,7 @@ export const getPersonalInfos = createSelector(
 );
 
 export const getPrefsInfos = createSelector(
+  getGender,
   getOrientation,
   getTags,
   (orientation, tags) => {

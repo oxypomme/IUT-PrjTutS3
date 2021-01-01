@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTags, getAllTags } from "../tagSlice";
 import { useHistory } from "react-router-dom";
 import { Button, ErrorLabel, Spacer } from '../../../components/styledComponents';
-import { addPrefs, addTag } from "../accountSlice";
+import { addGender, addPrefs, addTag } from "../accountSlice";
 
 import IComboBoxItem from '../../../include/IComboBoxItem';
 import Select from "react-select";
@@ -54,7 +54,7 @@ export const RegisterPreferences = (): JSX.Element => {
         setGlobalErrors(errors);
         if (errors.length < 1) {
             dispatch(addTag(selectedTags.map((tag) => tag.value)));
-            // dispatch(addGender(selectedGender[0].value)); // todo addGender
+            dispatch(addGender(selectedGender[0].value));
             dispatch(addPrefs(selectedOrientation[0].value));
             history.push('/SignUp/3');
         }
