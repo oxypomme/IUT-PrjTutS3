@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { WaitingForData } from '../../../components/styledComponents';
@@ -8,9 +9,15 @@ import filterProfiles from '../../../tests/FilterProfiles';
 import ProfileCard from '../profile/ProfileCard';
 import { fetchArrayProfile, getAllProfiles, getCurrProfile } from '../profileSlice';
 
+const ProfilesContainer = styled.div`
+    & > div {
+        margin: 10px auto;
+    }
+`;
+
 const SelectionProfiles = (): JSX.Element => {
     const dispatch = useDispatch();
-    const [loading, setLoading] = useState<boolean | null>(false);
+    const [loading, setLoading] = React.useState<boolean | null>(false);
     const currProfile: IProfile | Record<string, never> = useSelector(getCurrProfile);
 
     const profiles: IProfile[] = useSelector(getAllProfiles);
@@ -35,13 +42,12 @@ const SelectionProfiles = (): JSX.Element => {
         })();
     }, [currProfile, dispatch]);
 
-    //
     return (
-        <div>
+        <ProfilesContainer>
             {!loading ? profiles?.map(({ key }, index) => (
                 <ProfileCard id={key} key={index} />
             )) : (loading == null ? 'ERROR, see console for more info' : <WaitingForData length={16} />)}
-        </div>
+        </ProfilesContainer>
     );
 }
 
