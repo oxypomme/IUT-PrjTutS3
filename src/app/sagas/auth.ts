@@ -32,6 +32,9 @@ import { withCallback } from 'redux-saga-callback';
 export function* createEmailAuth(action) {
     try {
         const authInfo = yield select(getNewAuth);
+        if (!authInfo.email || !authInfo.passwd) {
+            throw new Error("Missing email or password");
+        }
 
         const { request } = action.payload;
         yield call(

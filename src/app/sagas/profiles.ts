@@ -1,4 +1,4 @@
-import { call, put, takeLatest, take, select, all } from 'redux-saga/effects'
+import { call, put, takeLatest, take, select, all, fork } from 'redux-saga/effects'
 
 import { rsf } from '../firebase'
 import '@firebase/database'
@@ -6,6 +6,7 @@ import '@firebase/database'
 import {
     clearNewAccount,
     createAccount,
+    createAccountSuccess,
     deleteAccount,
     getAccountError,
     getAuthId,
@@ -86,19 +87,18 @@ function* getCurrProfile(action) {
 
 function* createProfileSaga(action) {
     try {
-        yield call(createAccount);
-        /* In case of emergency :
+        //yield fork(createAccount);
 
         yield call(createEmailAuth, {
             payload: {
                 request: {
-                    type: createAccount.type,
+                    type: "createUserWithEmailAndPassword",
                     params: {}
                 }
             }
         })
-        
-        */
+
+        //yield take("profiles/createProfileSuccess");
 
         const { request } = action.payload;
         const profiles: [] = yield call(
@@ -114,19 +114,20 @@ function* createProfileSaga(action) {
             }
         }
 
+        const authid = yield select(getAuthId);
+        yield call(
+            rsf.database.update,
+            request.urlL + '/' + authid,
+            key.toString()
+        );
+
         const newProfile = yield select(getInfos);
         yield call(
-            rsf.database[request.type],
+            rsf.database.update,
             request.urlP + '/' + key,
             newProfile
         );
 
-        const authid = yield select(getAuthId);
-        yield call(
-            rsf.database[request.type],
-            request.urlL + '/' + authid,
-            key.toString()
-        );
         yield put(clearNewAccount());
         yield put(createProfileSuccess());
     } catch (error) {

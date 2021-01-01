@@ -83,7 +83,7 @@ export function RegisterPublicInfos(): JSX.Element {
         setGlobalErrors(errors);
         if (errors.length < 1) {
             dispatch(addDesc(description));
-            dispatch(addPhoto("https://i.ytimg.com/vi/BHc4sA3k8pA/maxresdefault.jpg"));
+            dispatch(addPhoto("https://i.ytimg.com/vi/BHc4sA3k8pA/maxresdefault.jpg")); //TODO fix to the link of the image
             history.push('/SignUp/4');
         }
     };
