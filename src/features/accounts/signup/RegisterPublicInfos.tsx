@@ -4,7 +4,7 @@ import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { getUploadedFiles, uploadFile, uploadFileSuccess, uploadStringFile } from "../../firestorage/storageSlice";
 import { Button, ErrorLabel, HiddenLabel, TextBox } from "../../../components/styledComponents";
-import { ProfilePicture } from "../profile/ProfileCard";
+import { ProfilePicture } from "../profile/ProfileComponent";
 import { addDesc, addPhoto } from "../accountSlice";
 import { isNonNullChain } from "typescript";
 import { useHistory } from "react-router-dom";

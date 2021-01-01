@@ -13,7 +13,7 @@ import IComboBoxItem from '../../../include/IComboBoxItem';
 import EGender from '../../../include/EGender';
 import EOrientation from '../../../include/EOrientation';
 import { Button, WaitingForData } from '../../../components/styledComponents';
-import { ProfilePicture } from './ProfileCard';
+import { ProfilePicture } from './ProfileComponent';
 
 const Item = styled.li`
     max-width: 850px;
