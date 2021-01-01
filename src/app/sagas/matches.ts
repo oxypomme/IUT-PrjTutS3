@@ -13,7 +13,6 @@ function* getMatches(action) {
     try {
         const { key } = yield select(getCurrProfile);
 
-
         const { request } = action.payload;
         const matches = yield call(
             rsf.database[request.type],

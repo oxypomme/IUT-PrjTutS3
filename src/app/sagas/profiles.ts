@@ -3,7 +3,14 @@ import { call, put, takeLatest, take, select, all } from 'redux-saga/effects'
 import { rsf } from '../firebase'
 import '@firebase/database'
 
-import { deleteAccount, getAccountError, getAuthId } from '../../features/accounts/accountSlice';
+import {
+    clearNewAccount,
+    createAccount,
+    deleteAccount,
+    getAccountError,
+    getAuthId,
+    getInfos
+} from '../../features/accounts/accountSlice';
 
 import {
     createProfile,
@@ -22,6 +29,8 @@ import {
     updateProfileFailed,
     updateProfileSuccess
 } from '../../features/accounts/profileSlice';
+
+import { createEmailAuth } from "./auth";
 
 function* getProfile(action) {
     try {
@@ -77,6 +86,20 @@ function* getCurrProfile(action) {
 
 function* createProfileSaga(action) {
     try {
+        yield call(createAccount);
+        /* In case of emergency :
+
+        yield call(createEmailAuth, {
+            payload: {
+                request: {
+                    type: createAccount.type,
+                    params: {}
+                }
+            }
+        })
+        
+        */
+
         const { request } = action.payload;
         const profiles: [] = yield call(
             rsf.database.read,
@@ -91,10 +114,11 @@ function* createProfileSaga(action) {
             }
         }
 
+        const newProfile = yield select(getInfos);
         yield call(
             rsf.database[request.type],
             request.urlP + '/' + key,
-            request.params
+            newProfile
         );
 
         const authid = yield select(getAuthId);
@@ -103,6 +127,7 @@ function* createProfileSaga(action) {
             request.urlL + '/' + authid,
             key.toString()
         );
+        yield put(clearNewAccount());
         yield put(createProfileSuccess());
     } catch (error) {
         yield put(createProfileFailed(error.message));

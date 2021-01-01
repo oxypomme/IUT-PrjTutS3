@@ -6,8 +6,7 @@ export const createAccount = createAction(
     payload: {
       request: {
         type: "createUserWithEmailAndPassword",
-        email: params.email,
-        passwd: params.passwd
+        params
       }
     }
   })
@@ -79,6 +78,7 @@ export const accountSlice = createSlice({
       desc: "",
       imageURL: "",
       mail: "",
+      passwd: "",
       name: "",
       orientation: 0,
       gender: 0,
@@ -214,6 +214,10 @@ export const accountSlice = createSlice({
       // The payload must be the email
       state.new.mail = action.payload;
     },
+    addPasswd: (state, action) => {
+      // The payload must be the passwd
+      state.new.passwd = action.payload;
+    },
     addName: (state, action) => {
       // The payload must be the name
       state.new.name = action.payload;
@@ -256,11 +260,28 @@ export const accountSlice = createSlice({
       // The payload must be the uid
       state.uid = action.payload;
     },
+
+    clearNewAccount: (state) => ({
+      ...state,
+      new: {
+        age: 0,
+        desc: "",
+        imageURL: "",
+        mail: "",
+        passwd: "",
+        name: "",
+        orientation: 0,
+        gender: 0,
+        tags: new Array<number>(0),
+        town: "",
+      }
+    }),
   },
 });
 
 export const {
   addMail,
+  addPasswd,
   addName,
   addAge,
   addCity,
@@ -271,6 +292,7 @@ export const {
   addPhoto,
   addGender,
   setUid,
+  clearNewAccount,
 
   createAccountFailed,
   createAccountSuccess,
@@ -294,6 +316,7 @@ const getAge = createSelector(getNewState, (state) => state.age);
 const getDesc = createSelector(getNewState, (state) => state.desc);
 const getImageURL = createSelector(getNewState, (state) => state.imageURL);
 export const getMail = createSelector(getNewState, (state) => state.mail);
+const getPasswd = createSelector(getNewState, (state) => state.passwd);
 const getName = createSelector(getNewState, (state) => state.name);
 const getOrientation = createSelector(getNewState, (state) => state.orientation);
 const getTags = createSelector(getNewState, (state) => state.tags);
@@ -307,6 +330,14 @@ export const getIsConnected = createSelector(
   getState,
   (state) => state.uid !== ""
 );
+
+export const getNewAuth = createSelector(
+  getMail,
+  getPasswd,
+  (email, passwd) => ({
+    email,
+    passwd
+  }));
 
 export const getPersonalInfos = createSelector(
   getName,

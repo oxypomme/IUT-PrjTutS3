@@ -5,7 +5,7 @@ import { Button, Spacer, TextBox, HiddenLabel, ErrorLabel } from '../../../compo
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-import { addMail } from "../accountSlice";
+import { addMail, addPasswd } from "../accountSlice";
 import { useHistory } from "react-router-dom";
 
 import IError from "../../../include/IError";
@@ -38,6 +38,7 @@ const SignUp = (): JSX.Element => {
         setGlobalErrors(errors);
         if (errors.length < 1) {
             dispatch(addMail(email));
+            dispatch(addPasswd(passwd));
             history.push('SignUp/1');
         }
     };

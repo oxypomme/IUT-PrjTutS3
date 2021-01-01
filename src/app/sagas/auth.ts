@@ -24,17 +24,21 @@ import {
     resetPasswordAccountFailed,
     deleteAccount,
     deleteAccountSuccess,
-    deleteAccountFailed
+    deleteAccountFailed,
+    getNewAuth
 } from '../../features/accounts/accountSlice';
 import { withCallback } from 'redux-saga-callback';
 
-function* createEmailAuth(action) {
+export function* createEmailAuth(action) {
     try {
+        const authInfo = yield select(getNewAuth);
+
         const { request } = action.payload;
         yield call(
             rsf.auth[request.type],
-            request.email,
-            request.passwd
+            authInfo.email,
+            authInfo.passwd,
+            request.params
         );
         yield put(createAccountSuccess());
     } catch (error) {

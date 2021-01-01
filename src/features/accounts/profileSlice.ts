@@ -43,7 +43,7 @@ export const fetchCurrProfile = createAction(
 )
 export const createProfile = createAction(
     "CREATE_PROFILE_REQUESTED",
-    (params: IProfile) => ({
+    (params = {}) => ({
         payload: {
             request: {
                 type: "update",
