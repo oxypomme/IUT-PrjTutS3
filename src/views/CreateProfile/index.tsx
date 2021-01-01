@@ -3,6 +3,7 @@ import RegisterPersonal from '../../features/accounts/signup/RegisterPersonal';
 
 import { RegisterPreferences } from "../../features/accounts/signup/RegisterPreferences";
 import { RegisterPublicInfos } from "../../features/accounts/signup/RegisterPublicInfos";
+import ResumeInfos from "../../features/accounts/signup/ResumeInfos";
 
 export function CreatePersonal(): JSX.Element {
     return (
@@ -32,6 +33,17 @@ export function CreateFinishing(): JSX.Element {
             <div>
                 <h2>Finalisation</h2>
                 <RegisterPublicInfos />
+            </div>
+        </div >
+    );
+}
+
+export function CreateConfirm(): JSX.Element {
+    return (
+        <div className='App only'>
+            <div>
+                <h2>Confirmation</h2>
+                <ResumeInfos />
             </div>
         </div >
     );
