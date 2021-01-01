@@ -14,8 +14,8 @@ const SignUp = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [email, setEmail] = React.useState<string>();
-    const [passwd, setPasswd] = React.useState();
-    const [secondPasswd, setSecondPasswd] = React.useState();
+    const [passwd, setPasswd] = React.useState<string>();
+    const [secondPasswd, setSecondPasswd] = React.useState<string>();
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const handleSetEmailOnChange = (event) => setEmail(event.target.value);
@@ -30,8 +30,8 @@ const SignUp = (): JSX.Element => {
 
         if (!email || email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.([a-zA-Z0-9-]+){2,4}$/) === null)
             errors = [...errors, { component: "email", label: "L'email n'est pas valide." } as IError];
-        if (!passwd)
-            errors = [...errors, { component: "passwd", label: "Veuillez entrer un mot de passe." } as IError];
+        if (!passwd || (passwd && passwd.length < 6))
+            errors = [...errors, { component: "passwd", label: "Veuillez entrer un mot de passe de minimum 6 caractères." } as IError];
         if (!secondPasswd || passwd !== secondPasswd)
             errors = [...errors, { component: "secondPasswd", label: "Les mots de passes ne correspondent pas." } as IError];
 
