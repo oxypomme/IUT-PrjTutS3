@@ -358,6 +358,7 @@ export const getPrefsInfos = createSelector(
     getTags,
     (gender, orientation, tags) => {
         return {
+            gender,
             orientation,
             tags,
         };
