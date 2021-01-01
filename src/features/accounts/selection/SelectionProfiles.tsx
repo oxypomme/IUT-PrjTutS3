@@ -33,7 +33,7 @@ const SelectionProfiles = (): JSX.Element => {
                 setLoading(null);
             }
         })();
-    }, []);
+    }, [currProfile, dispatch]);
 
     //
     return (
