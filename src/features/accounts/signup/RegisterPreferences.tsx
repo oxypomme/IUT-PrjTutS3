@@ -11,7 +11,7 @@ import EOrientation from "../../../include/EOrientation";
 import EGender from "../../../include/EGender";
 import IError from "../../../include/IError";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import { faExclamationTriangle, faGenderless, faHelicopter, faHorse, faMarsDouble, faTransgender, faVenusMars } from "@fortawesome/free-solid-svg-icons";
 
 export const RegisterPreferences = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -33,15 +33,15 @@ export const RegisterPreferences = (): JSX.Element => {
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const genders = [
-        { value: EGender.Men, label: 'Poney' },
-        { value: EGender.Women, label: 'Hélicoptère' },
-        { value: EGender.NonBinary, label: 'Pirate' }
+        { value: EGender.Men, label: <span><FontAwesomeIcon icon={faHorse} style={{ marginRight: 4 }} />Poney</span> },
+        { value: EGender.Women, label: <span><FontAwesomeIcon icon={faHelicopter} style={{ marginRight: 4 }} />Hélicoptère</span> },
+        { value: EGender.NonBinary, label: <span><FontAwesomeIcon icon={faGenderless} style={{ marginRight: 4 }} />Pirate</span> }
     ] as IComboBoxItem[]
 
     const orientations = [
-        { value: EOrientation.Homosexual, label: 'Homosexuel' },
-        { value: EOrientation.Heterosexual, label: 'Hétérosexuel' },
-        { value: EOrientation.Bisexual, label: 'Bisexuel' }
+        { value: EOrientation.Homosexual, label: <span><FontAwesomeIcon icon={faVenusMars} style={{ marginRight: 4 }} />Homosexuel</span> },
+        { value: EOrientation.Heterosexual, label: <span><FontAwesomeIcon icon={faMarsDouble} style={{ marginRight: 4 }} />Hétérosexuel</span> },
+        { value: EOrientation.Bisexual, label: <span><FontAwesomeIcon icon={faTransgender} style={{ marginRight: 4 }} />Bisexuel</span> }
     ] as IComboBoxItem[]
 
     React.useEffect(() => {

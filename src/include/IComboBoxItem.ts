@@ -1,6 +1,6 @@
 interface IComboBoxItem {
     value: number,
-    label: string
+    label: string | JSX.Element
 }
 
 export default IComboBoxItem;
