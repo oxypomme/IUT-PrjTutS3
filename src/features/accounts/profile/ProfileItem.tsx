@@ -62,25 +62,27 @@ const Buttons = styled.div`
     transition: top 0.25s;
 `;
 
+const Pending = styled.div`
+    position: absolute;
+    top: 30%;
+    right: 30px;
+    transition: top 0.25s;
+    color: dimgray;
+`;
+
 interface ProfileItemProps {
-    id: number;
+    id: number,
+    isPending: boolean,
 }
 
-const ProfileItem = ({ id }: ProfileItemProps): JSX.Element => {
-    const dispatch = useDispatch();
-    const currProfile: IProfile = useSelector(getCurrProfile);
+const ProfileItem = ({ id, isPending }: ProfileItemProps): JSX.Element => {
     const profiles: IProfile[] = useSelector(getAllProfiles);
-    const profile: IProfile = profiles?.find(p => p.key === id) || currProfile;
+    const profile: IProfile = profiles?.find(p => p.key === id);
 
     let genderIcon = faUser;
     let gender = null;
     let orientationIcon = faNeuter;
     let orientation = null;
-
-    React.useEffect(() => {
-        dispatch(fetchTags());
-        dispatch(id != undefined ? fetchProfile(id) : fetchCurrProfile());
-    }, [dispatch]);
 
     switch (profile?.sex) {
         case EGender.NonBinary:
@@ -130,10 +132,14 @@ const ProfileItem = ({ id }: ProfileItemProps): JSX.Element => {
                 <li><FontAwesomeIcon icon={faCalendarAlt} /> {profile?.age || <WaitingForData length={2} />} ans</li>
                 <li><FontAwesomeIcon icon={faBuilding} /> {profile?.town || <WaitingForData length={16} />}</li>
             </ul>
-            <Buttons>
-                <CustomButton>Chat</CustomButton>
-                <CustomButton primary>Unmatch</CustomButton>
-            </Buttons>
+            {isPending ?
+                <Pending>En attente</Pending>
+                :
+                <Buttons>
+                    <CustomButton>Chat</CustomButton>
+                    <CustomButton primary>Unmatch</CustomButton>
+                </Buttons>
+            }
         </Item >
     );
 }

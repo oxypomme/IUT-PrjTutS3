@@ -14,7 +14,7 @@ import { NotFound } from "./views/Errors/NotFound";
 import { PublicHome } from "./views/Home/PublicHome";
 import { Camera } from "./../src/features/camera/Camera";
 import { Profile } from "./views/Profile";
-import MyMatches from "./views/Matches";
+import Matches from "./views/Matches";
 import { CreatePersonal, CreatePreferences, CreateFinishing } from "./views/CreateProfile";
 
 import "./App.css";
@@ -45,7 +45,7 @@ function App(): JSX.Element {
           <Route exact path='/' component={Home} />
           <Route exact path='/profile' component={Profile} />
           <Route exact path='/camera' component={Camera} />
-          <Route exact path='/matches' component={MyMatches} />
+          <Route exact path='/matches' component={Matches} />
           <Route component={NotFound} />
         </Switch>
       }

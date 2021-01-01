@@ -4,6 +4,7 @@ import tagsSagas from './tags'
 import profilesSagas from './profiles'
 import authSagas from './auth';
 import storageSagas from './storage'
+import matchesSagas from './matches';
 
 export default function* rootSaga() {
     // https://redux-saga.js.org/
@@ -13,5 +14,6 @@ export default function* rootSaga() {
         profilesSagas(),
         authSagas(),
         storageSagas(),
+        matchesSagas(),
     ]);
 }
