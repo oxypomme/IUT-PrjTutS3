@@ -15,6 +15,7 @@ import {
     fetchCurrProfilesFailed,
     fetchCurrProfilesSuccess,
     fetchProfile,
+    fetchArrayProfile,
     fetchProfilesFailed,
     fetchProfilesSuccess,
     updateProfile,
@@ -31,6 +32,23 @@ function* getProfile(action) {
             request.params
         );
         yield put(fetchProfilesSuccess({ ...profile, key: request.key }));
+    } catch (error) {
+        yield put(fetchProfilesFailed(error.message));
+    }
+}
+
+function* getArrayProfile(action) {
+    try {
+        const { request } = action.payload;
+
+        yield all(request.keys.map((key: number) => call(getProfile, {
+            payload: {
+                request: {
+                    ...request,
+                    key
+                }
+            }
+        })));
     } catch (error) {
         yield put(fetchProfilesFailed(error.message));
     }
@@ -131,6 +149,7 @@ function* deleteProfileSaga(action) {
 export default function* profilesSagas() {
     yield all([
         takeLatest(fetchProfile.type, getProfile),
+        takeLatest(fetchArrayProfile.type, getArrayProfile),
         takeLatest(fetchCurrProfile.type, getCurrProfile),
         takeLatest(createProfile.type, createProfileSaga),
         takeLatest(updateProfile.type, updateProfileSaga),

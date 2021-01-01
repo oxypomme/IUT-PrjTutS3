@@ -6,7 +6,7 @@ import IProfile, { instanceOfIProfile } from '../../../include/IProfile';
 
 import filterProfiles from '../../../tests/FilterProfiles';
 import ProfileCard from '../profile/ProfileCard';
-import { fetchProfile, getAllProfiles, getCurrProfile } from '../profileSlice';
+import { fetchArrayProfile, getAllProfiles, getCurrProfile } from '../profileSlice';
 
 const SelectionProfiles = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -24,9 +24,7 @@ const SelectionProfiles = (): JSX.Element => {
                     const profs = await filterProfiles(currProfile.sex, currProfile.orientation, currProfile.tags, currProfile.key);
                     console.log("[DEBUG] Matchables :", profs);
                     if (profs?.length > 0) {
-                        profs.forEach(({ key }) => {
-                            dispatch(fetchProfile(key));
-                        });
+                        dispatch(fetchArrayProfile(profs.map(profile => profile.key)));
                     }
                     setLoading(false);
                 }
@@ -37,11 +35,11 @@ const SelectionProfiles = (): JSX.Element => {
         })();
     }, []);
 
+    //
     return (
         <div>
             {!loading ? profiles?.map(({ key }, index) => (
-                //<ProfileCard key={index} id={key} />
-                <p key={index}>{key}</p>
+                <ProfileCard id={key} key={index} />
             )) : (loading == null ? 'ERROR, see console for more info' : <WaitingForData length={16} />)}
         </div>
     );

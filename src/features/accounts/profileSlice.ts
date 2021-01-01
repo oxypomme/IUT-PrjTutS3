@@ -15,6 +15,19 @@ export const fetchProfile = createAction(
         }
     })
 )
+export const fetchArrayProfile = createAction(
+    "FETCH_ARRAY_PROFILE_REQUESTED",
+    (keys: number[], params = {}) => ({
+        payload: {
+            request: {
+                type: "read",
+                url: "/profiles",
+                keys,
+                params
+            }
+        }
+    })
+);
 export const fetchCurrProfile = createAction(
     "FETCH-CURRENT_PROFILE_REQUESTED",
     (params = {}) => ({
@@ -80,6 +93,11 @@ export const profileSlice = createSlice({
     },
     extraReducers: {
         [fetchProfile.type]: (state) => ({
+            ...state,
+            isWorking: true,
+            error: ""
+        }),
+        [fetchArrayProfile.type]: (state) => ({
             ...state,
             isWorking: true,
             error: ""
