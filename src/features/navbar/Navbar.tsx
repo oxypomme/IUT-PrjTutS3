@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import logo from '../../logo.svg';
 
@@ -15,37 +15,58 @@ import {
     faCaretDown,
     faCaretUp,
     faUsers,
-    faGift
+    faGift,
+    faBars
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getIsConnected, logoutAccount } from '../accounts/accountSlice';
 
 //TODO: RIP Mobile users
-const NavBar = styled.nav`
+const NavBar = styled.nav<{ isopened?: boolean }>`
     position: fixed;
     top: 0;
     left: 0;
     height: 100%;
-    width: 16%;
-    min-width: 205px;
+    width: 225px;
     overflow: auto;
     margin: 0;
     padding: 0;
     background-color: #333;
     z-index: 9999;
+    transform: translateX(${props => props.isopened ? "0" : "-175px"});
+    transition: transform 0.5s;
 `;
+
 const NavList = styled.ul`
     list-style-type: none;
-    margin: 5px 0;
+    margin: 0 0 5px 0;
     padding: 0;
+    height: 50px;
+
+    & > li:nth-of-type(3){
+        margin-top: 50px;
+    }
+`;
+const NavButton = styled.a<{ isopened?: boolean }>`
+    width: fit-content;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    & > svg{
+        transform: rotate(${props => props.isopened ? "-90deg" : "0"});
+        transition: transform 0.5s;
+    }
 `;
 const NavLogo = styled.img`
     height: 32px;
+    padding: 10px 12px;
+    position: absolute;
+    left: 0;
+    top: 0;
 `;
-const NavItem = styled.li<{ stickToBottom?: boolean }>`
-    /*TODO: stick to bottom*/
-
+const NavItem = styled.li`
     & > a:hover {
         background-color: #111;
     }
@@ -66,6 +87,11 @@ const NavItem = styled.li<{ stickToBottom?: boolean }>`
         margin-right: 5px;
     }
 `;
+const CompactableIcon = styled(FontAwesomeIcon) <{ isopened?: boolean }>`
+    transform: translateX(${props => props.isopened ? "0" : "173px"});
+    transition: transform 0.5s;
+    right: 5px;
+`;
 const NavDropdownContainer = styled.ul`
     list-style-type: none;
     padding: 0;
@@ -82,25 +108,30 @@ export const Navbar = (): JSX.Element => {
     const history = useHistory();
     const isConnected = useSelector(getIsConnected);
 
-    const Dropdown = React.useCallback(({ dataId, icon, defaultValue, label, children }: any): JSX.Element => {
-        const [isOpened, setIsOpened] = useState<boolean>(!!defaultValue);
+    const [openState, setOpenState] = React.useState<boolean>(false);
+
+    const Dropdown = React.useCallback(({ icon, defaultValue, label, children }: any): JSX.Element => {
+        const [isOpened, setIsOpened] = React.useState<boolean>(!!defaultValue);
 
         const handleDropdown = (event) => {
             event.preventDefault();
+
             setIsOpened(!isOpened);
+            console.log(isOpened);
+            setOpenState(true);
         }
 
         return (
             <NavItem>
                 <a href="#" className={isOpened ? "active" : ""} onClick={handleDropdown}>
-                    <FontAwesomeIcon icon={icon} />{label} <FontAwesomeIcon icon={isOpened ? faCaretUp : faCaretDown} />
+                    <CompactableIcon icon={icon} isopened={openState} />{label} <FontAwesomeIcon icon={isOpened ? faCaretUp : faCaretDown} />
                 </a>
-                <NavDropdownContainer data-id={dataId} style={{ display: isOpened ? "block" : "none" }}>
+                <NavDropdownContainer style={{ display: isOpened ? "block" : "none" }}>
                     {children}
                 </NavDropdownContainer>
             </NavItem>
         )
-    }, [dispatch]);
+    }, [openState, dispatch]);
 
     const onUnlogged = ({ error, cancelled, data }) => {
         if (error) {
@@ -126,20 +157,28 @@ export const Navbar = (): JSX.Element => {
         });
     }
 
+    const handleOpening = async (event) => {
+        event.preventDefault();
+        setOpenState(!openState);
+    }
+
     return (
-        <NavBar>
+        <NavBar isopened={openState}>
             <NavList>
-                <NavItem style={{ textAlign: "center" }}>
+                <NavItem>
+                    <NavButton href="#" onClick={handleOpening} isopened={openState}><FontAwesomeIcon icon={faBars} /></NavButton>
+                </NavItem>
+                <NavItem>
                     <NavLogo src={logo} alt="logo" />
                 </NavItem>
                 <NavItem>
-                    <NavLink exact to="/"><FontAwesomeIcon icon={faHome} />Accueil</NavLink>
+                    <NavLink exact to="/"><CompactableIcon icon={faHome} isopened={openState} />Accueil</NavLink>
                 </NavItem>
                 <NavItem>
                     <NavLink to="/camera">Test caméra</NavLink>
                 </NavItem>
                 {isConnected &&
-                    <Dropdown dataId={0} defaultValue={false} icon={faUsers} label={"NomADefinir"}>
+                    <Dropdown defaultValue={false} icon={faUsers} label={"NomADefinir"}>
                         <NavItem>
                             <NavLink to="/matches"><FontAwesomeIcon icon={faHeart} />Mes matchs</NavLink>
                         </NavItem>
@@ -152,18 +191,18 @@ export const Navbar = (): JSX.Element => {
                     </Dropdown>
                 }
                 {isConnected &&
-                    <NavItem stickToBottom={true}>
-                        <NavLink to="/profile"><FontAwesomeIcon icon={faUser} />Mon profil</NavLink>
+                    <NavItem>
+                        <NavLink to="/profile"><CompactableIcon icon={faUser} isopened={openState} />Mon profil</NavLink>
                     </NavItem>
                 }
                 {isConnected &&
-                    <NavItem stickToBottom={true}>
-                        <a href="#" onClick={handleLogout}><FontAwesomeIcon icon={faSignOutAlt} />Déconnexion</a>
+                    <NavItem>
+                        <a href="#" onClick={handleLogout}><CompactableIcon icon={faSignOutAlt} isopened={openState} />Déconnexion</a>
                     </NavItem>
                 }
                 {!isConnected &&
-                    <NavItem stickToBottom={true}>
-                        <NavLink to="/login"><FontAwesomeIcon icon={faSignInAlt} />Connexion</NavLink>
+                    <NavItem>
+                        <NavLink to="/login"><CompactableIcon icon={faSignInAlt} isopened={openState} />Connexion</NavLink>
                     </NavItem>
                 }
             </NavList>
