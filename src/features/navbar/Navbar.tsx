@@ -141,7 +141,7 @@ export const Navbar = (): JSX.Element => {
                 {isConnected &&
                     <Dropdown dataId={0} defaultValue={false} icon={faUsers} label={"NomADefinir"}>
                         <NavItem>
-                            <NavLink to="/TODO"><FontAwesomeIcon icon={faHeart} />Mes matchs</NavLink>
+                            <NavLink to="/matches"><FontAwesomeIcon icon={faHeart} />Mes matchs</NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink to="/surprise"><FontAwesomeIcon icon={faGift} />Tinder Surprise</NavLink>
