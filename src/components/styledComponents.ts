@@ -8,6 +8,11 @@ export const HiddenLabel = styled.label`
   display: none;
 `;
 
+export const Separator = styled.div`
+    border-bottom: 1px solid silver;
+    width: 45%;
+    margin: 15px auto 15px auto;
+`;
 
 export const TextBox = styled.div<{ borderColor?: string, width?: number }>`
   display: flex;

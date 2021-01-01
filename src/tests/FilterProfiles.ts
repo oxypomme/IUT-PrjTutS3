@@ -6,7 +6,7 @@ import EOrientation from '../include/EOrientation';
 import IProfile from '../include/IProfile';
 
 const db = firebase.database();
-const ref = db.ref('/profiles');
+const Pref = db.ref('/profiles');
 
 /**
  * Get the tag score between 2 profiles
@@ -35,7 +35,10 @@ export const getScore = (profTags: number[], myTags: number[]): number => {
  */
 const filterProfiles = async (mySex: EGender, myOrientation: EOrientation, myTags: number[], myProfileId: number): Promise<{ key: number, score: number }[]> => {
     //TODO: Move to SAGA ?
-    const profiles = (await ref.once('value')).val();
+    const profiles = (await Pref.once('value')).val();
+
+    const Mref = db.ref('/matches/' + myProfileId);
+    const matches = (await Mref.once('value')).val();
 
     const profilesScore = [];
 
@@ -44,7 +47,7 @@ const filterProfiles = async (mySex: EGender, myOrientation: EOrientation, myTag
     profiles.forEach((profile: IProfile, key: number) => {
         if (myProfileId != key) {
             const score = calcScore(profile);
-            if (score > 10) {
+            if (score > 10 && !matches.find(match => match.target === key)) {
                 if (mySex == EGender.NonBinary) {
                     if (profile.sex == EGender.NonBinary) {
                         profilesScore.push({ key, score });

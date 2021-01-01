@@ -34,6 +34,11 @@ const Item = styled.li`
         width: 30%;
     }
 
+    &>ul {
+        list-style-type: none;
+        padding: 0 15px 0 0;
+    }
+
     &:hover {
         height: 200px;
     }
