@@ -85,7 +85,6 @@ const Tags = styled.ul`
 `
 
 const ProfileCard = ({ id }: any): JSX.Element => {
-    const dispatch = useDispatch();
     const currProfile: IProfile = useSelector(getCurrProfile);
     const profiles: IProfile[] = useSelector(getAllProfiles);
     const profile: IProfile = profiles?.find(p => p.key === id) || currProfile;
@@ -95,11 +94,6 @@ const ProfileCard = ({ id }: any): JSX.Element => {
     let gender = null;
     let orientationIcon = faNeuter;
     let orientation = null;
-
-    React.useEffect(() => {
-        dispatch(fetchTags());
-        dispatch(id != undefined ? fetchProfile(id) : fetchCurrProfile());
-    }, [dispatch]);
 
     switch (profile?.sex) {
         case EGender.NonBinary:

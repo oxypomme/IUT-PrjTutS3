@@ -51,8 +51,6 @@ const MyMatches = (): JSX.Element => {
             console.log(error);
             setLoading(null);
         }
-        console.log(parseInt(Object.keys(matches)[0]), matches[Object.keys(matches)[0]]);
-
     }, [currProfile, matches, dispatch]);
     return (
         <ProfileList>

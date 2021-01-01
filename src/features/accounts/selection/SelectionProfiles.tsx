@@ -8,6 +8,7 @@ import IProfile, { instanceOfIProfile } from '../../../include/IProfile';
 import filterProfiles from '../../../tests/FilterProfiles';
 import ProfileCard from '../profile/ProfileCard';
 import { fetchArrayProfile, getAllProfiles, getCurrProfile } from '../profileSlice';
+import { fetchTags } from '../tagSlice';
 
 const ProfilesContainer = styled.div`
     & > div {
@@ -31,6 +32,7 @@ const SelectionProfiles = (): JSX.Element => {
                     const profs = await filterProfiles(currProfile.sex, currProfile.orientation, currProfile.tags, currProfile.key);
                     console.log("[DEBUG] Matchables :", profs);
                     if (profs?.length > 0) {
+                        dispatch(fetchTags());
                         dispatch(fetchArrayProfile(profs.map(profile => profile.key)));
                     }
                     setLoading(false);
