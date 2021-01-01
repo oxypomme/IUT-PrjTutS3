@@ -13,7 +13,7 @@ export const fetchProfile = createAction(
             }
         }
     })
-)
+);
 export const fetchArrayProfile = createAction(
     "FETCH_ARRAY_PROFILE_REQUESTED",
     (authIds: string[], params = {}) => ({
@@ -37,7 +37,7 @@ export const fetchCurrProfile = createAction(
             }
         }
     })
-)
+);
 /**
  * Only used for type reference.
  * 
@@ -57,7 +57,7 @@ export const updateProfile = createAction(
             }
         }
     })
-)
+);
 export const deleteProfile = createAction(
     "DELETE_PROFILE_REQUESTED",
     (authId: string, params = {}) => ({
@@ -69,7 +69,7 @@ export const deleteProfile = createAction(
             }
         }
     })
-)
+);
 
 export const profileSlice = createSlice({
     name: "profiles",
@@ -217,7 +217,7 @@ export const {
 export const getState = state => state.profiles;
 
 export const getAllProfiles = createSelector(getState, state => state.profiles);
-export const getCurrProfile = createSelector(getState, state => state.current.profile)
+export const getCurrProfile = createSelector(getState, state => state.current.profile);
 export const getProfileError = createSelector(getState, state => state.error);
 
 export default profileSlice.reducer;

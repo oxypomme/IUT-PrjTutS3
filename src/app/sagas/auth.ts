@@ -32,16 +32,11 @@ import { withCallback } from 'redux-saga-callback';
 export function* createEmailAuth(action) {
     try {
         const authInfo = yield select(getNewAuth);
-        if (!authInfo.email || !authInfo.passwd) {
-            throw new Error("Missing email or password");
-        }
-
         const { request } = action.payload;
         yield call(
             rsf.auth[request.type],
             authInfo.email,
-            authInfo.passwd,
-            request.params
+            authInfo.passwd
         );
         yield put(createAccountSuccess());
     } catch (error) {
@@ -77,29 +72,16 @@ function* logOut(action) {
     }
 }
 
-function* updateEmail(action) {
+function* updateAuth(action) {
     try {
         const { request } = action.payload;
         yield call(
             rsf.auth[request.type],
-            request.email
+            request.param
         );
         yield put(updateEmailAccountSuccess());
     } catch (error) {
         yield put(updateEmailAccountFailed(error.message));
-    }
-}
-
-function* updatePassword(action) {
-    try {
-        const { request } = action.payload;
-        yield call(
-            rsf.auth[request.type],
-            request.passwd
-        );
-        yield put(updatePasswordAccountSuccess());
-    } catch (error) {
-        yield put(updatePasswordAccountFailed(error.message));
     }
 }
 
@@ -120,7 +102,8 @@ export function* deleteAuth(action) {
     try {
         const { request } = action.payload;
         yield call(
-            rsf.auth[request.type]
+            rsf.auth[request.type],
+            params
         );
         yield put(deleteAccountSuccess());
     } catch (error) {
@@ -133,8 +116,7 @@ export default function* authSagas() {
         takeLatest(createAccount.type, createEmailAuth),
         takeLatest(loginAccount.type, withCallback(logInMail)),
         takeLatest(logoutAccount.type, withCallback(logOut)),
-        takeLatest(updateEmailAccount.type, updateEmail),
-        takeLatest(updatePasswordAccount.type, updatePassword),
+        takeLatest([updateEmailAccount.type, updatePasswordAccount.type], updateAuth),
         takeLatest(resetPasswordAccount.type, sendPasswordReset),
         takeLatest(deleteAccount.type, deleteAuth),
     ]);

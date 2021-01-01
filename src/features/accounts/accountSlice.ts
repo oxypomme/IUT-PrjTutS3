@@ -2,47 +2,47 @@ import { createAction, createSelector, createSlice } from "@reduxjs/toolkit";
 
 export const createAccount = createAction(
     'CREATE-EMAIL_AUTH_REQUESTED',
-    (params = {}) => ({
+    () => ({
         payload: {
             request: {
                 type: "createUserWithEmailAndPassword",
-                params
             }
         }
     })
-)
+);
 /**
  * Only used for type reference.
  * 
  * Must have this payload :
  * request: { type: "signInWithEmailAndPassword", email, passwd }
  */
-export const loginAccount = createAction('LOGIN-EMAIL_AUTH_REQUESTED')
+export const loginAccount = createAction('LOGIN-EMAIL_AUTH_REQUESTED');
 /**
  * Only used for type reference.
  * 
  * Must have this payload :
  * request: { type: "signOut" }
  */
-export const logoutAccount = createAction('LOGIN-LOGOUT_AUTH_REQUESTED')
+export const logoutAccount = createAction('LOGIN-LOGOUT_AUTH_REQUESTED');
+
 export const updateEmailAccount = createAction(
     'UPDATE-EMAIL_AUTH_REQUESTED',
-    (params = {}) => ({
+    (email: string) => ({
         payload: {
             request: {
                 type: "updateEmail",
-                email: params.email
+                params: email
             }
         }
     })
-)
+);
 export const updatePasswordAccount = createAction(
     'UPDATE-PASSWORD_AUTH_REQUESTED',
-    (params = {}) => ({
+    (passwd: string) => ({
         payload: {
             request: {
                 type: "updatePassword",
-                passwd: params.passwd
+                params: passwd
             }
         }
     })
@@ -61,30 +61,33 @@ export const resetPasswordAccount = createAction(
 )
 export const deleteAccount = createAction(
     'DELETE_AUTH_REQUESTED',
-    () => ({
+    (params = {}) => ({
         payload: {
             request: {
-                type: "deleteProfile"
+                type: "deleteProfile",
+                params
             }
         }
     })
 )
 
+const initialNewAccount = {
+    age: -1,
+    desc: "",
+    imageURL: "",
+    mail: "",
+    passwd: "",
+    name: "",
+    orientation: -1,
+    sex: -1,
+    tags: new Array<number>(0),
+    town: "",
+};
+
 export const accountSlice = createSlice({
     name: "account",
     initialState: {
-        new: {
-            age: -1,
-            desc: "",
-            imageURL: "",
-            mail: "",
-            passwd: "",
-            name: "",
-            orientation: -1,
-            sex: -1,
-            tags: new Array<number>(0),
-            town: "",
-        },
+        new: initialNewAccount,
         uid: "",
         isWorking: false,
         error: ""
@@ -198,83 +201,65 @@ export const accountSlice = createSlice({
             error: message
         }),
 
-        addAge: (state, action) => {
-            // The payload must be the age
-            state.new.age = action.payload;
-        },
-        addDesc: (state, action) => {
-            // The payload must be the description
-            state.new.desc = action.payload;
-        },
-        addPhoto: (state, action) => {
-            // The payload must be the image URL
-            state.new.imageURL = action.payload;
-        },
-        addMail: (state, action) => {
-            // The payload must be the email
-            state.new.mail = action.payload;
-        },
-        addPasswd: (state, action) => {
-            // The payload must be the passwd
-            state.new.passwd = action.payload;
-        },
-        addName: (state, action) => {
-            // The payload must be the name
-            state.new.name = action.payload;
-        },
-        addPrefs: (state, action) => {
-            // The payload must be the orientation
-            state.new.orientation = action.payload;
-        },
-        addTag: (state, action) => {
-            //The payload must be the Tag(s) ID to add
-            state.new.tags = action.payload;
-        },
-        removeTag: (state, action) => {
-            //The payload must be the Tag(s) ID to remove
-            const removeTag = (id: number): void => {
-                const index = state.new.tags.indexOf(id);
-                if (index > -1) {
-                    state.new.tags.splice(index, 1);
-                }
-            };
-
-            if (Array.isArray(action.payload)) {
-                // If the payload is an array, remove each element
-                for (let i = 0; i < action.payload.length; i++) {
-                    removeTag(action.payload[i]);
-                }
-            } else {
-                removeTag(action.payload);
-            }
-        },
-        addCity: (state, action) => {
-            // The payload must be the city
-            state.new.town = action.payload;
-        },
-        addGender: (state, action) => {
-            // The payload must be the gender
-            state.new.sex = action.payload;
-        },
-        setUid: (state, action) => {
-            // The payload must be the uid
-            state.uid = action.payload;
-        },
+        addAge: (state, { payload: age }) => ({
+            ...state,
+            eror: "",
+            new: { ...state.new, age }
+        }),
+        addDesc: (state, { payload: desc }) => ({
+            ...state,
+            eror: "",
+            new: { ...state.new, desc }
+        }),
+        addPhoto: (state, { payload: imageURL }) => ({
+            ...state,
+            eror: "",
+            new: { ...state.new, imageURL }
+        }),
+        addMail: (state, { payload: mail }) => ({
+            ...state,
+            eror: "",
+            new: { ...state.new, mail }
+        }),
+        addPasswd: (state, { payload: passwd }) => ({
+            ...state,
+            eror: "",
+            new: { ...state.new, passwd }
+        }),
+        addName: (state, { payload: name }) => ({
+            ...state,
+            eror: "",
+            new: { ...state.new, name }
+        }),
+        addPrefs: (state, { payload: orientation }) => ({
+            ...state,
+            eror: "",
+            new: { ...state.new, orientation }
+        }),
+        addTags: (state, { payload: tags }) => ({
+            ...state,
+            eror: "",
+            new: { ...state.new, tags }
+        }),
+        addCity: (state, { payload: town }) => ({
+            ...state,
+            eror: "",
+            new: { ...state.new, town }
+        }),
+        addGender: (state, { payload: sex }) => ({
+            ...state,
+            eror: "",
+            new: { ...state.new, sex }
+        }),
+        setUid: (state, { payload: uid }) => ({
+            ...state,
+            eror: "",
+            uid
+        }),
 
         clearNewAccount: (state) => ({
             ...state,
-            new: {
-                age: -1,
-                desc: "",
-                imageURL: "",
-                mail: "",
-                passwd: "",
-                name: "",
-                orientation: -1,
-                sex: -1,
-                tags: new Array<number>(0),
-                town: "",
-            }
+            new: initialNewAccount
         }),
     },
 });
@@ -286,8 +271,7 @@ export const {
     addAge,
     addCity,
     addPrefs,
-    addTag,
-    removeTag,
+    addTags,
     addDesc,
     addPhoto,
     addGender,
