@@ -26,7 +26,7 @@ export const RegisterPreferences = (): JSX.Element => {
     const genders = [
         { value: EGender.Men, label: 'Poney' },
         { value: EGender.Women, label: 'Hélicoptère' },
-        { value: EGender.NonBinary, label: 'Non-binaire' }
+        { value: EGender.NonBinary, label: 'Pirate' }
     ] as IComboBoxItem[]
 
     const orientations = [
