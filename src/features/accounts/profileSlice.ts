@@ -195,7 +195,7 @@ export const profileSlice = createSlice({
             ...state,
             isWorking: false,
             error: "",
-            profiles: new Array<IProfile>()
+            profiles: []
         }),
         resetCurrProfile: (state) => ({
             ...state,

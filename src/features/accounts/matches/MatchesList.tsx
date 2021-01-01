@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProfileItem from '../profile/ProfileItem';
 import IProfile, { instanceOfIProfile } from '../../../include/IProfile';
 
-import { fetchArrayProfile, getCurrProfile } from '../profileSlice';
+import { fetchArrayProfile, fetchProfile, getCurrProfile } from '../profileSlice';
 
 import { fetchMatches, getAllMatches } from './matchesSlice';
 import { WaitingForData } from '../../../components/styledComponents';
@@ -30,7 +30,6 @@ const MyMatches = (): JSX.Element => {
     const currProfile: IProfile | Record<string, never> = useSelector(getCurrProfile);
 
     const matches: Match[] = useSelector(getAllMatches);
-    const tags: string[] = useSelector(getAllTags);
 
     React.useEffect(() => {
         try {
@@ -41,7 +40,9 @@ const MyMatches = (): JSX.Element => {
                     dispatch(fetchMatches());
                 }
                 else if (matches?.length > 0) {
-                    dispatch(fetchArrayProfile(matches.map((match, index) => index)))
+                    dispatch(fetchArrayProfile(matches.map((match, index) => index)));
+                } else if (matches) {
+                    dispatch(fetchProfile(parseInt(Object.keys(matches)[0])));
                 }
             }
 
@@ -50,12 +51,14 @@ const MyMatches = (): JSX.Element => {
             console.log(error);
             setLoading(null);
         }
+        console.log(parseInt(Object.keys(matches)[0]), matches[Object.keys(matches)[0]]);
+
     }, [currProfile, matches, dispatch]);
     return (
         <ProfileList>
-            {!loading && matches ? matches.map((match, index) =>
+            {!loading && matches ? (matches.length > 0 ? matches.map((match, index) =>
                 <ProfileItem key={index} id={index} isPending={match.isPending} />
-            ) : <WaitingForData length={16} />}
+            ) : <ProfileItem key={parseInt(Object.keys(matches)[0])} id={parseInt(Object.keys(matches)[0])} isPending={matches[Object.keys(matches)[0]]?.isPending} />) : <WaitingForData length={16} />}
         </ProfileList>
     );
 }

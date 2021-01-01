@@ -130,7 +130,7 @@ const ProfileItem = ({ id, isPending }: ProfileItemProps): JSX.Element => {
             </ul>
             <ul>
                 <li><FontAwesomeIcon icon={faCalendarAlt} /> {profile?.age || <WaitingForData length={2} />} ans</li>
-                <li><FontAwesomeIcon icon={faBuilding} /> {profile?.town || <WaitingForData length={16} />}</li>
+                <li><FontAwesomeIcon icon={faBuilding} /> {profile?.town || <WaitingForData length={14} />}</li>
             </ul>
             {isPending ?
                 <Pending>En attente</Pending>
