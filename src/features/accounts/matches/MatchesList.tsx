@@ -40,8 +40,10 @@ const MyMatches = (): JSX.Element => {
                     dispatch(fetchMatches());
                 }
                 else if (matches?.length > 0) {
+                    // Matches can be an array of match...
                     dispatch(fetchArrayProfile(matches.map((match, index) => index)));
                 } else if (matches) {
+                    // or a somewhat object if there's only one match
                     dispatch(fetchProfile(parseInt(Object.keys(matches)[0])));
                 }
             }
@@ -54,9 +56,12 @@ const MyMatches = (): JSX.Element => {
     }, [currProfile, matches, dispatch]);
     return (
         <ProfileList>
-            {!loading && matches ? (matches.length > 0 ? matches.map((match, index) =>
-                <ProfileItem key={index} id={index} isPending={match.isPending} />
-            ) : <ProfileItem key={parseInt(Object.keys(matches)[0])} id={parseInt(Object.keys(matches)[0])} isPending={matches[Object.keys(matches)[0]]?.isPending} />) : <WaitingForData length={16} />}
+            {!loading && matches ?
+                (matches.length > 0 ? matches.map((match, index) =>
+                    <ProfileItem key={index} id={index} isPending={match.isPending} />) // Matches can be an array of match or a somewhat object if there's only one match
+                    : <ProfileItem key={parseInt(Object.keys(matches)[0])} id={parseInt(Object.keys(matches)[0])} isPending={matches[Object.keys(matches)[0]]?.isPending} />
+                )
+                : <WaitingForData length={16} />}
         </ProfileList>
     );
 }
