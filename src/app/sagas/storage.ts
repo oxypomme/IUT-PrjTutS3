@@ -1,5 +1,5 @@
 import { eventChannel } from 'redux-saga';
-import { call, put, takeLatest, take } from 'redux-saga/effects'
+import { call, put, takeLatest, take, all } from 'redux-saga/effects'
 
 import { rsf } from '../firebase'
 import '@firebase/storage'
@@ -36,6 +36,8 @@ function* uploadFileSaga(action) {
 }
 
 export default function* storageSagas() {
-    yield takeLatest(uploadFile.type, withCallback(uploadFileSaga));
-    yield takeLatest(uploadStringFile.type, withCallback(uploadFileSaga));
+    yield all([
+        takeLatest(uploadFile.type, withCallback(uploadFileSaga)),
+        takeLatest(uploadStringFile.type, withCallback(uploadFileSaga)),
+    ]);
 }

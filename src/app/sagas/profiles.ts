@@ -1,4 +1,4 @@
-import { call, put, takeLatest, take, select } from 'redux-saga/effects'
+import { call, put, takeLatest, take, select, all } from 'redux-saga/effects'
 
 import { rsf } from '../firebase'
 import '@firebase/database'
@@ -129,9 +129,11 @@ function* deleteProfileSaga(action) {
 }
 
 export default function* profilesSagas() {
-    yield takeLatest(fetchProfile.type, getProfile);
-    yield takeLatest(fetchCurrProfile.type, getCurrProfile);
-    yield takeLatest(createProfile.type, createProfileSaga);
-    yield takeLatest(updateProfile.type, updateProfileSaga);
-    yield takeLatest(deleteProfile.type, deleteProfileSaga);
+    yield all([
+        takeLatest(fetchProfile.type, getProfile),
+        takeLatest(fetchCurrProfile.type, getCurrProfile),
+        takeLatest(createProfile.type, createProfileSaga),
+        takeLatest(updateProfile.type, updateProfileSaga),
+        takeLatest(deleteProfile.type, deleteProfileSaga),
+    ]);
 }
