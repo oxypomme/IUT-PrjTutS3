@@ -74,14 +74,14 @@ export const accountSlice = createSlice({
     name: "account",
     initialState: {
         new: {
-            age: 0,
+            age: -1,
             desc: "",
             imageURL: "",
             mail: "",
             passwd: "",
             name: "",
-            orientation: 0,
-            gender: 0,
+            orientation: -1,
+            sex: -1,
             tags: new Array<number>(0),
             town: "",
         },
@@ -254,7 +254,7 @@ export const accountSlice = createSlice({
         },
         addGender: (state, action) => {
             // The payload must be the gender
-            state.new.gender = action.payload;
+            state.new.sex = action.payload;
         },
         setUid: (state, action) => {
             // The payload must be the uid
@@ -264,14 +264,14 @@ export const accountSlice = createSlice({
         clearNewAccount: (state) => ({
             ...state,
             new: {
-                age: 0,
+                age: -1,
                 desc: "",
                 imageURL: "",
                 mail: "",
                 passwd: "",
                 name: "",
-                orientation: 0,
-                gender: 0,
+                orientation: -1,
+                sex: -1,
                 tags: new Array<number>(0),
                 town: "",
             }
@@ -321,7 +321,7 @@ const getName = createSelector(getNewState, (state) => state.name);
 const getOrientation = createSelector(getNewState, (state) => state.orientation);
 const getTags = createSelector(getNewState, (state) => state.tags);
 const getTown = createSelector(getNewState, (state) => state.town);
-const getGender = createSelector(getNewState, (state) => state.gender);
+const getGender = createSelector(getNewState, (state) => state.sex);
 
 export const getState = state => state.account;
 
@@ -356,9 +356,9 @@ export const getPrefsInfos = createSelector(
     getGender,
     getOrientation,
     getTags,
-    (gender, orientation, tags) => {
+    (sex, orientation, tags) => {
         return {
-            gender,
+            sex,
             orientation,
             tags,
         };

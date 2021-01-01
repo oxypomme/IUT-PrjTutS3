@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTags, getAllTags } from "../tagSlice";
 import { useHistory } from "react-router-dom";
 import { Button, ErrorLabel, Spacer } from '../../../components/styledComponents';
-import { addGender, addPrefs, addTag } from "../accountSlice";
+import { addGender, addPrefs, addTag, getInfos } from "../accountSlice";
 
 import IComboBoxItem from '../../../include/IComboBoxItem';
 import Select from "react-select";
@@ -16,6 +16,15 @@ import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 export const RegisterPreferences = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
+
+    const profile = useSelector(getInfos);
+    React.useEffect(() => {
+        if (!profile || profile.name === "" || profile.age < 18 || profile.town === "") {
+            alert("Vous n'avez pas rentré tous les champs nécéssaires.")
+            history.push('/SignUp/1');
+        }
+    }, [profile])
+
     const tags: Array<IComboBoxItem> = useSelector(getAllTags);
 
     const [selectedTags, setSelectedTags] = React.useState<Array<IComboBoxItem>>();

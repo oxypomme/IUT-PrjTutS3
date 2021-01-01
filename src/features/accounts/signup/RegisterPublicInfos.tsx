@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUploadedFiles, uploadFile, uploadFileSuccess, uploadStringFile } from "../../firestorage/storageSlice";
 import { Button, ErrorLabel, HiddenLabel, TextBox } from "../../../components/styledComponents";
 import { ProfilePicture } from "../profile/ProfileComponent";
-import { addDesc, addPhoto } from "../accountSlice";
+import { addDesc, addPhoto, getInfos } from "../accountSlice";
 import { isNonNullChain } from "typescript";
 import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,6 +18,14 @@ export function RegisterPublicInfos(): JSX.Element {
     const dispatch = useDispatch();
     const history = useHistory();
 
+    const profile = useSelector(getInfos);
+    React.useEffect(() => {
+        if (!profile || profile.sex < 0 || profile.orientation < 0 || profile.tags.lenght < 3) {
+            alert("Vous n'avez pas rentré tous les champs nécéssaires.")
+            history.push('/SignUp/2');
+        }
+    }, [profile])
+
     const webcamRef = React.useRef<Webcam>();
     const [devices, setDevices] = React.useState<Array<ICam>>([]);
     const [cam, setCam] = React.useState<string>();
@@ -28,6 +36,7 @@ export function RegisterPublicInfos(): JSX.Element {
 
 
     const [pendingUploadUrl, setPendingUploadUrl] = React.useState<string>();
+
 
     const uploadedLinks = useSelector(getUploadedFiles);
     let mylink;

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { createAccount, getInfos, getNewAuth } from '../accountSlice';
+
+import { getInfos } from '../accountSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfileComponent from '../profile/ProfileComponent';
 import { useHistory } from 'react-router-dom';
@@ -12,31 +13,37 @@ const ResumeInfos = () => {
     const history = useHistory();
 
     const profile = useSelector(getInfos);
-    const auth = useSelector(getNewAuth);
+
+    React.useEffect(() => {
+        if (!profile || profile.desc === "" || profile.imageURL === "") {
+            alert("Vous n'avez pas rentré tous les champs nécéssaires.")
+            history.push('/SignUp/3');
+        }
+    }, [profile])
+
+    const onSigned = ({ error }) => {
+        if (error) {
+            alert("ERREUR : " + error.message);
+        }
+        else {
+            alert('Vous êtes inscrits (et connecté).')
+            history.push('/index');
+        }
+    }
 
     const handleOnSubmit = (event) => {
         event.preventDefault();
-        if (!profile ||
-            !auth ||
-            auth.passwd === "" || // TODO check if passwd is specified
-            auth.email === "" || // TODO check if mail is specified
-            profile.age === 0 ||
-            profile.desc === "" ||
-            profile.imageURL === "" ||
-            profile.name === "" ||
-            profile.orientation === 0 ||
-            profile.gender === 0 ||
-            profile.tags.length < 3 ||
-            profile.town === ""
-        ) {
-            alert("Vous n'avez pas rentré tous les champs nécéssaires.")
-            history.push('/login');
-        }
-        else {
-            console.log("should create account");
-            // dispatch(createAccount());
-            dispatch(createProfile());
-        }
+        dispatch({
+            type: createProfile.type,
+            payload: {
+                type: "update",
+                typeR: "read",
+                urlP: "/profiles",
+                urlL: "/link"
+            },
+            onComplete: onSigned
+        });
+
 
     };
 

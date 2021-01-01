@@ -65,16 +65,6 @@ const SignIn = (): JSX.Element => {
                 },
                 onComplete: onLogged
             });
-            //TODO: If success, message
-            /*
-            if (loginError !== "") {
-                alert("Erreur de connexion : \n" + loginError);
-            }
-            else {
-                alert("Vous êtes connecté")
-                //history.push('/');
-            }
-            */
         }
     }
 

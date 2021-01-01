@@ -41,19 +41,14 @@ export const fetchCurrProfile = createAction(
         }
     })
 )
-export const createProfile = createAction(
-    "CREATE_PROFILE_REQUESTED",
-    (params = {}) => ({
-        payload: {
-            request: {
-                type: "update",
-                urlP: "/profiles",
-                urlL: "/link",
-                params
-            }
-        }
-    })
-)
+/**
+ * Only used for type reference.
+ * 
+ * Must have this payload :
+ * request: { typeU: "update", typeR: "read", urlP: "/profiles", urlL: "/link" }
+ */
+export const createProfile = createAction("CREATE_PROFILE_REQUESTED");
+
 export const updateProfile = createAction(
     "EDIT_PROFILE_REQUESTED",
     (key: number, params: IProfile) => ({

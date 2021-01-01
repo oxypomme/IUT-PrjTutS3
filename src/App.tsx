@@ -18,7 +18,7 @@ import Matches from "./views/Matches";
 import { CreatePersonal, CreatePreferences, CreateFinishing, CreateConfirm } from "./views/CreateProfile";
 
 import "./App.css";
-import { fetchCurrProfile, resetProfiles, resetCurrProfile } from "./features/accounts/profileSlice";
+import { fetchCurrProfile, resetCurrProfile } from "./features/accounts/profileSlice";
 
 function App(): JSX.Element {
     const dispatch = useDispatch();

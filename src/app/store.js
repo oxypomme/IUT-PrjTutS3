@@ -3,7 +3,7 @@ import createSagaMiddleware from 'redux-saga'
 
 import accountReducer, { loginAccount, logoutAccount } from '../features/accounts/accountSlice';
 import tagsReducer from '../features/accounts/tagSlice';
-import profilesReducer from '../features/accounts/profileSlice';
+import profilesReducer, {createProfile} from '../features/accounts/profileSlice';
 import storageReducer from '../features/firestorage/storageSlice';
 import matchesReducer from '../features/accounts/matches/matchesSlice';
 
@@ -27,7 +27,8 @@ export default () => {
       serializableCheck: {
         ignoredAction: [
           loginAccount.type, 
-          logoutAccount.type
+          logoutAccount.type,
+          createProfile.type,
         ],
       }
     }), sagaMiddleware]

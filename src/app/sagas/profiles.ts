@@ -28,10 +28,12 @@ import {
     fetchProfilesSuccess,
     updateProfile,
     updateProfileFailed,
-    updateProfileSuccess
+    updateProfileSuccess,
+    deleteProfileSuccess
 } from '../../features/accounts/profileSlice';
 
 import { createEmailAuth } from "./auth";
+import { withCallback } from 'redux-saga-callback';
 
 function* getProfile(action) {
     try {
@@ -87,8 +89,6 @@ function* getCurrProfile(action) {
 
 function* createProfileSaga(action) {
     try {
-        //yield fork(createAccount);
-
         yield call(createEmailAuth, {
             payload: {
                 request: {
@@ -98,11 +98,14 @@ function* createProfileSaga(action) {
             }
         })
 
-        //yield take("profiles/createProfileSuccess");
+        const authError = yield select(getAccountError);
+        if (authError != "") {
+            throw new Error(authError);
+        }
 
         const { request } = action.payload;
         const profiles: [] = yield call(
-            rsf.database.read,
+            rsf.database[request.typeR],
             request.urlP
         );
 
@@ -116,14 +119,14 @@ function* createProfileSaga(action) {
 
         const authid = yield select(getAuthId);
         yield call(
-            rsf.database.update,
+            rsf.database[request.typeU],
             request.urlL + '/' + authid,
             key.toString()
         );
 
         const newProfile = yield select(getInfos);
         yield call(
-            rsf.database.update,
+            rsf.database[request.typeU],
             request.urlP + '/' + key,
             newProfile
         );
@@ -132,6 +135,7 @@ function* createProfileSaga(action) {
         yield put(createProfileSuccess());
     } catch (error) {
         yield put(createProfileFailed(error.message));
+        throw error;
     }
 }
 
@@ -166,7 +170,7 @@ function* deleteProfileSaga(action) {
             rsf.database[request.type],
             request.urlL + '/' + authid
         );
-        yield put(createProfileSuccess());
+        yield put(deleteProfileSuccess());
     } catch (error) {
         yield put(deleteProfileFailed(error.message));
     }
@@ -177,7 +181,7 @@ export default function* profilesSagas() {
         takeLatest(fetchProfile.type, getProfile),
         takeLatest(fetchArrayProfile.type, getArrayProfile),
         takeLatest(fetchCurrProfile.type, getCurrProfile),
-        takeLatest(createProfile.type, createProfileSaga),
+        takeLatest(createProfile.type, withCallback(createProfileSaga)),
         takeLatest(updateProfile.type, updateProfileSaga),
         takeLatest(deleteProfile.type, deleteProfileSaga),
     ]);
