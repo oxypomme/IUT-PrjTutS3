@@ -103,7 +103,7 @@ const RegisterPersonal = (): JSX.Element => {
                 </HiddenLabel>
             </TextBox>
 
-            <Button>Suivant</Button>
+            <Button primary>Suivant</Button>
         </form >
     );
 };

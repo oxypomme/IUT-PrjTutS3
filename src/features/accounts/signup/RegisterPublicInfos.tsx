@@ -3,19 +3,32 @@ import Webcam from "react-webcam";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { getUploadedFiles, uploadFile, uploadFileSuccess, uploadStringFile } from "../../firestorage/storageSlice";
-import { Button } from "../../../components/styledComponents";
+import { Button, ErrorLabel, HiddenLabel, TextBox } from "../../../components/styledComponents";
 import { ProfilePicture } from "../profile/ProfileCard";
+import { addDesc, addPhoto } from "../accountSlice";
+import { isNonNullChain } from "typescript";
+import { useHistory } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationTriangle, faUser } from "@fortawesome/free-solid-svg-icons";
+import IError from "../../../include/IError";
 
 export interface ICam { value: string, label: string; }
-export function ProfPicture(): JSX.Element {
+
+export function RegisterPublicInfos(): JSX.Element {
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const webcamRef = React.useRef<Webcam>();
     const [devices, setDevices] = React.useState<Array<ICam>>([]);
     const [cam, setCam] = React.useState<string>();
     const [picture, setPicture] = React.useState<string>();
 
+    const [description, setDescription] = React.useState();
+    const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
+
+
     const [pendingUploadUrl, setPendingUploadUrl] = React.useState<string>();
+
     const uploadedLinks = useSelector(getUploadedFiles);
     let mylink;
     if ((mylink = uploadedLinks.find(u => u.url === pendingUploadUrl)) !== undefined) {
@@ -54,8 +67,40 @@ export function ProfPicture(): JSX.Element {
         }
     }, [picture, setPicture]);
 
+
+    const handleSetDescriptionOnChange = (event) => setDescription(event.target.value);
+
+    const handleOnSubmit = (event) => {
+        event.preventDefault();
+        let errors = [];
+
+        if (!picture)
+            errors = [...errors, { component: "picture", label: "Veuillez séléctionner une photo de profile." } as IError];
+
+        if (!description || (description && description === isNonNullChain))
+            errors = [...errors, { component: "description", label: "Veuillez spécifier votre description." } as IError];
+
+        setGlobalErrors(errors);
+        if (errors.length < 1) {
+            dispatch(addDesc(description));
+            dispatch(addPhoto("https://i.ytimg.com/vi/BHc4sA3k8pA/maxresdefault.jpg"));
+            history.push('/SignUp/4');
+        }
+    };
+
     return (
-        <div>
+        <form onSubmit={handleOnSubmit}>
+            {globalErrors.length > 0 &&
+                <ErrorLabel>
+                    {globalErrors.map((error, index) => (
+                        <div key={index}>
+                            <FontAwesomeIcon icon={faExclamationTriangle} />
+                            {error.label}
+                        </div>
+                    ))}
+                </ErrorLabel>
+            }
+
             <Select
                 onChange={device => setCam(device.value)}
                 options={devices}
@@ -76,7 +121,24 @@ export function ProfPicture(): JSX.Element {
                     <ProfilePicture source={picture} />
                 </div>
             }
-        </div>
+            <TextBox
+                borderColor={globalErrors.some(e => e.component === "description") ? 'red' : 'default'}
+                width={400}
+            >
+                <FontAwesomeIcon icon={faUser} />
+                <textarea
+                    rows={5}
+                    value={description}
+                    onChange={handleSetDescriptionOnChange}
+                    name='description'
+                    placeholder='Description'
+                ></textarea>
+                <HiddenLabel htmlFor="description">
+                    Description
+                </HiddenLabel>
+            </TextBox>
+            <Button primary>Suivant</Button>
+        </form>
     );
 }
 

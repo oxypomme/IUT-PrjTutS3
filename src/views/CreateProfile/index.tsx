@@ -1,9 +1,8 @@
 import React from "react";
 import RegisterPersonal from '../../features/accounts/signup/RegisterPersonal';
 
-import { Description } from "../../features/accounts/signup/Description";
-import { ProfPicture } from "../../features/accounts/signup/ProfPicture";
 import { RegisterPreferences } from "../../features/accounts/signup/RegisterPreferences";
+import { RegisterPublicInfos } from "../../features/accounts/signup/RegisterPublicInfos";
 
 export function CreatePersonal(): JSX.Element {
     return (
@@ -28,13 +27,11 @@ export function CreatePreferences(): JSX.Element {
 }
 
 export function CreateFinishing(): JSX.Element {
-    //TODO
     return (
         <div className='App login only'>
             <div>
                 <h2>Finalisation</h2>
-                <ProfPicture />
-                <Description />
+                <RegisterPublicInfos />
             </div>
         </div >
     );

@@ -122,7 +122,7 @@ export const RegisterPreferences = (): JSX.Element => {
                     }),
                 }}
             />
-            <Button>Suivant</Button>
+            <Button primary>Suivant</Button>
         </form>
     );
 };
