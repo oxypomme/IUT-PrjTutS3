@@ -59,7 +59,7 @@ function* getCurrProfile(action) {
         const id = yield select(getAuthId);
 
         const { request } = action.payload;
-        const key: number = yield call(
+        const key: string = yield call(
             rsf.database[request.type],
             request.urlL + '/' + id,
             request.params
@@ -69,7 +69,7 @@ function* getCurrProfile(action) {
             request.urlP + '/' + key,
             request.params
         )
-        yield put(fetchCurrProfilesSuccess({ ...profile, key }));
+        yield put(fetchCurrProfilesSuccess({ ...profile, key: parseInt(key) }));
     } catch (error) {
         yield put(fetchCurrProfilesFailed(error.message));
     }
@@ -101,7 +101,7 @@ function* createProfileSaga(action) {
         yield call(
             rsf.database[request.type],
             request.urlL + '/' + authid,
-            key
+            key.toString()
         );
         yield put(createProfileSuccess());
     } catch (error) {
