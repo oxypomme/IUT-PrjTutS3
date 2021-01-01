@@ -7,7 +7,7 @@ import IProfile, { instanceOfIProfile } from '../../../include/IProfile';
 
 import filterProfiles from '../../../tests/FilterProfiles';
 import ProfileCard from '../profile/ProfileCard';
-import { fetchArrayProfile, getAllProfiles, getCurrProfile } from '../profileSlice';
+import { fetchArrayProfile, getAllProfiles, getCurrProfile, resetProfiles } from '../profileSlice';
 import { fetchTags } from '../tagSlice';
 
 const ProfilesContainer = styled.div`
@@ -27,6 +27,9 @@ const SelectionProfiles = (): JSX.Element => {
         (async function getProfiles() {
             try {
                 setLoading(true);
+                if (profiles?.length > 0) {
+                    dispatch(resetProfiles());
+                }
 
                 if (instanceOfIProfile(currProfile)) {
                     const profs = await filterProfiles(currProfile.sex, currProfile.orientation, currProfile.tags, currProfile.key);

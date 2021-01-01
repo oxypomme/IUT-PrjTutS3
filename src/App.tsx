@@ -32,7 +32,6 @@ function App(): JSX.Element {
       } else {
         dispatch(setUid(''));
         dispatch(resetCurrProfile());
-        dispatch(resetProfiles())
       }
     });
   }, []);
