@@ -25,8 +25,9 @@ const PasswdRecoveryLink = styled.a`
 const SignIn = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const [email, setEmail] = React.useState();
-    const [passwd, setPasswd] = React.useState();
+
+    const [email, setEmail] = React.useState<string>("");
+    const [passwd, setPasswd] = React.useState<string>("");
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const handleSetEmailOnChange = (event) => setEmail(event.target.value);

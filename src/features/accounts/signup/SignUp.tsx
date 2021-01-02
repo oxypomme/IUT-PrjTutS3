@@ -13,9 +13,10 @@ import IError from "../../../include/IError";
 const SignUp = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const [email, setEmail] = React.useState<string>();
-    const [passwd, setPasswd] = React.useState<string>();
-    const [secondPasswd, setSecondPasswd] = React.useState<string>();
+
+    const [email, setEmail] = React.useState<string>("");
+    const [passwd, setPasswd] = React.useState<string>("");
+    const [secondPasswd, setSecondPasswd] = React.useState<string>("");
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const handleSetEmailOnChange = (event) => setEmail(event.target.value);

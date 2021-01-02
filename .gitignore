@@ -32,3 +32,5 @@ desktop.ini
 
 # Security reasons duh
 firebaseconfig.js
+
+/src/tests/test.tsx

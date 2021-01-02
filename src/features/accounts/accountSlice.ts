@@ -130,10 +130,11 @@ export const accountSlice = createSlice({
         }),
     },
     reducers: {
-        createAccountSuccess: (state) => ({
+        createAccountSuccess: (state, { payload: uid }) => ({
             ...state,
             isWorking: false,
-            error: ""
+            error: "",
+            uid
         }),
         createAccountFailed: (state, { payload: message }) => ({
             ...state,

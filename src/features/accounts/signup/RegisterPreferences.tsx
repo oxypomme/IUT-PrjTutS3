@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTags, getAllTags } from "../tagSlice";
 import { useHistory } from "react-router-dom";
@@ -11,7 +12,11 @@ import EOrientation from "../../../include/EOrientation";
 import EGender from "../../../include/EGender";
 import IError from "../../../include/IError";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationTriangle, faGenderless, faHelicopter, faHorse, faMarsDouble, faTransgender, faVenusMars } from "@fortawesome/free-solid-svg-icons";
+import { faExclamationTriangle, faGenderless, faHelicopter, faHorse, faMarsDouble, faTransgender, faVenusDouble, faVenusMars } from "@fortawesome/free-solid-svg-icons";
+
+const FontStyledIcon = styled(FontAwesomeIcon)`
+    margin-right: 5px;
+`;
 
 export const RegisterPreferences = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -27,21 +32,21 @@ export const RegisterPreferences = (): JSX.Element => {
 
     const tags: Array<IComboBoxItem> = useSelector(getAllTags);
 
-    const [selectedTags, setSelectedTags] = React.useState<Array<IComboBoxItem>>();
-    const [selectedGender, setSelectedGender] = React.useState<Array<IComboBoxItem>>();
-    const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IComboBoxItem>>();
+    const [selectedTags, setSelectedTags] = React.useState<Array<IComboBoxItem>>([]);
+    const [selectedGender, setSelectedGender] = React.useState<Array<IComboBoxItem>>([]);
+    const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IComboBoxItem>>([]);
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const genders = [
-        { value: EGender.Men, label: <span><FontAwesomeIcon icon={faHorse} style={{ marginRight: 4 }} />Poney</span> },
-        { value: EGender.Women, label: <span><FontAwesomeIcon icon={faHelicopter} style={{ marginRight: 4 }} />Hélicoptère</span> },
-        { value: EGender.NonBinary, label: <span><FontAwesomeIcon icon={faGenderless} style={{ marginRight: 4 }} />Pirate</span> }
+        { value: EGender.Men, label: <span><FontStyledIcon icon={faHorse} />Poney</span> },
+        { value: EGender.Women, label: <span><FontStyledIcon icon={faHelicopter} />Hélicoptère</span> },
+        { value: EGender.NonBinary, label: <span><FontStyledIcon icon={faGenderless} />Pirate</span> }
     ] as IComboBoxItem[]
 
     const orientations = [
-        { value: EOrientation.Homosexual, label: <span><FontAwesomeIcon icon={faVenusMars} style={{ marginRight: 4 }} />Homosexuel</span> },
-        { value: EOrientation.Heterosexual, label: <span><FontAwesomeIcon icon={faMarsDouble} style={{ marginRight: 4 }} />Hétérosexuel</span> },
-        { value: EOrientation.Bisexual, label: <span><FontAwesomeIcon icon={faTransgender} style={{ marginRight: 4 }} />Bisexuel</span> }
+        { value: EOrientation.Homosexual, label: <span><FontStyledIcon icon={selectedGender[0]?.value == 1 ? faVenusDouble : faMarsDouble} />Homosexuel</span> },
+        { value: EOrientation.Heterosexual, label: <span><FontStyledIcon icon={faVenusMars} />Hétérosexuel</span> },
+        { value: EOrientation.Bisexual, label: <span><FontStyledIcon icon={faTransgender} />Bisexuel</span> }
     ] as IComboBoxItem[]
 
     React.useEffect(() => {

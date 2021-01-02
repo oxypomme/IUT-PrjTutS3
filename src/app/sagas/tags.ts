@@ -20,7 +20,7 @@ function* getTags(action) {
       request.url,
       request.params
     );
-    yield put(fetchTagsSuccess(tags));
+    yield put(fetchTagsSuccess(tags.map((tag, index) => ({ value: index, label: tag }))));
   } catch (error) {
     yield put(fetchTagsFailed(error.message));
   }
@@ -42,20 +42,17 @@ function* getTag(action) {
   }
 }
 
-export function* getArrayTag(action) {
+function* getArrayTag(action) {
   try {
     const { request } = action.payload;
     const { tagsIds, ...params } = request.params;
 
-    yield all(tagsIds.map((tagId: number) => call(getTag, {
-      payload: {
-        request: {
-          type: request.type,
-          url: request.url,
-          params: { tagId, ...params }
-        }
-      }
-    })));
+    for (let i = 0; i < tagsIds.length; i++) {
+      const tagId = tagsIds[i];
+      yield put(fetchTag(tagId, params));
+      yield take([fetchTagSuccess, fetchTagFailed]);
+    }
+
   } catch (error) {
     yield put(fetchTagsFailed(error.message));
   }

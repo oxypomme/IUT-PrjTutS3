@@ -1,4 +1,4 @@
-import { call, put, takeLatest, select } from "redux-saga/effects";
+import { call, put, takeLatest, select, take } from "redux-saga/effects";
 import { rsf } from "../firebase";
 import "@firebase/database";
 
@@ -9,8 +9,12 @@ import {
 } from "../../features/accounts/matches/matchesSlice";
 import { getAuthId } from "../../features/accounts/accountSlice";
 
-import { getArrayProfile } from "./profiles";
-import { getProfileError } from "../../features/accounts/profileSlice";
+import {
+    fetchArrayProfile,
+    fetchProfilesFailed,
+    fetchProfilesSuccess,
+    getProfileError
+} from "../../features/accounts/profileSlice";
 
 function* getCurrMatches(action) {
     try {
@@ -24,16 +28,8 @@ function* getCurrMatches(action) {
         );
         yield put(fetchMatchesSuccess(matches));
 
-        yield call(getArrayProfile, {
-            payload: {
-                request: {
-                    type: "read",
-                    url: "/profiles",
-                    params: { authIds: Object.keys(matches) },
-                },
-            },
-        });
-
+        yield put(fetchArrayProfile(Object.keys(matches)))
+        yield take([fetchProfilesSuccess, fetchProfilesFailed]);
         const profileError = yield select(getProfileError);
         if (profileError != "") {
             throw new Error(profileError);

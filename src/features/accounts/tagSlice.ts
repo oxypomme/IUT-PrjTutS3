@@ -26,13 +26,13 @@ export const fetchTag = createAction(
     })
 );
 export const fetchArrayTag = createAction(
-    "FETCH_TAG_REQUESTED",
-    (tagIds: number[], params = {}) => ({
+    "FETCH_ARRAY_TAG_REQUESTED",
+    (tagsIds: number[], params = {}) => ({
         payload: {
             request: {
                 type: "read",
                 url: "/tags",
-                params: { tagIds, ...params },
+                params: { tagsIds, ...params },
             },
         },
     })

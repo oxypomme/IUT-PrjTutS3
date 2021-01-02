@@ -17,6 +17,7 @@ import Matches from "./views/Matches";
 import { CreatePersonal, CreatePreferences, CreateFinishing, CreateConfirm } from "./views/CreateProfile";
 
 import "./App.css";
+import TEST from "./tests/test";
 
 function App(): JSX.Element {
     const isConnected = useSelector(getIsConnected);

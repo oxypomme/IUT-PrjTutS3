@@ -28,14 +28,14 @@ export function RegisterPublicInfos(): JSX.Element {
 
     const webcamRef = React.useRef<Webcam>();
     const [devices, setDevices] = React.useState<Array<ICam>>([]);
-    const [cam, setCam] = React.useState<string>();
-    const [picture, setPicture] = React.useState<string>();
+    const [cam, setCam] = React.useState<string>("");
+    const [picture, setPicture] = React.useState<string>("");
 
-    const [description, setDescription] = React.useState();
+    const [description, setDescription] = React.useState<string>("");
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
 
-    const [pendingUploadUrl, setPendingUploadUrl] = React.useState<string>();
+    const [pendingUploadUrl, setPendingUploadUrl] = React.useState<string>("");
 
 
     const uploadedLinks = useSelector(getUploadedFiles);
@@ -52,6 +52,7 @@ export function RegisterPublicInfos(): JSX.Element {
             const icams = mdevices.map(v => { return { value: v.deviceId, label: v.label }; }) as ICam[];
 
             setDevices(icams);
+            setCam(icams[0].label);
         }
         getDevices();
     }, [setDevices]);
@@ -86,7 +87,7 @@ export function RegisterPublicInfos(): JSX.Element {
         if (!picture)
             errors = [...errors, { component: "picture", label: "Veuillez séléctionner une photo de profile." } as IError];
 
-        if (!description || (description && description === isNonNullChain))
+        if (!description)
             errors = [...errors, { component: "description", label: "Veuillez spécifier votre description." } as IError];
 
         setGlobalErrors(errors);

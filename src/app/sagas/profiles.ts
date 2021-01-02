@@ -5,8 +5,8 @@ import { rsf } from '../firebase'
 import '@firebase/database'
 
 import {
-    clearNewAccount,
     createAccount,
+    createAccountFailed,
     createAccountSuccess,
     deleteAccount,
     getAccountError,
@@ -33,9 +33,12 @@ import {
     deleteProfileSuccess
 } from '../../features/accounts/profileSlice';
 
-import { getArrayTag } from "./tags";
-import { createEmailAuth } from "./auth";
-import { getTagError } from '../../features/accounts/tagSlice';
+import {
+    fetchArrayTag,
+    fetchTagsFailed,
+    fetchTagSuccess,
+    getTagError
+} from '../../features/accounts/tagSlice';
 
 function* getProfile(action) {
     try {
@@ -49,16 +52,8 @@ function* getProfile(action) {
         );
         yield put(fetchProfilesSuccess({ ...profile, authId }));
 
-        yield call(getArrayTag, {
-            payload: {
-                request: {
-                    type: "read",
-                    url: "/tags",
-                    params: { tagsIds: profile.tags },
-                },
-            },
-        });
-
+        yield put(fetchArrayTag(profile.tags));
+        yield take([fetchTagSuccess, fetchTagsFailed]);
         const tagError = yield select(getTagError);
         if (tagError != "") {
             throw new Error(tagError);
@@ -68,26 +63,22 @@ function* getProfile(action) {
     }
 }
 
-export function* getArrayProfile(action) {
+function* getArrayProfile(action) {
     try {
         const { request } = action.payload;
         const { authIds, ...params } = request.params;
 
-        yield all(authIds.map((authId: number) => call(getProfile, {
-            payload: {
-                request: {
-                    type: request.type,
-                    url: request.url,
-                    params: { authId, ...params }
-                }
-            }
-        })));
+        for (let i = 0; i < authIds.length; i++) {
+            const authId = authIds[i];
+            yield put(fetchProfile(authId, params));
+            yield take([fetchProfilesSuccess, fetchProfilesFailed]);
+        }
     } catch (error) {
         yield put(fetchProfilesFailed(error.message));
     }
 }
 
-export function* getCurrProfile(action) {
+function* getCurrProfile(action) {
     try {
         const authId = yield select(getAuthId);
 
@@ -99,16 +90,8 @@ export function* getCurrProfile(action) {
         )
         yield put(fetchCurrProfilesSuccess({ ...profile, authId }));
 
-        yield call(getArrayTag, {
-            payload: {
-                request: {
-                    type: "read",
-                    url: "/tags",
-                    params: { tagsIds: profile.tags },
-                },
-            },
-        });
-
+        yield put(fetchArrayTag(profile.tags));
+        yield take([fetchTagSuccess, fetchTagsFailed]);
         const tagError = yield select(getTagError);
         if (tagError != "") {
             throw new Error(tagError);
@@ -120,14 +103,8 @@ export function* getCurrProfile(action) {
 
 function* createProfileSaga(action) {
     try {
-        yield call(createEmailAuth, {
-            payload: {
-                request: {
-                    type: "createUserWithEmailAndPassword",
-                    params: {}
-                }
-            }
-        });
+        yield put(createAccount());
+        yield take([createAccountSuccess, createAccountFailed]);
 
         const authError = yield select(getAccountError);
         if (authError != "") {
@@ -143,7 +120,6 @@ function* createProfileSaga(action) {
             { ...newProfile, ...request.params }
         );
 
-        yield put(clearNewAccount());
         yield put(createProfileSuccess());
     } catch (error) {
         yield put(createProfileFailed(error.message));

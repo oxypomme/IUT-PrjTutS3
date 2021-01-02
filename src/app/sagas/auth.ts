@@ -1,10 +1,8 @@
-import { all, call, put, select, takeLatest } from 'redux-saga/effects'
+import { all, call, put, select, take, takeLatest } from 'redux-saga/effects'
 import { withCallback } from 'redux-saga-callback';
 
 import { rsf } from '../firebase'
 import '@firebase/auth'
-
-import { getCurrProfile } from "./profiles";
 
 import {
     createAccount,
@@ -28,18 +26,27 @@ import {
     deleteAccountFailed,
     getNewAuth
 } from '../../features/accounts/accountSlice';
-import { getProfileError, resetCurrProfile, resetProfiles } from '../../features/accounts/profileSlice';
 
-export function* createEmailAuth(action) {
+import {
+    fetchCurrProfile,
+    fetchCurrProfilesFailed,
+    fetchCurrProfilesSuccess,
+    getProfileError,
+    resetCurrProfile,
+    resetProfiles
+} from '../../features/accounts/profileSlice';
+
+function* createEmailAuth(action) {
     try {
         const authInfo = yield select(getNewAuth);
         const { request } = action.payload;
-        yield call(
+        const data = yield call(
             rsf.auth[request.type],
             authInfo.email,
             authInfo.passwd
         );
-        yield put(createAccountSuccess());
+        const { user } = data;
+        yield put(createAccountSuccess(user.uid));
     } catch (error) {
         yield put(createAccountFailed(error.message));
     }
@@ -56,16 +63,8 @@ function* logInMail(action) {
         const { user } = data;
         yield put(loginAccountSuccess(user.uid));
 
-        yield call(getCurrProfile, {
-            payload: {
-                request: {
-                    type: "read",
-                    url: "/profiles",
-                    params: {}
-                }
-            }
-        });
-
+        yield put(fetchCurrProfile());
+        yield take([fetchCurrProfilesSuccess, fetchCurrProfilesFailed])
         const profileError = yield select(getProfileError);
         if (profileError != "") {
             throw new Error(profileError);

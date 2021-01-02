@@ -23,9 +23,9 @@ const RegisterPersonal = (): JSX.Element => {
         }
     }, [auth])
 
-    const [name, setName] = React.useState();
-    const [age, setAge] = React.useState<number>();
-    const [town, setTown] = React.useState();
+    const [name, setName] = React.useState("");
+    const [age, setAge] = React.useState<number>(18);
+    const [town, setTown] = React.useState("");
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
 
@@ -40,13 +40,13 @@ const RegisterPersonal = (): JSX.Element => {
         event.preventDefault();
         let errors = [];
 
-        if (!name || (name && name === isNonNullChain))
+        if (!name)
             errors = [...errors, { component: "name", label: "Veuillez spécifier votre nom." } as IError];
         if (!age)
             errors = [...errors, { component: "age", label: "Veuillez spécifier votre age." } as IError];
         else if (age && age < 18)
             errors = [...errors, { component: "age", label: "L'âge doit etre supérieur à 18 ans." } as IError];
-        if (!town || (town && town === isNonNullChain))
+        if (!town)
             errors = [...errors, { component: "town", label: "Veuillez spécifier votre ville." } as IError];
 
         setGlobalErrors(errors);
