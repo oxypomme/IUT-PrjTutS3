@@ -7,8 +7,7 @@ import IProfile, { instanceOfIProfile } from '../../../include/IProfile';
 
 import filterProfiles from '../../../tests/FilterProfiles';
 import ProfileCard from '../profile/ProfileCard';
-import { fetchArrayProfile, getAllProfiles, getCurrProfile, resetProfiles } from '../profileSlice';
-//import { fetchTags } from '../tagSlice';
+import { fetchArrayProfile, getCurrProfile } from '../profileSlice';
 
 const ProfilesContainer = styled.div`
     & > div {

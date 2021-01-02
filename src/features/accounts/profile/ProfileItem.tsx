@@ -1,15 +1,14 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHorse, faCalendarAlt, faBuilding, faVenusMars, faVenusDouble, faNeuter, faHelicopter, faMarsDouble, faTransgender, faGenderless } from '@fortawesome/free-solid-svg-icons';
 
-import { fetchCurrProfile, fetchProfile, getAllProfiles, getCurrProfile } from '../profileSlice';
-import { fetchTags, getAllTags } from '../tagSlice';
+import { getAllProfiles } from '../profileSlice';
 
 import IProfile from '../../../include/IProfile';
-import IComboBoxItem from '../../../include/IComboBoxItem';
+import ITag from '../../../include/IComboBoxItem';
 import EGender from '../../../include/EGender';
 import EOrientation from '../../../include/EOrientation';
 import { Button, WaitingForData } from '../../../components/styledComponents';
