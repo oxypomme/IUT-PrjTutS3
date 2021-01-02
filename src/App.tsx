@@ -1,11 +1,13 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
+import firebaseApp from "./app/firebase";
 import "@firebase/auth";
 
 import { Navbar } from "./features/navbar/Navbar";
-import { getIsConnected } from "./features/accounts/accountSlice";
+import { getIsConnected, setUid } from "./features/accounts/accountSlice";
+import { fetchCurrProfile, resetCurrProfile } from "./features/accounts/profileSlice";
 
 import { Home } from "./views/Home";
 import { Login } from "./views/Login/Login";
@@ -19,7 +21,20 @@ import { CreatePersonal, CreatePreferences, CreateFinishing, CreateConfirm } fro
 import "./App.css";
 
 function App(): JSX.Element {
+    const dispatch = useDispatch();
     const isConnected = useSelector(getIsConnected);
+
+    React.useEffect(() => {
+        firebaseApp.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                dispatch(setUid(user.uid));
+                dispatch(fetchCurrProfile());
+            } else {
+                dispatch(setUid(''));
+                dispatch(resetCurrProfile());
+            }
+        });
+    }, []);
 
     return (
         <Router>
