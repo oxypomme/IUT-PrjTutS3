@@ -132,7 +132,7 @@ const ProfileComponent = ({ profile }: any): JSX.Element => {
                 <ProfilePicture source={profile?.imageURL} />
             </div>
             <div>
-                <h1>{profile?.authId} {profile?.name || <WaitingForData length={16} />}</h1>
+                <h1>{profile?.name || <WaitingForData length={16} />}</h1>
                 <Infos>
                     <li><FontAwesomeIcon icon={faCalendarAlt} /> {profile?.age || <WaitingForData length={2} />} ans</li>
                     <li><FontAwesomeIcon icon={genderIcon} /> {gender || <WaitingForData length={8} />}</li>
