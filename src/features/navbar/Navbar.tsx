@@ -88,8 +88,8 @@ const NavItem = styled.li`
         margin-right: 5px;
     }
 `;
-const CompactableIcon = styled(FontAwesomeIcon) <{ isopened?: boolean }>`
-    transform: translateX(${props => props.isopened ? "0" : "173px"});
+const CompactableIcon = styled(FontAwesomeIcon) <{ isopened?: string }>`
+    transform: translateX(${props => props.isopened == "true" ? "0" : "173px"});
     transition: transform 0.5s;
     right: 5px;
 `;
@@ -130,7 +130,7 @@ export const Navbar = (): JSX.Element => {
         return (
             <NavItem>
                 <a href="#" className={isOpened ? "active" : ""} onClick={handleDropdown}>
-                    <CompactableIcon icon={icon} isopened={openState} />{label} <FontAwesomeIcon icon={isOpened ? faCaretUp : faCaretDown} />
+                    <CompactableIcon icon={icon} isopened={openState.toString()} />{label} <FontAwesomeIcon icon={isOpened ? faCaretUp : faCaretDown} />
                 </a>
                 <NavDropdownContainer style={{ display: isOpened ? "block" : "none" }}>
                     {children}
@@ -178,7 +178,7 @@ export const Navbar = (): JSX.Element => {
                     <NavLogo src={logo} alt="logo" />
                 </NavItem>
                 <NavItem>
-                    <NavLink exact to="/"><CompactableIcon icon={faHome} isopened={openState} />Accueil</NavLink>
+                    <NavLink exact to="/"><CompactableIcon icon={faHome} isopened={openState.toString()} />Accueil</NavLink>
                 </NavItem>
                 <NavItem>
                     <NavLink to="/camera">Test caméra</NavLink>
@@ -198,17 +198,17 @@ export const Navbar = (): JSX.Element => {
                 }
                 {isConnected &&
                     <NavItem>
-                        <NavLink to="/profile"><CompactableIcon icon={faUser} isopened={openState} />Mon profil</NavLink>
+                        <NavLink to="/profile"><CompactableIcon icon={faUser} isopened={openState.toString()} />Mon profil</NavLink>
                     </NavItem>
                 }
                 {isConnected &&
                     <NavItem>
-                        <a href="#" onClick={handleLogout}><CompactableIcon icon={faSignOutAlt} isopened={openState} />Déconnexion</a>
+                        <a href="#" onClick={handleLogout}><CompactableIcon icon={faSignOutAlt} isopened={openState.toString()} />Déconnexion</a>
                     </NavItem>
                 }
                 {!isConnected &&
                     <NavItem>
-                        <NavLink to="/login"><CompactableIcon icon={faSignInAlt} isopened={openState} />Connexion</NavLink>
+                        <NavLink to="/login"><CompactableIcon icon={faSignInAlt} isopened={openState.toString()} />Connexion</NavLink>
                     </NavItem>
                 }
             </NavList>
