@@ -52,7 +52,7 @@ const CheckBox = ({ onChange, content }: any): JSX.Element => {
         setChecked(event.target.checked)
 
         onChange(event);
-        console.log(checked);
+        //? if the style need to be changed with script, do it here
     }
 
     return (
