@@ -3,13 +3,12 @@ import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ProfileItem from '../profile/ProfileItem';
-import IProfile, { instanceOfIProfile } from '../../../include/IProfile';
+import IProfile from '../../../include/IProfile';
 
-import { fetchArrayProfile, fetchProfile, getAllProfiles, getCurrProfile } from '../profileSlice';
+import { getAllProfiles, getCurrProfile } from '../profileSlice';
 
 import { fetchMatches, getAllMatches } from './matchesSlice';
 import { Separator, WaitingForData } from '../../../components/styledComponents';
-import { fetchTags, getAllTags } from '../tagSlice';
 import { getScore } from '../../../tests/FilterProfiles';
 
 const ProfileList = styled.ul`
@@ -31,6 +30,7 @@ interface IMatch {
 const MyMatches = (props: any): JSX.Element => {
     const dispatch = useDispatch();
     const currProfile: IProfile | Record<string, never> = useSelector(getCurrProfile);
+    const profiles: IProfile[] = useSelector(getAllProfiles);
     const matches: IMatch = useSelector(getAllMatches);
 
     React.useEffect(() => {
@@ -41,16 +41,32 @@ const MyMatches = (props: any): JSX.Element => {
         }
     }, [currProfile]);
 
+    const Profiles = ({ isPending }: any): JSX.Element => {
+        if (!isPending) {
+            isPending = false;
+        }
+
+        return (
+            <ProfileList>
+                {
+                    matches ?
+                        Object.keys(matches).sort((a, b) => getScore((profiles.find(p => p.authId == b))?.tags, currProfile.tags) - getScore((profiles.find(p => p.authId == a))?.tags, currProfile.tags))
+                            .map((target, index) =>
+                                matches[target]?.isPending == isPending ?
+                                    <ProfileItem key={index} id={target} isPending={matches[target].isPending} />
+                                    : <></>)
+                        : <WaitingForData length={16} />
+                }
+            </ProfileList>
+        )
+    }
+
     return (
         <div>
-            <ProfileList>
-                {matches ? Object.keys(matches).map((target, index) => matches[target]?.isPending == false ? <ProfileItem key={index} id={target} isPending={matches[target].isPending} /> : '') : <WaitingForData length={16} />}
-            </ProfileList>
+            <Profiles />
             <Separator />
-            <ProfileList>
-                {matches ? Object.keys(matches).map((target, index) => matches[target]?.isPending == true ? <ProfileItem key={index} id={target} isPending={matches[target].isPending} /> : '') : <WaitingForData length={16} />}
-            </ProfileList>
-        </div>
+            <Profiles isPending={true} />
+        </div >
     );
 }
 
