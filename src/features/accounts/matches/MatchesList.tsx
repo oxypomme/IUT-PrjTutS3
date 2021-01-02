@@ -14,6 +14,8 @@ import { getScore } from '../../../tests/FilterProfiles';
 const ProfileList = styled.ul`
     list-style-type: none;
     padding: 0 40px;
+    width: fit-content;
+    margin: 15px auto;
 
     &>li {
         margin: 5px;
@@ -64,9 +66,6 @@ const MyMatches = (): JSX.Element => {
             </ProfileList>
         )
     }
-
-    console.log(Object.keys(inMatches));
-
 
     return (
         <div>

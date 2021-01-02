@@ -15,7 +15,7 @@ import { Button, WaitingForData } from '../../../components/styledComponents';
 import { ProfilePicture } from './ProfileComponent';
 
 const Item = styled.li`
-    max-width: 850px;
+    width: 850px;
     display:flex;
     flex-direction: row;
     background-color: white;
