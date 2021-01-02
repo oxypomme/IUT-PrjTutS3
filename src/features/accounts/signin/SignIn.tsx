@@ -11,6 +11,7 @@ import { loginAccount, resetPasswordAccount } from '../accountSlice';
 
 import IError from '../../../include/IError';
 import CheckBox from '../../../components/CheckBox';
+import firebase from 'firebase';
 
 const PasswdRecoveryLink = styled.a`
     color: hsl(0, 0%, 50%);
@@ -29,15 +30,15 @@ const SignIn = (): JSX.Element => {
 
     const [email, setEmail] = React.useState<string>("");
     const [passwd, setPasswd] = React.useState<string>("");
-    const [persistance, setPersistance] = React.useState<boolean>(false);
+    const [persistence, setPersistence] = React.useState<boolean>(false);
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const handleSetEmailOnChange = (event) => setEmail(event.target.value);
 
     const handleSetPasswordOnChange = (event) => setPasswd(event.target.value);
 
-    const handlePersistanceChange = (event) => setPersistance(event.target.checked);
-    console.log(persistance);
+    const handlePersistanceChange = (event) => setPersistence(event.target.checked);
+    console.log(persistence);
 
 
     const onLogged = ({ error }) => {
@@ -60,17 +61,23 @@ const SignIn = (): JSX.Element => {
 
         setGlobalErrors(errors);
         if (errors.length < 1) {
-            dispatch({
-                type: loginAccount.type,
-                payload: {
-                    request: {
-                        type: "signInWithEmailAndPassword",
-                        email,
-                        passwd
-                    }
-                },
-                onComplete: onLogged
-            });
+            firebase.auth().setPersistence(persistence ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION)
+                .then(() =>
+                    dispatch({
+                        type: loginAccount.type,
+                        payload: {
+                            request: {
+                                type: "signInWithEmailAndPassword",
+                                email,
+                                passwd
+                            }
+                        },
+                        onComplete: onLogged
+                    })
+                )
+                .catch((error) => {
+                    alert("ERREUR : " + error.message);
+                });
         }
     }
 
