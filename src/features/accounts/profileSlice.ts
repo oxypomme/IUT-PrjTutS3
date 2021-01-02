@@ -60,12 +60,12 @@ export const updateProfile = createAction(
 );
 export const deleteProfile = createAction(
     "DELETE_PROFILE_REQUESTED",
-    (authId: string, params = {}) => ({
+    (params = {}) => ({
         payload: {
             request: {
                 type: "delete",
                 urls: ["/profiles", "/matchs"],
-                params: { authId, ...params }
+                params
             }
         }
     })

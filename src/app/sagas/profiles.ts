@@ -1,4 +1,5 @@
 import { call, put, takeLatest, take, select, all, fork } from 'redux-saga/effects'
+import { withCallback } from 'redux-saga-callback';
 
 import { rsf } from '../firebase'
 import '@firebase/database'
@@ -32,8 +33,9 @@ import {
     deleteProfileSuccess
 } from '../../features/accounts/profileSlice';
 
+import { getArrayTag } from "./tags";
 import { createEmailAuth } from "./auth";
-import { withCallback } from 'redux-saga-callback';
+import { getTagError } from '../../features/accounts/tagSlice';
 
 function* getProfile(action) {
     try {
@@ -46,6 +48,21 @@ function* getProfile(action) {
             params
         );
         yield put(fetchProfilesSuccess({ ...profile, authId }));
+
+        yield call(getArrayTag, {
+            payload: {
+                request: {
+                    type: "read",
+                    url: "/tags",
+                    params: profile.tags,
+                },
+            },
+        });
+
+        const tagError = yield select(getTagError);
+        if (tagError != "") {
+            throw new Error(tagError);
+        }
     } catch (error) {
         yield put(fetchProfilesFailed(error.message));
     }
@@ -80,6 +97,21 @@ function* getCurrProfile(action) {
             request.params
         )
         yield put(fetchCurrProfilesSuccess({ ...profile, authId }));
+
+        yield call(getArrayTag, {
+            payload: {
+                request: {
+                    type: "read",
+                    url: "/tags",
+                    params: profile.tags,
+                },
+            },
+        });
+
+        const tagError = yield select(getTagError);
+        if (tagError != "") {
+            throw new Error(tagError);
+        }
     } catch (error) {
         yield put(fetchCurrProfilesFailed(error.message));
     }
@@ -94,7 +126,7 @@ function* createProfileSaga(action) {
                     params: {}
                 }
             }
-        })
+        });
 
         const authError = yield select(getAccountError);
         if (authError != "") {
@@ -140,14 +172,13 @@ function* deleteProfileSaga(action) {
             throw new Error(accountError);
         }
 
-        const authid = yield select(getAuthId);
+        const authId = yield select(getAuthId);
         const { request } = action.payload;
-        const { authId, ...params } = request;
         for (let i = 0; i < request.urls.length; i++) {
             yield call(
                 rsf.database[request.type],
                 request.urls[i] + '/' + authId,
-                params
+                request.params
             );
         }
 

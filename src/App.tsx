@@ -24,7 +24,7 @@ function App(): JSX.Element {
     const dispatch = useDispatch();
     const isConnected = useSelector(getIsConnected);
 
-    React.useEffect(() => {
+    /*React.useEffect(() => {
         firebaseApp.auth().onAuthStateChanged(function (user) {
             if (user) {
                 dispatch(setUid(user.uid));
@@ -34,7 +34,7 @@ function App(): JSX.Element {
                 dispatch(resetCurrProfile());
             }
         });
-    }, []);
+    }, []);*/
 
     return (
         <Router>

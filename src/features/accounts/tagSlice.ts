@@ -1,13 +1,25 @@
 import { createAction, createSelector, createSlice } from "@reduxjs/toolkit";
 
-export const fetchTags = createAction(
-    "FETCH_TAGS_REQUESTED",
-    (params = {}) => ({
+export const fetchTag = createAction(
+    "FETCH_TAG_REQUESTED",
+    (tagId: number, params = {}) => ({
         payload: {
             request: {
                 type: "read",
                 url: "/tags",
-                params,
+                params: { tagId, ...params },
+            },
+        },
+    })
+);
+export const fetchArrayTag = createAction(
+    "FETCH_TAG_REQUESTED",
+    (tagIds: number[], params = {}) => ({
+        payload: {
+            request: {
+                type: "read",
+                url: "/tags",
+                params: { tagIds, ...params },
             },
         },
     })
@@ -21,20 +33,32 @@ export const tagSlice = createSlice({
         error: ""
     },
     extraReducers: {
-        [fetchTags.type]: (state) => ({
+        [fetchTag.type]: (state) => ({
             ...state,
             isFetching: true,
             error: ""
         }),
     },
     reducers: {
-        fetchTagsSuccess: (state, { payload: tags }) => ({
-            ...state,
-            isFetching: false,
-            error: "",
-            tags,
-        }),
-        fetchTagsFailed: (state, { payload: message }) => ({
+        fetchTagSuccess: (state, { payload: newTag }) => {
+            const tags = [...state.tags];
+
+            for (let i = 0; i < state.tags.length; i++) {
+                const tag = state.tags[i];
+
+                if (tag == newTag) {
+                    tags.splice(i, 1);
+                }
+            }
+
+            return {
+                ...state,
+                isWorking: false,
+                error: "",
+                profiles: [...tags, newTag]
+            }
+        },
+        fetchTagFailed: (state, { payload: message }) => ({
             ...state,
             isFetching: false,
             error: message
@@ -43,8 +67,8 @@ export const tagSlice = createSlice({
 });
 
 export const {
-    fetchTagsSuccess,
-    fetchTagsFailed
+    fetchTagSuccess,
+    fetchTagFailed
 } = tagSlice.actions;
 
 export const getState = state => state.tags;

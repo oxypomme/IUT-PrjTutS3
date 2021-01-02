@@ -140,10 +140,11 @@ export const accountSlice = createSlice({
             isWorking: false,
             error: message
         }),
-        loginAccountSuccess: (state) => ({
+        loginAccountSuccess: (state, { payload: uid }) => ({
             ...state,
             isWorking: false,
-            error: ""
+            error: "",
+            uid
         }),
         loginAccountFailed: (state, { payload: message }) => ({
             ...state,
@@ -153,29 +154,20 @@ export const accountSlice = createSlice({
         logoutAccountSuccess: (state) => ({
             ...state,
             isWorking: false,
-            error: ""
+            error: "",
+            uid: ""
         }),
         logoutAccountFailed: (state, { payload: message }) => ({
             ...state,
             isWorking: false,
             error: message
         }),
-        updateEmailAccountSuccess: (state) => ({
+        updateAccountSuccess: (state) => ({
             ...state,
             isWorking: false,
             error: ""
         }),
-        updateEmailAccountFailed: (state, { payload: message }) => ({
-            ...state,
-            isWorking: false,
-            error: message
-        }),
-        updatePasswordAccountSuccess: (state) => ({
-            ...state,
-            isWorking: false,
-            error: ""
-        }),
-        updatePasswordAccountFailed: (state, { payload: message }) => ({
+        updateAccountFailed: (state, { payload: message }) => ({
             ...state,
             isWorking: false,
             error: message
@@ -284,10 +276,8 @@ export const {
     loginAccountSuccess,
     logoutAccountSuccess,
     logoutAccountFailed,
-    updateEmailAccountFailed,
-    updateEmailAccountSuccess,
-    updatePasswordAccountFailed,
-    updatePasswordAccountSuccess,
+    updateAccountFailed,
+    updateAccountSuccess,
     resetPasswordAccountFailed,
     resetPasswordAccountSuccess,
     deleteAccountFailed,

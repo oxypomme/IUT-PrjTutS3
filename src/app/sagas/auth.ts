@@ -1,4 +1,5 @@
 import { all, call, put, select, takeLatest } from 'redux-saga/effects'
+import { withCallback } from 'redux-saga-callback';
 
 import { rsf } from '../firebase'
 import '@firebase/auth'
@@ -14,11 +15,9 @@ import {
     logoutAccountSuccess,
     logoutAccountFailed,
     updateEmailAccount,
-    updateEmailAccountSuccess,
-    updateEmailAccountFailed,
+    updateAccountSuccess,
+    updateAccountFailed,
     updatePasswordAccount,
-    updatePasswordAccountSuccess,
-    updatePasswordAccountFailed,
     resetPasswordAccount,
     resetPasswordAccountSuccess,
     resetPasswordAccountFailed,
@@ -27,7 +26,7 @@ import {
     deleteAccountFailed,
     getNewAuth
 } from '../../features/accounts/accountSlice';
-import { withCallback } from 'redux-saga-callback';
+import { getCurrProfile, getProfileError, resetCurrProfile } from '../../features/accounts/profileSlice';
 
 export function* createEmailAuth(action) {
     try {
@@ -47,12 +46,27 @@ export function* createEmailAuth(action) {
 function* logInMail(action) {
     try {
         const { request } = action.payload;
-        yield call(
+        const user = yield call(
             rsf.auth[request.type],
             request.email,
             request.passwd
         );
-        yield put(loginAccountSuccess());
+        yield put(loginAccountSuccess(user.uid));
+
+        yield call(getCurrProfile, {
+            payload: {
+                request: {
+                    type: "read",
+                    url: "/profiles",
+                    params: {}
+                }
+            }
+        });
+
+        const profileError = yield select(getProfileError);
+        if (profileError != "") {
+            throw new Error(profileError);
+        }
     } catch (error) {
         yield put(loginAccountFailed(error.message));
         throw error;
@@ -66,6 +80,7 @@ function* logOut(action) {
             rsf.auth[request.type]
         );
         yield put(logoutAccountSuccess());
+        yield put(resetCurrProfile());
     } catch (error) {
         yield put(logoutAccountFailed(error.message));
         throw error;
@@ -79,9 +94,9 @@ function* updateAuth(action) {
             rsf.auth[request.type],
             request.param
         );
-        yield put(updateEmailAccountSuccess());
+        yield put(updateAccountSuccess());
     } catch (error) {
-        yield put(updateEmailAccountFailed(error.message));
+        yield put(updateAccountFailed(error.message));
     }
 }
 
