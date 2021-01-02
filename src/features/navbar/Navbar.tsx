@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import logo from '../../logo.svg';
+import { InferProps } from "prop-types";
 
 import styled from '@emotion/styled';
 
@@ -110,8 +111,13 @@ export const Navbar = (): JSX.Element => {
 
     const [openState, setOpenState] = React.useState<boolean>(false);
 
-    const Dropdown = React.useCallback(({ icon, defaultValue, label, children }: any): JSX.Element => {
-        const [isOpened, setIsOpened] = React.useState<boolean>(!!defaultValue);
+    const Dropdown = React.useCallback(({
+        icon,
+        defaultValue,
+        label,
+        children
+    }: InferProps<typeof Dropdown.propTypes>): JSX.Element => {
+        const [isOpened, setIsOpened] = React.useState<boolean>(defaultValue);
 
         const handleDropdown = (event) => {
             event.preventDefault();
@@ -133,7 +139,7 @@ export const Navbar = (): JSX.Element => {
         )
     }, [openState, dispatch]);
 
-    const onUnlogged = ({ error, cancelled, data }) => {
+    const onUnlogged = ({ error }) => {
         if (error) {
             alert("ERREUR : " + error.message);
         }
