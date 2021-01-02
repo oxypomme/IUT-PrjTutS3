@@ -64,6 +64,10 @@ const Buttons = styled.div`
     top: 20%;
     right: 15px;
     transition: top 0.25s;
+
+    & > button{
+        min-width: 75px;
+    }
 `;
 
 const Pending = styled.div`
@@ -76,10 +80,11 @@ const Pending = styled.div`
 
 interface ProfileItemProps {
     id: number | string,
-    isPending: boolean,
+    isPending?: boolean,
+    inviting?: boolean
 }
 
-const ProfileItem = ({ id, isPending }: ProfileItemProps): JSX.Element => {
+const ProfileItem = ({ id, isPending, inviting }: ProfileItemProps): JSX.Element => {
     const profiles: IProfile[] = useSelector(getAllProfiles);
     const profile: IProfile = profiles?.find(p => p.authId === id);
 
@@ -140,8 +145,8 @@ const ProfileItem = ({ id, isPending }: ProfileItemProps): JSX.Element => {
                 <Pending>En attente</Pending>
                 :
                 <Buttons>
-                    <CustomButton>Chat</CustomButton>
-                    <CustomButton primary>Unmatch</CustomButton>
+                    {inviting ? <CustomButton>Refuser</CustomButton> : <CustomButton>Chat</CustomButton>}
+                    {inviting ? <CustomButton primary>Accepter</CustomButton> : <CustomButton primary>Unmatch</CustomButton>}
                 </Buttons>
             }
         </Item >

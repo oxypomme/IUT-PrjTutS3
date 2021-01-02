@@ -1,44 +1,82 @@
-import { call, put, takeLatest, select, take } from "redux-saga/effects";
+import { call, put, takeLatest, select, take, all } from "redux-saga/effects";
 import { rsf } from "../firebase";
+import firebase from '@firebase/app';
 import "@firebase/database";
 
 import {
     fetchMatches,
     fetchMatchesSuccess,
-    fetchMatchesFailed
+    fetchMatchesFailed,
+    createMatchSuccess,
+    createMatchFailed,
+    newMatch
 } from "../../features/accounts/matches/matchesSlice";
 import { getAuthId } from "../../features/accounts/accountSlice";
 
 import {
-    fetchArrayProfile,
-    fetchProfilesFailed,
-    fetchProfilesSuccess,
-    getProfileError
+    fetchArrayProfile
 } from "../../features/accounts/profileSlice";
 
-function* getCurrMatches(action) {
+function* getMatches(action) {
     try {
         const authId = yield select(getAuthId);
+        if (authId == "") {
+            throw new Error("User not connected");
+        }
 
         const { request } = action.payload;
-        const matches = yield call(
+        const outgoingMatches = yield call(
             rsf.database[request.type],
             request.url + '/' + authId,
             request.params
         );
-        yield put(fetchMatchesSuccess(matches));
 
-        yield put(fetchArrayProfile(Object.keys(matches)))
-        yield take([fetchProfilesSuccess, fetchProfilesFailed]);
-        const profileError = yield select(getProfileError);
-        if (profileError != "") {
-            throw new Error(profileError);
-        }
+        // Récupère tout les matchs des personnes qui m'ont matchés
+        const incomingRawMatches = yield call(
+            rsf.database[request.type],
+            firebase.database().ref(request.url).orderByChild(authId + '/isBlocked').equalTo(false),
+            request.params
+        );
+        const incomingMatches = {};
+        Object.getOwnPropertyNames(incomingRawMatches)?.forEach(key => {
+            if (incomingRawMatches[key][authId]) {
+                incomingMatches[key] = incomingRawMatches[key][authId];
+            }
+        });
+
+        yield put(fetchMatchesSuccess({ incomingMatches, outgoingMatches }));
+
+        yield put(fetchArrayProfile(Object.keys({ ...incomingMatches, ...outgoingMatches })))
     } catch (error) {
         yield put(fetchMatchesFailed(error.message));
     }
 }
 
+function* createMatch(action) {
+    try {
+        const authId = yield select(getAuthId);
+        if (authId == "") {
+            throw new Error("User not connected");
+        }
+
+        const { request } = action.payload;
+        const { targetId, ...params } = request.params;
+        yield call(
+            rsf.database[request.type],
+            request.url + '/' + authId + '/' + targetId,
+            params
+        );
+        yield put(createMatchSuccess());
+
+        yield put(fetchMatches());
+    } catch (error) {
+        yield put(createMatchFailed(error.message));
+    }
+}
+
 export default function* matchesSagas() {
-    yield takeLatest(fetchMatches.type, getCurrMatches);
+    yield all([
+        takeLatest(fetchMatches.type, getMatches),
+        takeLatest(newMatch.type, createMatch),
+    ]);
 }

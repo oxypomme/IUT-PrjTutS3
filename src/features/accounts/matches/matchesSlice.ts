@@ -12,31 +12,70 @@ export const fetchMatches = createAction(
         },
     })
 );
+export const newMatch = createAction(
+    "CREATE_MATCH_REQUESTED",
+    (targetId: string, params = {}) => ({
+        payload: {
+            request: {
+                type: "update",
+                url: "/matches",
+                params: {
+                    targetId,
+                    data: {
+                        isBlocked: false,
+                        isPending: true
+                    },
+                    ...params
+                },
+            },
+        },
+    })
+);
 
 export const matchSlice = createSlice({
     name: 'matches',
     initialState: {
         matches: null,
-        isFetching: false,
+        incomingMatches: null,
+        isWorking: false,
         error: ""
     },
     extraReducers: {
         [fetchMatches.type]: (state) => ({
             ...state,
-            isFetching: true,
+            isWorking: true,
+            error: ""
+        }),
+        [newMatch.type]: (state) => ({
+            ...state,
+            isWorking: true,
             error: ""
         }),
     },
     reducers: {
-        fetchMatchesSuccess: (state, { payload: matches }) => ({
-            ...state,
-            isFetching: false,
-            error: "",
-            matches,
-        }),
+        fetchMatchesSuccess: (state, { payload: matches }) => {
+            const { incomingMatches, outgoingMatches } = matches;
+            return {
+                ...state,
+                isWorking: false,
+                error: "",
+                matches: outgoingMatches,
+                incomingMatches
+            }
+        },
         fetchMatchesFailed: (state, { payload: message }) => ({
             ...state,
-            isFetching: false,
+            isWorking: false,
+            error: message
+        }),
+        createMatchSuccess: (state) => ({
+            ...state,
+            isWorking: false,
+            error: "",
+        }),
+        createMatchFailed: (state, { payload: message }) => ({
+            ...state,
+            isWorking: false,
             error: message
         }),
     }
@@ -44,12 +83,15 @@ export const matchSlice = createSlice({
 
 export const {
     fetchMatchesSuccess,
-    fetchMatchesFailed
+    fetchMatchesFailed,
+    createMatchSuccess,
+    createMatchFailed,
 } = matchSlice.actions;
 
 export const getState = state => state.matches;
 
-export const getAllMatches = createSelector(getState, (state) => state.matches);
+export const getOutgoingMatches = createSelector(getState, (state) => state.matches);
+export const getIngoingMatches = createSelector(getState, (state) => state.incomingMatches);
 
 export const getMatchError = createSelector(getState, (state) => state.error);
 
