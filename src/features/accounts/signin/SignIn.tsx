@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { loginAccount, resetPasswordAccount } from '../accountSlice';
 
 import IError from '../../../include/IError';
+import CheckBox from '../../../components/CheckBox';
 
 const PasswdRecoveryLink = styled.a`
     color: hsl(0, 0%, 50%);
@@ -28,11 +29,16 @@ const SignIn = (): JSX.Element => {
 
     const [email, setEmail] = React.useState<string>("");
     const [passwd, setPasswd] = React.useState<string>("");
+    const [persistance, setPersistance] = React.useState<boolean>(false);
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const handleSetEmailOnChange = (event) => setEmail(event.target.value);
 
     const handleSetPasswordOnChange = (event) => setPasswd(event.target.value);
+
+    const handlePersistanceChange = (event) => setPersistance(event.target.checked);
+    console.log(persistance);
+
 
     const onLogged = ({ error }) => {
         if (error) {
@@ -114,6 +120,10 @@ const SignIn = (): JSX.Element => {
                 <HiddenLabel htmlFor="passwd">Password</HiddenLabel>
             </TextBox>
             <PasswdRecoveryLink href="#" onClick={handleResetPassword}>Mot de passe oublié ?</PasswdRecoveryLink>
+            <CheckBox
+                content="Rester connecté"
+                onChange={handlePersistanceChange}
+            ></CheckBox>
             <Button primary>Connexion</Button>
         </form>
     );
