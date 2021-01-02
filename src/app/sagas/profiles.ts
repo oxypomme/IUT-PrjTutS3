@@ -54,7 +54,7 @@ function* getProfile(action) {
                 request: {
                     type: "read",
                     url: "/tags",
-                    params: profile.tags,
+                    params: { tagsIds: profile.tags },
                 },
             },
         });
@@ -68,16 +68,17 @@ function* getProfile(action) {
     }
 }
 
-function* getArrayProfile(action) {
+export function* getArrayProfile(action) {
     try {
         const { request } = action.payload;
+        const { authIds, ...params } = request.params;
 
-        yield all(request.authIds.map((authId: number) => call(getProfile, {
+        yield all(authIds.map((authId: number) => call(getProfile, {
             payload: {
                 request: {
                     type: request.type,
                     url: request.url,
-                    params: { authId, ...request.params }
+                    params: { authId, ...params }
                 }
             }
         })));
@@ -86,7 +87,7 @@ function* getArrayProfile(action) {
     }
 }
 
-function* getCurrProfile(action) {
+export function* getCurrProfile(action) {
     try {
         const authId = yield select(getAuthId);
 
@@ -103,7 +104,7 @@ function* getCurrProfile(action) {
                 request: {
                     type: "read",
                     url: "/tags",
-                    params: profile.tags,
+                    params: { tagsIds: profile.tags },
                 },
             },
         });

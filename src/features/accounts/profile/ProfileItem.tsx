@@ -76,13 +76,13 @@ const Pending = styled.div`
 `;
 
 interface ProfileItemProps {
-    id: number,
+    id: number | string,
     isPending: boolean,
 }
 
 const ProfileItem = ({ id, isPending }: ProfileItemProps): JSX.Element => {
     const profiles: IProfile[] = useSelector(getAllProfiles);
-    const profile: IProfile = profiles?.find(p => p.key === id);
+    const profile: IProfile = profiles?.find(p => p.authId === id);
 
     let genderIcon = faUser;
     let gender = null;

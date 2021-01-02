@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+import firebase from '../app/firebase';
 import '@firebase/database'
 
 import EGender from '../include/EGender';
@@ -33,21 +33,21 @@ export const getScore = (profTags: number[], myTags: number[]): number => {
  * @param myTags The tags IDs of the current profile
  * @param myProfileId The id to exclude
  */
-const filterProfiles = async (mySex: EGender, myOrientation: EOrientation, myTags: number[], myProfileId: number): Promise<{ key: number, score: number }[]> => {
+const filterProfiles = async ({ sex: mySex, orientation: myOrientation, tags: myTags, authId: myProfileId }: IProfile): Promise<{ key: string, score: number }[]> => {
     //TODO: Move to SAGA ?
     const profiles = (await Pref.once('value')).val();
 
     const Mref = db.ref('/matches/' + myProfileId);
     const matches = (await Mref.once('value')).val();
 
-    const profilesScore = [];
-
     const calcScore = (profile) => getScore(profile.tags, myTags);
 
-    profiles.forEach((profile: IProfile, key: number) => {
+    const profilesScore = [];
+    Object.keys(profiles).forEach((key) => {
+        const profile = profiles[key];
         if (myProfileId != key) {
             const score = calcScore(profile);
-            if (score > 10 && !matches.find(match => match.target === key)) {
+            if (score > 10 && !Object.keys(matches).find(target => target === key)) {
                 if (mySex == EGender.NonBinary) {
                     if (profile.sex == EGender.NonBinary) {
                         profilesScore.push({ key, score });
@@ -66,7 +66,7 @@ const filterProfiles = async (mySex: EGender, myOrientation: EOrientation, myTag
                             }
                         }
                         else { // profile is Bi
-                            profilesScore.push({ key, score });
+                            return ({ key, score });
                         }
                     } else if (myOrientation == EOrientation.Heterosexual) {
                         if (mySex != profile.sex) {

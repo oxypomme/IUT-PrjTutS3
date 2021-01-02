@@ -8,7 +8,7 @@ import IProfile, { instanceOfIProfile } from '../../../include/IProfile';
 import { fetchArrayProfile, fetchProfile, getAllProfiles, getCurrProfile } from '../profileSlice';
 
 import { fetchMatches, getAllMatches } from './matchesSlice';
-import { WaitingForData } from '../../../components/styledComponents';
+import { Separator, WaitingForData } from '../../../components/styledComponents';
 import { fetchTags, getAllTags } from '../tagSlice';
 import { getScore } from '../../../tests/FilterProfiles';
 
@@ -21,58 +21,36 @@ const ProfileList = styled.ul`
     }
 `;
 
-interface Match {
-    isPending: boolean,
-    target: number,
+interface IMatch {
+    [target: string]: {
+        isBlocked: boolean,
+        isPending: boolean
+    }
 }
 
-const MyMatches = ({ pendingList = false, forceUpdate = true }: any): JSX.Element => {
+const MyMatches = (props: any): JSX.Element => {
     const dispatch = useDispatch();
-    const [loading, setLoading] = React.useState<boolean | null>(false);
     const currProfile: IProfile | Record<string, never> = useSelector(getCurrProfile);
-    const profiles: IProfile[] = useSelector(getAllProfiles);
-
-    const matches: Match[] = useSelector(getAllMatches);
+    const matches: IMatch = useSelector(getAllMatches);
 
     React.useEffect(() => {
         try {
-            if (!forceUpdate)
-                return;
-
-            setLoading(true);
-
-            if (instanceOfIProfile(currProfile)) {
-                if (matches?.length <= 0) {
-                    dispatch(fetchMatches());
-                }
-                else if (matches?.length > 0) {
-                    // Matches can be an array of match...
-                    dispatch(fetchArrayProfile(matches.map(({ target }) => target)));
-                } else if (matches) {
-                    // or a somewhat object if there's only one match
-                    dispatch(fetchProfile(parseInt(Object.keys(matches)[0])));
-                }
-            }
-
-            setLoading(false);
+            dispatch(fetchMatches());
         } catch (error) {
             console.log(error);
-            setLoading(null);
         }
-    }, [currProfile, matches, dispatch]);
+    }, [currProfile]);
 
     return (
-        <ProfileList>
-            {!loading && matches ?
-                (matches.length > 0 ? matches.slice().sort(
-                    (a, b) => getScore(profiles?.find(p => p.key === b.target)?.tags, currProfile.tags)
-                        - getScore(profiles?.find(p => p.key === a.target)?.tags, currProfile.tags)
-                ).map((match, index) =>
-                    (match.isPending == pendingList ? <ProfileItem key={index} id={match.target} isPending={match.isPending} /> : '')) // Matches can be an array of match or a somewhat object if there's only one match
-                    : (matches[Object.keys(matches)[0]]?.isPending == pendingList ? <ProfileItem key={parseInt(Object.keys(matches)[0])} id={matches[Object.keys(matches)[0]]?.target} isPending={matches[Object.keys(matches)[0]]?.isPending} /> : '')
-                )
-                : <WaitingForData length={16} />}
-        </ProfileList>
+        <div>
+            <ProfileList>
+                {matches ? Object.keys(matches).map((target, index) => matches[target]?.isPending == false ? <ProfileItem key={index} id={target} isPending={matches[target].isPending} /> : '') : <WaitingForData length={16} />}
+            </ProfileList>
+            <Separator />
+            <ProfileList>
+                {matches ? Object.keys(matches).map((target, index) => matches[target]?.isPending == true ? <ProfileItem key={index} id={target} isPending={matches[target].isPending} /> : '') : <WaitingForData length={16} />}
+            </ProfileList>
+        </div>
     );
 }
 

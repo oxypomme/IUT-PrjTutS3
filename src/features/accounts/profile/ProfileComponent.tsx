@@ -10,7 +10,7 @@ import { fetchCurrProfile, fetchProfile, getAllProfiles, getCurrProfile } from '
 import { fetchTags, getAllTags } from '../tagSlice';
 
 import IProfile from '../../../include/IProfile';
-import IComboBoxItem from '../../../include/IComboBoxItem';
+import ITag from '../../../include/IComboBoxItem';
 import EGender from '../../../include/EGender';
 import EOrientation from '../../../include/EOrientation';
 import { WaitingForData } from '../../../components/styledComponents';
@@ -85,7 +85,8 @@ const Tags = styled.ul`
 `
 
 const ProfileComponent = ({ profile }: any): JSX.Element => {
-    const tags: Array<IComboBoxItem> = useSelector(getAllTags);
+    const tags: Array<ITag> = useSelector(getAllTags);
+
     let genderIcon = faUser;
     let gender = null;
     let orientationIcon = faNeuter;
@@ -131,7 +132,7 @@ const ProfileComponent = ({ profile }: any): JSX.Element => {
                 <ProfilePicture source={profile?.imageURL} />
             </div>
             <div>
-                <h1>{profile?.key} {profile?.name || <WaitingForData length={16} />}</h1>
+                <h1>{profile?.authId} {profile?.name || <WaitingForData length={16} />}</h1>
                 <Infos>
                     <li><FontAwesomeIcon icon={faCalendarAlt} /> {profile?.age || <WaitingForData length={2} />} ans</li>
                     <li><FontAwesomeIcon icon={genderIcon} /> {gender || <WaitingForData length={8} />}</li>
@@ -142,7 +143,7 @@ const ProfileComponent = ({ profile }: any): JSX.Element => {
 
                 <p>Tags :</p>
                 <Tags>
-                    {profile?.tags?.map((tag, index) => (
+                    {profile?.tags?.map((tag: number, index: number) => (
                         <li key={index}>- {tags.find(t => t.value === tag)?.label}</li>
                     )) || <WaitingForData length={16} />}
                 </Tags>

@@ -13,8 +13,6 @@ const Matches = (): JSX.Element => {
         <div>
             <Title>Mes matchs</Title>
             <MyMatches />
-            <Separator />
-            <MyMatches pendingList={true} forceUpdate={false} />
         </div>
     );
 }

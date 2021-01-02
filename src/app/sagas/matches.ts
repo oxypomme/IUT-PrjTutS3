@@ -7,24 +7,42 @@ import {
     fetchMatchesSuccess,
     fetchMatchesFailed
 } from "../../features/accounts/matches/matchesSlice";
-import { getCurrProfile } from "../../features/accounts/profileSlice";
+import { getAuthId } from "../../features/accounts/accountSlice";
 
-function* getMatches(action) {
+import { getArrayProfile } from "./profiles";
+import { getProfileError } from "../../features/accounts/profileSlice";
+
+function* getCurrMatches(action) {
     try {
-        const { key } = yield select(getCurrProfile);
+        const authId = yield select(getAuthId);
 
         const { request } = action.payload;
         const matches = yield call(
             rsf.database[request.type],
-            request.url + '/' + key,
+            request.url + '/' + authId,
             request.params
         );
         yield put(fetchMatchesSuccess(matches));
+
+        yield call(getArrayProfile, {
+            payload: {
+                request: {
+                    type: "read",
+                    url: "/profiles",
+                    params: { authIds: Object.keys(matches) },
+                },
+            },
+        });
+
+        const profileError = yield select(getProfileError);
+        if (profileError != "") {
+            throw new Error(profileError);
+        }
     } catch (error) {
         yield put(fetchMatchesFailed(error.message));
     }
 }
 
 export default function* matchesSagas() {
-    yield takeLatest(fetchMatches.type, getMatches);
+    yield takeLatest(fetchMatches.type, getCurrMatches);
 }

@@ -4,6 +4,8 @@ import { withCallback } from 'redux-saga-callback';
 import { rsf } from '../firebase'
 import '@firebase/auth'
 
+import { getCurrProfile } from "./profiles";
+
 import {
     createAccount,
     createAccountSuccess,
@@ -26,7 +28,7 @@ import {
     deleteAccountFailed,
     getNewAuth
 } from '../../features/accounts/accountSlice';
-import { getCurrProfile, getProfileError, resetCurrProfile } from '../../features/accounts/profileSlice';
+import { getProfileError, resetCurrProfile, resetProfiles } from '../../features/accounts/profileSlice';
 
 export function* createEmailAuth(action) {
     try {
@@ -46,11 +48,12 @@ export function* createEmailAuth(action) {
 function* logInMail(action) {
     try {
         const { request } = action.payload;
-        const user = yield call(
+        const data = yield call(
             rsf.auth[request.type],
             request.email,
             request.passwd
         );
+        const { user } = data;
         yield put(loginAccountSuccess(user.uid));
 
         yield call(getCurrProfile, {
@@ -81,6 +84,7 @@ function* logOut(action) {
         );
         yield put(logoutAccountSuccess());
         yield put(resetCurrProfile());
+        yield put(resetProfiles());
     } catch (error) {
         yield put(logoutAccountFailed(error.message));
         throw error;
@@ -118,7 +122,7 @@ export function* deleteAuth(action) {
         const { request } = action.payload;
         yield call(
             rsf.auth[request.type],
-            params
+            request.params
         );
         yield put(deleteAccountSuccess());
     } catch (error) {

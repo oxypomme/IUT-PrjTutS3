@@ -20,6 +20,8 @@ import { CreatePersonal, CreatePreferences, CreateFinishing, CreateConfirm } fro
 import "./App.css";
 import { fetchCurrProfile, resetCurrProfile } from "./features/accounts/profileSlice";
 
+import firebase from "firebase/app";
+
 function App(): JSX.Element {
     const dispatch = useDispatch();
     const isConnected = useSelector(getIsConnected);

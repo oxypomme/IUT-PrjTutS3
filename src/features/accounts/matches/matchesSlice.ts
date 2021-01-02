@@ -16,7 +16,7 @@ export const fetchMatches = createAction(
 export const matchSlice = createSlice({
     name: 'matches',
     initialState: {
-        matches: new Array<string>(),
+        matches: null,
         isFetching: false,
         error: ""
     },

@@ -39,7 +39,7 @@ const SignIn = (): JSX.Element => {
             alert("ERREUR : " + error.message);
         }
         else {
-            alert('Vous êtes connecté.')
+            //alert('Vous êtes connecté.')
             history.goBack();
         }
     }

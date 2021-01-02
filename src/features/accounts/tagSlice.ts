@@ -1,5 +1,18 @@
 import { createAction, createSelector, createSlice } from "@reduxjs/toolkit";
+import ITag from "../../include/IComboBoxItem";
 
+export const fetchTags = createAction(
+    "FETCH_TAGS_REQUESTED",
+    (params = {}) => ({
+        payload: {
+            request: {
+                type: "read",
+                url: "/tags",
+                params,
+            },
+        },
+    })
+);
 export const fetchTag = createAction(
     "FETCH_TAG_REQUESTED",
     (tagId: number, params = {}) => ({
@@ -28,11 +41,16 @@ export const fetchArrayTag = createAction(
 export const tagSlice = createSlice({
     name: 'tags',
     initialState: {
-        tags: new Array<string>(),
+        tags: new Array<ITag>(),
         isFetching: false,
         error: ""
     },
     extraReducers: {
+        [fetchTags.type]: (state) => ({
+            ...state,
+            isFetching: true,
+            error: ""
+        }),
         [fetchTag.type]: (state) => ({
             ...state,
             isFetching: true,
@@ -40,6 +58,17 @@ export const tagSlice = createSlice({
         }),
     },
     reducers: {
+        fetchTagsSuccess: (state, { payload: tags }) => ({
+            ...state,
+            isFetching: false,
+            error: "",
+            tags,
+        }),
+        fetchTagsFailed: (state, { payload: message }) => ({
+            ...state,
+            isFetching: false,
+            error: message
+        }),
         fetchTagSuccess: (state, { payload: newTag }) => {
             const tags = [...state.tags];
 
@@ -55,7 +84,7 @@ export const tagSlice = createSlice({
                 ...state,
                 isWorking: false,
                 error: "",
-                profiles: [...tags, newTag]
+                tags: [...tags, newTag]
             }
         },
         fetchTagFailed: (state, { payload: message }) => ({
@@ -67,15 +96,15 @@ export const tagSlice = createSlice({
 });
 
 export const {
+    fetchTagsSuccess,
+    fetchTagsFailed,
     fetchTagSuccess,
     fetchTagFailed
 } = tagSlice.actions;
 
 export const getState = state => state.tags;
 
-export const getAllTags = createSelector(getState, (state) =>
-    state.tags.map((tag, key) => ({ value: key, label: tag }))
-);
+export const getAllTags = createSelector(getState, (state) => state.tags);
 
 export const getTagError = createSelector(getState, (state) => state.error);
 

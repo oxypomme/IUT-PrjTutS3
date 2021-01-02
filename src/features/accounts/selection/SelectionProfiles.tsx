@@ -8,7 +8,7 @@ import IProfile, { instanceOfIProfile } from '../../../include/IProfile';
 import filterProfiles from '../../../tests/FilterProfiles';
 import ProfileCard from '../profile/ProfileCard';
 import { fetchArrayProfile, getAllProfiles, getCurrProfile, resetProfiles } from '../profileSlice';
-import { fetchTags } from '../tagSlice';
+//import { fetchTags } from '../tagSlice';
 
 const ProfilesContainer = styled.div`
     & > div {
@@ -18,25 +18,21 @@ const ProfilesContainer = styled.div`
 
 const SelectionProfiles = (): JSX.Element => {
     const dispatch = useDispatch();
+    const [matchableKeys, setKeys] = React.useState<string[]>();
     const [loading, setLoading] = React.useState<boolean | null>(false);
     const currProfile: IProfile | Record<string, never> = useSelector(getCurrProfile);
-
-    const profiles: IProfile[] = useSelector(getAllProfiles);
 
     React.useEffect(() => {
         (async function getProfiles() {
             try {
                 setLoading(true);
-                if (profiles?.length > 0) {
-                    dispatch(resetProfiles());
-                }
 
                 if (instanceOfIProfile(currProfile)) {
-                    const profs = await filterProfiles(currProfile.sex, currProfile.orientation, currProfile.tags, currProfile.key);
+                    const profs = await filterProfiles(currProfile);
                     console.log("[DEBUG] Matchables :", profs);
+                    setKeys(profs.map(profile => profile.key));
                     if (profs?.length > 0) {
-                        dispatch(fetchTags());
-                        dispatch(fetchArrayProfile(profs.map(profile => profile.key)));
+                        dispatch(fetchArrayProfile(matchableKeys));
                     }
                     setLoading(false);
                 }
@@ -45,12 +41,12 @@ const SelectionProfiles = (): JSX.Element => {
                 setLoading(null);
             }
         })();
-    }, [currProfile, dispatch]);
+    }, [currProfile]);
 
     return (
         <ProfilesContainer>
-            {!loading ? profiles?.map(({ key }, index) => (
-                <ProfileCard id={key} key={index} />
+            {!loading ? matchableKeys?.map((authId, index) => (
+                <ProfileCard id={authId} key={index} />
             )) : (loading == null ? 'ERROR, see console for more info' : <WaitingForData length={16} />)}
         </ProfilesContainer>
     );
