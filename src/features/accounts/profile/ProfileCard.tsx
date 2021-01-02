@@ -7,7 +7,7 @@ import IProfile from '../../../include/IProfile';
 import ProfileComponent from './ProfileComponent';
 
 
-const ProfileCard = ({ id }: any): JSX.Element => {
+const ProfileCard = ({ id }: { id?: string }): JSX.Element => {
     const currProfile: IProfile = useSelector(getCurrProfile);
     const profiles: IProfile[] = useSelector(getAllProfiles);
     const profile: IProfile = profiles?.find(p => p.authId === id) || currProfile;

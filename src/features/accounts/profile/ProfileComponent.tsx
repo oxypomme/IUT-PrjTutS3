@@ -83,7 +83,7 @@ const Tags = styled.ul`
     }
 `
 
-const ProfileComponent = ({ profile }: any): JSX.Element => {
+const ProfileComponent = ({ profile }: { profile: IProfile }): JSX.Element => {
     const tags: Array<ITag> = useSelector(getAllTags);
 
     let genderIcon = faUser;

@@ -10,7 +10,7 @@ interface IProfile {
     sex: EGender;
     tags: number[];
     town: string;
-    authId: string | null;
+    authId?: string;
 }
 
 export const instanceOfIProfile = (object: any): object is IProfile => {
@@ -21,8 +21,7 @@ export const instanceOfIProfile = (object: any): object is IProfile => {
         && 'orientation' in object
         && 'sex' in object
         && 'tags' in object
-        && 'town' in object
-        && 'authId' in object;
+        && 'town' in object;
 }
 
 export default IProfile;

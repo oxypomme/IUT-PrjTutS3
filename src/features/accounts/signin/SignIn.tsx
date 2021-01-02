@@ -5,9 +5,9 @@ import { Button, TextBox, HiddenLabel, ErrorLabel } from '../../../components/st
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { getAccountError, loginAccount, resetPasswordAccount } from '../accountSlice';
+import { loginAccount, resetPasswordAccount } from '../accountSlice';
 
 import IError from '../../../include/IError';
 
@@ -25,7 +25,6 @@ const PasswdRecoveryLink = styled.a`
 const SignIn = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const loginError = useSelector(getAccountError);
     const [email, setEmail] = React.useState();
     const [passwd, setPasswd] = React.useState();
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
@@ -34,12 +33,12 @@ const SignIn = (): JSX.Element => {
 
     const handleSetPasswordOnChange = (event) => setPasswd(event.target.value);
 
-    const onLogged = ({ error, cancelled, data }) => {
+    const onLogged = ({ error }) => {
         if (error) {
             alert("ERREUR : " + error.message);
         }
         else {
-            //alert('Vous êtes connecté.')
+            alert('Vous êtes connecté.')
             history.goBack();
         }
     }

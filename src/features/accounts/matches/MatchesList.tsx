@@ -27,7 +27,7 @@ interface IMatch {
     }
 }
 
-const MyMatches = (props: any): JSX.Element => {
+const MyMatches = (): JSX.Element => {
     const dispatch = useDispatch();
     const currProfile: IProfile | Record<string, never> = useSelector(getCurrProfile);
     const profiles: IProfile[] = useSelector(getAllProfiles);
@@ -41,8 +41,9 @@ const MyMatches = (props: any): JSX.Element => {
         }
     }, [currProfile]);
 
-    const Profiles = ({ isPending }: any): JSX.Element => {
-        if (!isPending) {
+    const Profiles = (props: { isPending?: boolean }): JSX.Element => {
+        let { isPending } = props;
+        if (isPending == undefined) {
             isPending = false;
         }
 
