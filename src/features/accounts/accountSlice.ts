@@ -141,11 +141,10 @@ export const accountSlice = createSlice({
             isWorking: false,
             error: message
         }),
-        loginAccountSuccess: (state, { payload: uid }) => ({
+        loginAccountSuccess: (state) => ({
             ...state,
             isWorking: false,
-            error: "",
-            uid
+            error: ""
         }),
         loginAccountFailed: (state, { payload: message }) => ({
             ...state,

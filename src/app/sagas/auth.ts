@@ -55,20 +55,12 @@ function* createEmailAuth(action) {
 function* logInMail(action) {
     try {
         const { request } = action.payload;
-        const data = yield call(
+        yield call(
             rsf.auth[request.type],
             request.email,
             request.passwd
         );
-        const { user } = data;
-        yield put(loginAccountSuccess(user.uid));
-
-        yield put(fetchCurrProfile());
-        yield take([fetchCurrProfilesSuccess, fetchCurrProfilesFailed])
-        const profileError = yield select(getProfileError);
-        if (profileError != "") {
-            throw new Error(profileError);
-        }
+        yield put(loginAccountSuccess());
     } catch (error) {
         yield put(loginAccountFailed(error.message));
         throw error;
