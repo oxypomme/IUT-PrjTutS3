@@ -42,11 +42,13 @@ function* getMatches(action) {
             request.params
         );
         const incomingMatches = {};
-        Object.getOwnPropertyNames(incomingRawMatches)?.forEach(key => {
-            if (incomingRawMatches[key][authId]) {
-                incomingMatches[key] = incomingRawMatches[key][authId];
-            }
-        });
+        if (incomingRawMatches) {
+            Object.getOwnPropertyNames(incomingRawMatches)?.forEach(key => {
+                if (incomingRawMatches[key][authId]) {
+                    incomingMatches[key] = incomingRawMatches[key][authId];
+                }
+            });
+        }
 
         yield put(fetchMatchesSuccess({ incomingMatches, outgoingMatches }));
 
