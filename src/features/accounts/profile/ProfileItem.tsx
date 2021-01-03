@@ -8,7 +8,6 @@ import { faUser, faHorse, faCalendarAlt, faBuilding, faVenusMars, faVenusDouble,
 import { getAllProfiles } from '../profileSlice';
 
 import IProfile from '../../../include/IProfile';
-import ITag from '../../../include/IComboBoxItem';
 import EGender from '../../../include/EGender';
 import EOrientation from '../../../include/EOrientation';
 import { Button, WaitingForData } from '../../../components/styledComponents';

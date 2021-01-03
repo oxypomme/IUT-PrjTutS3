@@ -1,4 +1,4 @@
-import { call, put, takeLatest, take, select, all, fork } from 'redux-saga/effects'
+import { call, put, takeLatest, take, select, all } from 'redux-saga/effects'
 import { withCallback } from 'redux-saga-callback';
 
 import { rsf } from '../firebase'

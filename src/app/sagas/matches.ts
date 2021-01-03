@@ -1,4 +1,4 @@
-import { call, put, takeLatest, select, take, all } from "redux-saga/effects";
+import { call, put, takeLatest, select, all } from "redux-saga/effects";
 import { rsf } from "../firebase";
 import firebase from '@firebase/app';
 import "@firebase/database";

@@ -5,7 +5,6 @@ import { Button, TextBox, HiddenLabel, ErrorLabel, ButtonFlex } from '../../../c
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCalendarAlt, faBuilding, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-import { isNonNullChain } from "typescript";
 import { addAge, addCity, addName, getNewAuth } from "../accountSlice";
 import { useHistory } from "react-router-dom";
 

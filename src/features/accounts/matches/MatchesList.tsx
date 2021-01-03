@@ -8,7 +8,7 @@ import IProfile from '../../../include/IProfile';
 import { getAllProfiles, getCurrProfile } from '../profileSlice';
 
 import { fetchMatches, getIngoingMatches, getOutgoingMatches } from './matchesSlice';
-import { Separator, WaitingForData } from '../../../components/styledComponents';
+import { Separator } from '../../../components/styledComponents';
 import { getScore } from '../../../tests/FilterProfiles';
 
 const ProfileList = styled.ul`

@@ -1,4 +1,4 @@
-import { all, call, put, select, take, takeLatest } from 'redux-saga/effects'
+import { all, call, put, select, takeLatest } from 'redux-saga/effects'
 import { withCallback } from 'redux-saga-callback';
 
 import { rsf } from '../firebase'
@@ -28,10 +28,6 @@ import {
 } from '../../features/accounts/accountSlice';
 
 import {
-    fetchCurrProfile,
-    fetchCurrProfilesFailed,
-    fetchCurrProfilesSuccess,
-    getProfileError,
     resetCurrProfile,
     resetProfiles
 } from '../../features/accounts/profileSlice';

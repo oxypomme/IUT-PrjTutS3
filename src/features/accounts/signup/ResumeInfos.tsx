@@ -1,7 +1,6 @@
 import React from 'react';
-import styled from '@emotion/styled';
 
-import { clearNewAccount, getInfos } from '../accountSlice';
+import { getInfos } from '../accountSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfileComponent from '../profile/ProfileComponent';
 import { useHistory } from 'react-router-dom';
