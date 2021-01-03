@@ -47,7 +47,7 @@ const filterProfiles = async ({ sex: mySex, orientation: myOrientation, tags: my
         const profile = profiles[key];
         if (myProfileId != key) {
             const score = calcScore(profile);
-            if (score > 10 && !Object.keys(matches).find(target => target === key)) {
+            if (score > 10 && (!matches || !Object.keys(matches).find(target => target === key))) {
                 if (mySex == EGender.NonBinary) {
                     if (profile.sex == EGender.NonBinary) {
                         profilesScore.push({ key, score });
