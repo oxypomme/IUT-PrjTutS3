@@ -34,7 +34,7 @@ const Item = styled.li`
         width: 30%;
     }
 
-    &>ul {
+    & ul {
         list-style-type: none;
         padding: 0 15px 0 0;
     }
@@ -45,6 +45,10 @@ const Item = styled.li`
 
     &:hover div:last-of-type{
         top: 42.5%;
+    }
+
+    &:hover li {
+        padding: 4px 0;
     }
 `;
 
@@ -57,6 +61,16 @@ const ImageProfileContainer = styled.div`
     width: 15%;
     margin: 0;
     margin-right: 15px;
+`;
+
+const InfoList = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    height: 100%;
+
+    
 `;
 
 const Buttons = styled.div`
@@ -156,14 +170,16 @@ const ProfileItem = ({ id, isPending, inviting }: ProfileItemProps): JSX.Element
                 <ProfilePicture source={profile?.imageURL} />
             </ImageProfileContainer>
             <h2>{profile?.name || <WaitingForData length={16} />}</h2>
-            <ul>
-                <li><FontAwesomeIcon icon={genderIcon} /> {gender || <WaitingForData length={8} />}</li>
-                <li><FontAwesomeIcon icon={orientationIcon} /> {orientation || <WaitingForData length={8} />}</li>
-            </ul>
-            <ul>
-                <li><FontAwesomeIcon icon={faCalendarAlt} /> {profile?.age || <WaitingForData length={2} />} ans</li>
-                <li><FontAwesomeIcon icon={faBuilding} /> {profile?.town || <WaitingForData length={14} />}</li>
-            </ul>
+            <InfoList>
+                <ul>
+                    <li><FontAwesomeIcon icon={genderIcon} /> {gender || <WaitingForData length={8} />}</li>
+                    <li><FontAwesomeIcon icon={orientationIcon} /> {orientation || <WaitingForData length={8} />}</li>
+                </ul>
+                <ul>
+                    <li><FontAwesomeIcon icon={faCalendarAlt} /> {profile?.age || <WaitingForData length={2} />} ans</li>
+                    <li><FontAwesomeIcon icon={faBuilding} /> {profile?.town || <WaitingForData length={14} />}</li>
+                </ul>
+            </InfoList>
             {isPending ?
                 <Pending>En attente</Pending>
                 :
