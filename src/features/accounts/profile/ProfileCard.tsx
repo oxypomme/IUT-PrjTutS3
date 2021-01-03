@@ -13,7 +13,7 @@ const ProfileCard = ({ id }: { id?: string }): JSX.Element => {
     const profile: IProfile = profiles?.find(p => p.authId === id) || currProfile;
 
     return (
-        <ProfileComponent profile={profile} />
+        <ProfileComponent profile={profile} isMatchable={profile != currProfile} />
     );
 }
 

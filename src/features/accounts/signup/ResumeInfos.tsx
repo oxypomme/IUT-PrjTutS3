@@ -61,7 +61,7 @@ const ResumeInfos = () => {
 
     return (
         <form onSubmit={handleOnSubmit}>
-            <ProfileComponent profile={profile} />
+            <ProfileComponent profile={profile} isMatchable={false} />
             <ButtonFlex>
                 <Button onClick={handleBack}>Retour</Button>
                 <div>

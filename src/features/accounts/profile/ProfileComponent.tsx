@@ -96,7 +96,7 @@ const ButtonContainer = styled.div`
     }
 `;
 
-const ProfileComponent = ({ profile }: { profile: IProfile }): JSX.Element => {
+const ProfileComponent = ({ profile, isMatchable }: { profile: IProfile, isMatchable: boolean }): JSX.Element => {
     const dispatch = useDispatch();
 
     const tags: Array<ITag> = useSelector(getAllTags);
@@ -170,10 +170,12 @@ const ProfileComponent = ({ profile }: { profile: IProfile }): JSX.Element => {
                         <li key={index}>- {tags.find(t => t.value === tag)?.label}</li>
                     )) || <WaitingForData length={16} />}
                 </Tags>
-                <ButtonContainer>
-                    <Button onClick={handleSkip}>Skip</Button>
-                    <Button onClick={handleMatch} primary>Match</Button>
-                </ButtonContainer>
+                {isMatchable ?
+                    <ButtonContainer>
+                        <Button onClick={handleSkip}>Skip</Button>
+                        <Button onClick={handleMatch} primary>Match</Button>
+                    </ButtonContainer>
+                    : <></>}
             </div>
         </Profile>
     );
