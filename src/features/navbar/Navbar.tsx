@@ -1,9 +1,8 @@
 import React from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
-import logo from '../../logo.svg';
-import { InferProps } from "prop-types";
-
 import styled from '@emotion/styled';
+import { NavLink, useHistory } from 'react-router-dom';
+import { InferProps } from "prop-types";
+import { useDispatch, useSelector } from 'react-redux';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -20,8 +19,9 @@ import {
     faBars
 } from "@fortawesome/free-solid-svg-icons";
 
-import { useDispatch, useSelector } from 'react-redux';
 import { getIsConnected, logoutAccount } from '../accounts/accountSlice';
+
+import logo from '../../logo.svg';
 
 //TODO: RIP Mobile users
 const NavBar = styled.nav<{ isopened?: boolean }>`

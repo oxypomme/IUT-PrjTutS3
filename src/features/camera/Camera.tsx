@@ -1,9 +1,11 @@
 import React from "react";
 import Webcam from "react-webcam";
 import Select from "react-select";
-import { Mic } from '../mic/Mic';
 import { useDispatch, useSelector } from "react-redux";
+
 import { getUploadedFiles, uploadFile, uploadFileSuccess, uploadStringFile } from "../firestorage/storageSlice";
+
+import { Mic } from '../mic/Mic';
 
 export interface ICam { value: string, label: string; }
 export function Camera(): JSX.Element {

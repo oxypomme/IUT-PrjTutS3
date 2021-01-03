@@ -10,6 +10,7 @@ import { getAllProfiles } from '../profileSlice';
 import IProfile from '../../../include/IProfile';
 import EGender from '../../../include/EGender';
 import EOrientation from '../../../include/EOrientation';
+
 import { Button, WaitingForData } from '../../../components/styledComponents';
 import { ProfilePicture } from './ProfileComponent';
 import { deleteMatch, newMatch } from '../matches/matchesSlice';

@@ -1,16 +1,16 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
-
-import { Button, TextBox, HiddenLabel, ErrorLabel, ButtonFlex } from '../../../components/styledComponents';
+import { useHistory } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCalendarAlt, faBuilding, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 
 import { addAge, addCity, addName, getNewAuth } from "../accountSlice";
-import { useHistory } from "react-router-dom";
 
 import IError from "../../../include/IError";
+
+import { Button, TextBox, HiddenLabel, ErrorLabel, ButtonFlex } from '../../../components/styledComponents';
 
 const RegisterPersonal = (): JSX.Element => {
     const dispatch = useDispatch();

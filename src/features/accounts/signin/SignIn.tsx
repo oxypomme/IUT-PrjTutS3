@@ -1,17 +1,18 @@
 import React from 'react';
-
 import styled from '@emotion/styled';
-import { Button, TextBox, HiddenLabel, ErrorLabel } from '../../../components/styledComponents';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import firebase from 'firebase';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+
 import { loginAccount, resetPasswordAccount } from '../accountSlice';
 
 import IError from '../../../include/IError';
 import CheckBox from '../../../components/CheckBox';
-import firebase from 'firebase';
+
+import { Button, TextBox, HiddenLabel, ErrorLabel } from '../../../components/styledComponents';
 
 const PasswdRecoveryLink = styled.a`
     color: hsl(0, 0%, 50%);

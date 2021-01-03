@@ -1,10 +1,9 @@
 import { eventChannel } from 'redux-saga';
 import { call, put, takeLatest, take, all } from 'redux-saga/effects'
+import { withCallback } from 'redux-saga-callback';
 
 import { rsf } from '../firebase'
 import '@firebase/storage'
-
-import { withCallback } from 'redux-saga-callback';
 
 import {
     uploadFile,

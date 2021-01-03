@@ -1,8 +1,8 @@
 import React from "react";
 import styled from '@emotion/styled';
-
 import { ReactMic, ReactMicStopEvent } from 'react-mic';
 import { useDispatch } from "react-redux";
+
 import { uploadFile } from "../firestorage/storageSlice";
 
 export const MicCircle = styled(ReactMic) <{ backgroundColor?: string, strokeColor?: string }>`
@@ -14,7 +14,6 @@ export const MicCircle = styled(ReactMic) <{ backgroundColor?: string, strokeCol
   margin: 8px;
   background-color: ${props => props.backgroundColor};
 `;
-
 
 export function Mic(): JSX.Element {
     const dispatch = useDispatch();

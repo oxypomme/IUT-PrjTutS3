@@ -2,13 +2,14 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { WaitingForData } from '../../../components/styledComponents';
-import IProfile, { instanceOfIProfile } from '../../../include/IProfile';
-
-import filterProfiles from './FilterProfiles';
-import ProfileCard from '../profile/ProfileCard';
 import { fetchArrayProfile, getCurrProfile } from '../profileSlice';
 import { getOutgoingMatches } from '../matches/matchesSlice';
+
+import { WaitingForData } from '../../../components/styledComponents';
+import IProfile, { instanceOfIProfile } from '../../../include/IProfile';
+import filterProfiles from './FilterProfiles';
+
+import ProfileCard from '../profile/ProfileCard';
 
 const ProfilesContainer = styled.div`
     & > div {

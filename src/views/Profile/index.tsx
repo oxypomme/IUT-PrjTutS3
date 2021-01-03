@@ -1,4 +1,5 @@
 import React from "react";
+
 import ProfileCard from "../../features/accounts/profile/ProfileCard";
 
 export function Profile(): JSX.Element {

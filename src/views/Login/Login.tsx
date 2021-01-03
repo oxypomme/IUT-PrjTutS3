@@ -1,7 +1,4 @@
 import React from "react";
-import { Redirect } from 'react-router-dom'
-import { useSelector } from "react-redux";
-import { getIsConnected } from "../../features/accounts/accountSlice";
 
 import "./Login.css";
 

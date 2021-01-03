@@ -2,19 +2,21 @@ import React from "react";
 import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
+import { useHistory } from "react-router-dom";
+import Select from "react-select";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationTriangle, faGenderless, faHelicopter, faHorse, faMarsDouble, faTransgender, faVenusDouble, faVenusMars } from "@fortawesome/free-solid-svg-icons";
 
 import { fetchTags, getAllTags } from "../tagSlice";
-import { useHistory } from "react-router-dom";
-import { Button, ButtonFlex, ErrorLabel } from '../../../components/styledComponents';
 import { addGender, addPrefs, addTags, getInfos } from "../accountSlice";
 
-import IComboBoxItem from '../../../include/IComboBoxItem';
-import Select from "react-select";
 import EOrientation from "../../../include/EOrientation";
 import EGender from "../../../include/EGender";
 import IError from "../../../include/IError";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationTriangle, faGenderless, faHelicopter, faHorse, faMarsDouble, faTransgender, faVenusDouble, faVenusMars } from "@fortawesome/free-solid-svg-icons";
+
+import IComboBoxItem from '../../../include/IComboBoxItem';
+import { Button, ButtonFlex, ErrorLabel } from '../../../components/styledComponents';
 
 const FontStyledIcon = styled(FontAwesomeIcon)`
     margin-right: 5px;

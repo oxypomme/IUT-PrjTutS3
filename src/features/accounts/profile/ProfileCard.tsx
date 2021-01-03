@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import { getAllProfiles, getCurrProfile } from '../profileSlice';
 
 import IProfile from '../../../include/IProfile';
-import ProfileComponent from './ProfileComponent';
 
+import ProfileComponent from './ProfileComponent';
 
 const ProfileCard = ({ id }: { id?: string }): JSX.Element => {
     const currProfile: IProfile = useSelector(getCurrProfile);

@@ -1,6 +1,6 @@
 import React from "react";
-import RegisterPersonal from '../../features/accounts/signup/RegisterPersonal';
 
+import RegisterPersonal from '../../features/accounts/signup/RegisterPersonal';
 import { RegisterPreferences } from "../../features/accounts/signup/RegisterPreferences";
 import { RegisterPublicInfos } from "../../features/accounts/signup/RegisterPublicInfos";
 import ResumeInfos from "../../features/accounts/signup/ResumeInfos";
