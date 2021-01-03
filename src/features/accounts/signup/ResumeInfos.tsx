@@ -48,10 +48,12 @@ const ResumeInfos = () => {
 
     };
 
+    const handleBack = (event) => history.goBack();
+
     return (
         <form onSubmit={handleOnSubmit}>
             <ProfileComponent profile={profile} />
-            <Button onClick={history.goBack}>Retour</Button>
+            <Button onClick={handleBack}>Retour</Button>
             <Button primary>Créer le compte</Button>
         </form>
     );

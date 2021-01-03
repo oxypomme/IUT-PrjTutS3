@@ -98,6 +98,8 @@ export function RegisterPublicInfos(): JSX.Element {
         }
     };
 
+    const handleBack = (event) => history.goBack();
+
     return (
         <form onSubmit={handleOnSubmit}>
             {globalErrors.length > 0 &&
@@ -147,7 +149,7 @@ export function RegisterPublicInfos(): JSX.Element {
                     Description
                 </HiddenLabel>
             </TextBox>
-            <Button onClick={history.goBack}>Retour</Button>
+            <Button onClick={handleBack}>Retour</Button>
             <Button primary>Suivant</Button>
         </form>
     );

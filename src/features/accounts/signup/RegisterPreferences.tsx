@@ -74,6 +74,8 @@ export const RegisterPreferences = (): JSX.Element => {
         }
     }
 
+    const handleBack = (event) => history.goBack();
+
     return (
         <form onSubmit={handleOnSubmit}>
             {globalErrors.length > 0 &&
@@ -136,7 +138,7 @@ export const RegisterPreferences = (): JSX.Element => {
                     }),
                 }}
             />
-            <Button onClick={history.goBack}>Retour</Button>
+            <Button onClick={handleBack}>Retour</Button>
             <Button primary>Suivant</Button>
 
         </form>

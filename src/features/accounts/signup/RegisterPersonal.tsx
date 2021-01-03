@@ -36,6 +36,8 @@ const RegisterPersonal = (): JSX.Element => {
     //TODO: use a proper thing, not a simple textbox
     const handleSetTownOnChange = (event) => setTown(event.target.value);
 
+    const handleBack = (event) => history.goBack();
+
     const handleOnSubmit = (event) => {
         event.preventDefault();
         let errors = [];
@@ -112,7 +114,7 @@ const RegisterPersonal = (): JSX.Element => {
                 </HiddenLabel>
             </TextBox>
 
-            <Button onClick={history.goBack}>Retour</Button>
+            <Button onClick={handleBack}>Retour</Button>
             <Button primary>Suivant</Button>
 
         </form >
