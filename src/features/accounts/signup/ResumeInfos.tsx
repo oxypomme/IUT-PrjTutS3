@@ -32,10 +32,10 @@ const ResumeInfos = () => {
 
     const onSigned = ({ error }) => {
         if (error) {
-            alert.show("ERREUR : " + error.message, { type: 'error' });
+            alert.error(error.message);
         }
         else {
-            alert.show('Vous êtes inscrits (et connecté).')
+            alert.success('Vous êtes inscrits (et connecté).')
             history.push('/index');
         }
     }
@@ -57,7 +57,7 @@ const ResumeInfos = () => {
                 })
             )
             .catch((error) => {
-                alert.error("ERREUR : " + error.message);
+                alert.error(error.message);
             });
     };
 

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { useAlert } from 'react-alert';
 import firebase from 'firebase';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,6 +29,7 @@ const PasswdRecoveryLink = styled.a`
 const SignIn = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const alert = useAlert();
 
     const [email, setEmail] = React.useState<string>("");
     const [passwd, setPasswd] = React.useState<string>("");
@@ -42,10 +44,10 @@ const SignIn = (): JSX.Element => {
 
     const onLogged = ({ error }) => {
         if (error) {
-            alert("ERREUR : " + error.message);
+            alert.error("ERREUR : " + error.message);
         }
         else {
-            alert('Vous êtes connecté.')
+            alert.success('Vous êtes connecté.')
             history.goBack();
         }
     }
@@ -75,7 +77,7 @@ const SignIn = (): JSX.Element => {
                     })
                 )
                 .catch((error) => {
-                    alert("ERREUR : " + error.message);
+                    alert.error(error.message);
                 });
         }
     }

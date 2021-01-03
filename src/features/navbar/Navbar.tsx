@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { NavLink, useHistory } from 'react-router-dom';
 import { InferProps } from "prop-types";
 import { useDispatch, useSelector } from 'react-redux';
+import { useAlert } from 'react-alert';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -23,7 +24,6 @@ import { getIsConnected, logoutAccount } from '../accounts/accountSlice';
 
 import logo from '../../logo.svg';
 
-//TODO: RIP Mobile users
 const NavBar = styled.nav<{ isopened?: boolean }>`
     position: fixed;
     top: 0;
@@ -108,6 +108,7 @@ export const Navbar = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
     const isConnected = useSelector(getIsConnected);
+    const alert = useAlert();
 
     const [openState, setOpenState] = React.useState<boolean>(false);
 
@@ -141,10 +142,10 @@ export const Navbar = (): JSX.Element => {
 
     const onUnlogged = ({ error }) => {
         if (error) {
-            alert("ERREUR : " + error.message);
+            alert.error(error.message);
         }
         else {
-            alert('Vous êtes déconnecté.')
+            alert.success('Vous êtes déconnecté.')
             history.push('/');
         }
     }
