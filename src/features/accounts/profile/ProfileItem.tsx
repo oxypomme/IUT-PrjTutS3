@@ -49,6 +49,10 @@ const Item = styled.li`
     &:hover li {
         padding: 4px 0;
     }
+    
+    &:hover > p {
+        top: 45%;
+    }
 `;
 
 const CustomButton = styled(Button)`
@@ -84,10 +88,10 @@ const Buttons = styled.div`
     }
 `;
 
-const Pending = styled.div`
+const Pending = styled.p`
     position: absolute;
     top: 30%;
-    right: 30px;
+    right: 110px;
     transition: top 0.25s;
     color: dimgray;
 `;
@@ -179,18 +183,12 @@ const ProfileItem = ({ id, isPending, inviting }: ProfileItemProps): JSX.Element
                     <li><FontAwesomeIcon icon={faBuilding} /> {profile?.town || <WaitingForData length={14} />}</li>
                 </ul>
             </InfoList>
-            {isPending ?
-                <Pending>En attente</Pending>
-                :
-                <Buttons>
-                    {inviting ?
-                        <CustomButton onClick={handleDenyInvite}>Refuser</CustomButton>
-                        : <CustomButton onClick={handleChat}>Chat</CustomButton>}
-                    {inviting ?
-                        <CustomButton primary onClick={handleAcceptInvite}>Accepter</CustomButton>
-                        : <CustomButton primary onClick={handleUnmatch}>Unmatch</CustomButton>}
-                </Buttons>
-            }
+            {isPending ? <Pending>En attente</Pending> : <></>}
+            <Buttons>
+                {!isPending ? (inviting ? <CustomButton onClick={handleDenyInvite}>Refuser</CustomButton> : <CustomButton onClick={handleChat}>Chat</CustomButton>) : <></>}
+                {!isPending ? (inviting ? <CustomButton primary onClick={handleAcceptInvite}>Accepter</CustomButton> : <></>) : <></>}
+                {!inviting ? <CustomButton primary onClick={handleUnmatch}>Unmatch</CustomButton> : <></>}
+            </Buttons>
         </Item >
     );
 }
