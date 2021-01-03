@@ -30,7 +30,7 @@ export const RegisterPreferences = (): JSX.Element => {
     const profile = useSelector(getInfos);
     React.useEffect(() => {
         if (!profile || profile.name === "" || profile.age < 18 || profile.town === "") {
-            alert.error("Vous n'avez pas rentré tous les champs nécéssaires.")
+            alert.error("Vous n'avez pas rentré tous les champs nécéssaires")
             history.push('/SignUp/1');
         }
     }, [profile])

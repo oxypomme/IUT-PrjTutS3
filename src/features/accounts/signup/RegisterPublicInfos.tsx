@@ -25,7 +25,7 @@ export function RegisterPublicInfos(): JSX.Element {
     const profile = useSelector(getInfos);
     React.useEffect(() => {
         if (!profile || profile.sex < 0 || profile.orientation < 0 || profile.tags.lenght < 3) {
-            alert.error("Vous n'avez pas rentré tous les champs nécéssaires.")
+            alert.error("Vous n'avez pas rentré tous les champs nécéssaires")
             history.push('/SignUp/2');
         }
     }, [profile])

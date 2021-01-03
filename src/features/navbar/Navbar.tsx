@@ -145,7 +145,7 @@ export const Navbar = (): JSX.Element => {
             alert.error(error.message);
         }
         else {
-            alert.success('Vous êtes déconnecté.')
+            alert.success('Vous êtes déconnecté')
             history.push('/');
         }
     }

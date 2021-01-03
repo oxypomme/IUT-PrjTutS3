@@ -25,7 +25,7 @@ const ResumeInfos = () => {
 
     React.useEffect(() => {
         if (!profile || profile.desc === "" || profile.imageURL === "") {
-            alert.error("Vous n'avez pas rentré tous les champs nécéssaires.");
+            alert.error("Vous n'avez pas rentré tous les champs nécéssaires");
             history.push('/SignUp/3');
         }
     }, [profile])

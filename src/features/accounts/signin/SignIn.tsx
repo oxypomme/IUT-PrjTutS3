@@ -47,7 +47,7 @@ const SignIn = (): JSX.Element => {
             alert.error("ERREUR : " + error.message);
         }
         else {
-            alert.success('Vous êtes connecté.')
+            alert.success('Vous êtes connecté')
             history.goBack();
         }
     }
