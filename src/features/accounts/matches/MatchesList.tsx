@@ -33,7 +33,7 @@ const MyMatches = (): JSX.Element => {
     const dispatch = useDispatch();
     const currProfile: IProfile | Record<string, never> = useSelector(getCurrProfile);
     const profiles: IProfile[] = useSelector(getAllProfiles);
-    const matches: IMatch = useSelector(getOutgoingMatches);
+    const outMatches: IMatch = useSelector(getOutgoingMatches);
     const inMatches: IMatch = useSelector(getIngoingMatches);
 
     React.useEffect(() => {
@@ -55,11 +55,11 @@ const MyMatches = (): JSX.Element => {
         return (
             <ProfileList>
                 {
-                    matches ?
-                        Object.keys(matches).sort((a, b) => compScore(b) - compScore(a))
+                    outMatches ?
+                        Object.keys(outMatches).sort((a, b) => compScore(b) - compScore(a))
                             .map((target, index) =>
-                                matches[target]?.isPending == isPending ?
-                                    <ProfileItem key={index} id={target} isPending={matches[target].isPending} />
+                                outMatches[target]?.isPending == isPending ?
+                                    <ProfileItem key={index} id={target} isPending={outMatches[target].isPending} />
                                     : <></>)
                         : <WaitingForData length={16} />
                 }

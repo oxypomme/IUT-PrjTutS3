@@ -115,24 +115,41 @@ export const profileSlice = createSlice({
     },
     reducers: {
         fetchProfilesSuccess: (state, { payload: newProfile }) => {
-            const profiles = [...state.profiles];
+            let profiles = [...state.profiles];
 
-            for (let i = 0; i < state.profiles.length; i++) {
-                const profile = state.profiles[i];
-
-                if (profile.authId == newProfile.authId || newProfile.authId == (state.current.profile as IProfile).authId) {
-                    profiles.splice(i, 1);
-                }
+            if (!profiles.includes(newProfile)) {
+                profiles = [...profiles, newProfile]
             }
 
             return {
                 ...state,
                 isWorking: false,
                 error: "",
-                profiles: [...profiles, newProfile]
+                profiles
             }
         },
         fetchProfilesFailed: (state, { payload: message }) => ({
+            ...state,
+            isWorking: false,
+            error: message
+        }),
+        fetchArrayProfilesSuccess: (state, { payload: newProfile }) => {
+            let profiles = [...state.profiles];
+
+            newProfile.forEach(profile => {
+                if (!profiles.includes(profile)) {
+                    profiles = [...profiles, profile]
+                }
+            });
+
+            return {
+                ...state,
+                isWorking: false,
+                error: "",
+                profiles
+            }
+        },
+        fetchArrayProfilesFailed: (state, { payload: message }) => ({
             ...state,
             isWorking: false,
             error: message
@@ -203,6 +220,8 @@ export const {
     fetchProfilesFailed,
     fetchCurrProfilesSuccess,
     fetchCurrProfilesFailed,
+    fetchArrayProfilesSuccess,
+    fetchArrayProfilesFailed,
     createProfileSuccess,
     createProfileFailed,
     updateProfileSuccess,

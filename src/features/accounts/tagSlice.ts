@@ -56,6 +56,11 @@ export const tagSlice = createSlice({
             isFetching: true,
             error: ""
         }),
+        [fetchArrayTag.type]: (state) => ({
+            ...state,
+            isFetching: true,
+            error: ""
+        }),
     },
     reducers: {
         fetchTagsSuccess: (state, { payload: tags }) => ({
@@ -70,24 +75,41 @@ export const tagSlice = createSlice({
             error: message
         }),
         fetchTagSuccess: (state, { payload: newTag }) => {
-            const tags = [...state.tags];
+            let tags = [...state.tags];
 
-            for (let i = 0; i < state.tags.length; i++) {
-                const tag = state.tags[i];
-
-                if (tag == newTag) {
-                    tags.splice(i, 1);
-                }
+            if (!tags.includes(newTag)) {
+                tags = [...tags, newTag]
             }
 
             return {
                 ...state,
                 isWorking: false,
                 error: "",
-                tags: [...tags, newTag]
+                tags
             }
         },
         fetchTagFailed: (state, { payload: message }) => ({
+            ...state,
+            isFetching: false,
+            error: message
+        }),
+        fetchArrayTagSuccess: (state, { payload: newTags }) => {
+            let tags = [...state.tags];
+
+            newTags.forEach(newTag => {
+                if (!tags.includes(newTag)) {
+                    tags = [...tags, newTag];
+                }
+            });
+
+            return {
+                ...state,
+                isWorking: false,
+                error: "",
+                tags
+            }
+        },
+        fetchArrayTagFailed: (state, { payload: message }) => ({
             ...state,
             isFetching: false,
             error: message
@@ -99,7 +121,9 @@ export const {
     fetchTagsSuccess,
     fetchTagsFailed,
     fetchTagSuccess,
-    fetchTagFailed
+    fetchTagFailed,
+    fetchArrayTagSuccess,
+    fetchArrayTagFailed,
 } = tagSlice.actions;
 
 export const getState = state => state.tags;

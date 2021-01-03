@@ -25,6 +25,8 @@ import {
     fetchCurrProfilesSuccess,
     fetchProfile,
     fetchArrayProfile,
+    fetchArrayProfilesSuccess,
+    fetchArrayProfilesFailed,
     fetchProfilesFailed,
     fetchProfilesSuccess,
     updateProfile,
@@ -53,11 +55,6 @@ function* getProfile(action) {
         yield put(fetchProfilesSuccess({ ...profile, authId }));
 
         yield put(fetchArrayTag(profile.tags));
-        yield take([fetchTagSuccess, fetchTagsFailed]);
-        const tagError = yield select(getTagError);
-        if (tagError != "") {
-            throw new Error(tagError);
-        }
     } catch (error) {
         yield put(fetchProfilesFailed(error.message));
     }
@@ -68,13 +65,28 @@ function* getArrayProfile(action) {
         const { request } = action.payload;
         const { authIds, ...params } = request.params;
 
+        let profiles = [];
+        let tags = [];
+
         for (let i = 0; i < authIds.length; i++) {
             const authId = authIds[i];
-            yield put(fetchProfile(authId, params));
-            yield take([fetchProfilesSuccess, fetchProfilesFailed]);
+            const profile = yield call(
+                rsf.database[request.type],
+                request.url + '/' + authId,
+                params
+            );
+            profiles = [...profiles, { ...profile, authId }];
+            profile.tags.forEach(tag => {
+                if (!tags.includes(tag)) {
+                    tags = [...tags, tag];
+                }
+            });
         }
+        yield put(fetchArrayProfilesSuccess(profiles));
+
+        yield put(fetchArrayTag(tags));
     } catch (error) {
-        yield put(fetchProfilesFailed(error.message));
+        yield put(fetchArrayProfilesFailed(error.message));
     }
 }
 

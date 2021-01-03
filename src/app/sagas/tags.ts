@@ -9,7 +9,9 @@ import {
   fetchTag,
   fetchTagSuccess,
   fetchTagFailed,
-  fetchArrayTag
+  fetchArrayTag,
+  fetchArrayTagSuccess,
+  fetchArrayTagFailed,
 } from "../../features/accounts/tagSlice";
 
 function* getTags(action) {
@@ -47,14 +49,21 @@ function* getArrayTag(action) {
     const { request } = action.payload;
     const { tagsIds, ...params } = request.params;
 
+    let tags = [];
+
     for (let i = 0; i < tagsIds.length; i++) {
       const tagId = tagsIds[i];
-      yield put(fetchTag(tagId, params));
-      yield take([fetchTagSuccess, fetchTagFailed]);
+      const tag = yield call(
+        rsf.database[request.type],
+        request.url + '/' + tagId,
+        params
+      );
+      tags = [...tags, { value: tagId, label: tag }];
     }
 
+    yield put(fetchArrayTagSuccess(tags));
   } catch (error) {
-    yield put(fetchTagsFailed(error.message));
+    yield put(fetchArrayTagFailed(error.message));
   }
 }
 
