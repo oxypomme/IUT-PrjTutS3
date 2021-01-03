@@ -91,7 +91,7 @@ const Buttons = styled.div`
     }
 `;
 
-const Pending = styled.p`
+const StatusText = styled.p`
     position: absolute;
     top: 30%;
     right: 110px;
@@ -102,10 +102,11 @@ const Pending = styled.p`
 interface ProfileItemProps {
     id: number | string,
     isPending?: boolean,
-    inviting?: boolean
+    inviting?: boolean,
+    isBlocked?: boolean
 }
 
-const ProfileItem = ({ id, isPending, inviting }: ProfileItemProps): JSX.Element => {
+const ProfileItem = ({ id, isPending, inviting, isBlocked }: ProfileItemProps): JSX.Element => {
     const dispatch = useDispatch();
 
     const profiles: IProfile[] = useSelector(getAllProfiles);
@@ -186,11 +187,11 @@ const ProfileItem = ({ id, isPending, inviting }: ProfileItemProps): JSX.Element
                     <li><FontAwesomeIcon icon={faBuilding} /> {profile?.town || <WaitingForData length={14} />}</li>
                 </ul>
             </InfoList>
-            {isPending ? <Pending>En attente</Pending> : <></>}
+            {isPending ? <StatusText>En attente</StatusText> : isBlocked ? <StatusText>Bloqué</StatusText> : <></>}
             <Buttons>
-                {!isPending ? (inviting ? <CustomButton onClick={handleDenyInvite}>Refuser</CustomButton> : <CustomButton onClick={handleChat}>Chat</CustomButton>) : <></>}
-                {!isPending ? (inviting ? <CustomButton primary onClick={handleAcceptInvite}>Accepter</CustomButton> : <></>) : <></>}
-                {!inviting ? <CustomButton primary onClick={handleUnmatch}>Unmatch</CustomButton> : <></>}
+                {!isPending && !isBlocked ? (inviting ? <CustomButton onClick={handleDenyInvite}>Refuser</CustomButton> : <CustomButton onClick={handleChat}>Chat</CustomButton>) : <></>}
+                {!isPending && !isBlocked ? (inviting ? <CustomButton primary onClick={handleAcceptInvite}>Accepter</CustomButton> : <></>) : <></>}
+                {!inviting ? <CustomButton primary={!isBlocked} onClick={handleUnmatch}>{!isBlocked ? "Annuler" : "Débloquer"}</CustomButton> : <></>}
             </Buttons>
         </Item >
     );

@@ -35,7 +35,7 @@ const ResumeInfos = () => {
             alert.error(error.message);
         }
         else {
-            alert.success('Vous êtes inscrits (et connecté).')
+            alert.success('Vous êtes inscrits (et connecté)')
             history.push('/index');
         }
     }

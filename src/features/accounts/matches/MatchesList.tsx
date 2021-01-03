@@ -83,6 +83,18 @@ const MyMatches = (): JSX.Element => {
                         : <></>
                 }
             </ProfileList>
+            <Separator />
+            <ProfileList>
+                {
+                    outMatches ?
+                        Object.keys(outMatches).sort((a, b) => compScore(b) - compScore(a))
+                            .filter((target) => (outMatches[target]?.isBlocked))
+                            .map((target, index) =>
+                                <ProfileItem key={index} id={target} isBlocked />
+                            )
+                        : <></>
+                }
+            </ProfileList>
         </div >
     );
 }

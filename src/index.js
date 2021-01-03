@@ -10,7 +10,7 @@ import * as serviceWorker from './serviceWorker';
 import AlertTemplate from './AlertTemplate';
 
 const alertOprions = {
-  timeout: 5000,
+  timeout: 3000,
 }
 
 ReactDOM.render(
