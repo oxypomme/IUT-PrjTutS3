@@ -22,8 +22,7 @@ export const newMatch = createAction(
                 params: {
                     targetId,
                     data: {
-                        isBlocked: false,
-                        isPending: true
+                        isBlocked: false
                     },
                     ...params
                 },
