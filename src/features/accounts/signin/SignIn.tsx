@@ -38,8 +38,6 @@ const SignIn = (): JSX.Element => {
     const handleSetPasswordOnChange = (event) => setPasswd(event.target.value);
 
     const handlePersistanceChange = (event) => setPersistence(event.target.checked);
-    console.log(persistence);
-
 
     const onLogged = ({ error }) => {
         if (error) {

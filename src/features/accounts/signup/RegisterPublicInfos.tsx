@@ -3,7 +3,7 @@ import Webcam from "react-webcam";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { getUploadedFiles, uploadFile, uploadFileSuccess, uploadStringFile } from "../../firestorage/storageSlice";
-import { Button, ErrorLabel, HiddenLabel, TextBox } from "../../../components/styledComponents";
+import { Button, ButtonFlex, ErrorLabel, HiddenLabel, TextBox } from "../../../components/styledComponents";
 import { ProfilePicture } from "../profile/ProfileComponent";
 import { addDesc, addPhoto, getInfos } from "../accountSlice";
 import { isNonNullChain } from "typescript";
@@ -149,8 +149,10 @@ export function RegisterPublicInfos(): JSX.Element {
                     Description
                 </HiddenLabel>
             </TextBox>
-            <Button onClick={handleBack}>Retour</Button>
-            <Button primary>Suivant</Button>
+            <ButtonFlex>
+                <Button onClick={handleBack}>Retour</Button>
+                <Button primary>Suivant</Button>
+            </ButtonFlex>
         </form>
     );
 }

@@ -57,6 +57,16 @@ export const Button = styled.button<{ primary?: boolean }>`
   }
 `;
 
+export const ButtonFlex = styled.div`
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    
+    &>*:not(:last-child) {
+        margin-right: 10px;
+    }
+`;
+
 export const ErrorLabel = styled.div`
   color: red;
   border: 2px solid red;

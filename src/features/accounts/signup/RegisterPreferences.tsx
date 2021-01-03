@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTags, getAllTags } from "../tagSlice";
 import { useHistory } from "react-router-dom";
-import { Button, ErrorLabel, Spacer } from '../../../components/styledComponents';
+import { Button, ButtonFlex, ErrorLabel, Spacer } from '../../../components/styledComponents';
 import { addGender, addPrefs, addTags, getInfos } from "../accountSlice";
 
 import IComboBoxItem from '../../../include/IComboBoxItem';
@@ -138,9 +138,10 @@ export const RegisterPreferences = (): JSX.Element => {
                     }),
                 }}
             />
-            <Button onClick={handleBack}>Retour</Button>
-            <Button primary>Suivant</Button>
-
+            <ButtonFlex>
+                <Button onClick={handleBack}>Retour</Button>
+                <Button primary>Suivant</Button>
+            </ButtonFlex>
         </form>
     );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Button, TextBox, HiddenLabel, ErrorLabel } from '../../../components/styledComponents';
+import { Button, TextBox, HiddenLabel, ErrorLabel, ButtonFlex } from '../../../components/styledComponents';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCalendarAlt, faBuilding, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
@@ -114,9 +114,10 @@ const RegisterPersonal = (): JSX.Element => {
                 </HiddenLabel>
             </TextBox>
 
-            <Button onClick={handleBack}>Retour</Button>
-            <Button primary>Suivant</Button>
-
+            <ButtonFlex>
+                <Button onClick={handleBack}>Retour</Button>
+                <Button primary>Suivant</Button>
+            </ButtonFlex>
         </form >
     );
 };
