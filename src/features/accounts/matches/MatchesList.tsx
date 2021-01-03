@@ -54,7 +54,7 @@ const MyMatches = (): JSX.Element => {
         return (
             <ProfileList>
                 {
-                    outMatches ?
+                    outMatches && inMatches ?
                         Object.keys(outMatches).sort((a, b) => compScore(b) - compScore(a))
                             .map((target, index) =>
                                 (!(outMatches[target] && inMatches[target]) == isPending) && !outMatches[target]?.isBlocked ?
@@ -74,7 +74,7 @@ const MyMatches = (): JSX.Element => {
             <Separator />
             <ProfileList>
                 {
-                    inMatches ?
+                    inMatches && outMatches ?
                         Object.keys(inMatches).sort((a, b) => compScore(b) - compScore(a))
                             .map((target, index) =>
                                 inMatches[target] && !outMatches[target] ?
