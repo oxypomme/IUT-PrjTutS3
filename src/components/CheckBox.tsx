@@ -11,6 +11,7 @@ export const CheckBoxContainer = styled.p`
 
     // TODO fix broken css
     &>input[type=checkbox] {
+        vertical-align: middle;
         /* display: none; */
     }
 
