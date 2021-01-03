@@ -39,6 +39,10 @@ const Item = styled.li`
         padding: 0 15px 0 0;
     }
 
+    & li {
+        transition: padding 0.125s;
+    }
+
     &:hover {
         height: 200px;
     }
@@ -73,8 +77,6 @@ const InfoList = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     height: 100%;
-
-    
 `;
 
 const Buttons = styled.div`
