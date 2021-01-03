@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHorse, faCalendarAlt, faBuilding, faVenusMars, faVenusDouble, faNeuter, faHelicopter, faMarsDouble, faTransgender, faGenderless } from '@fortawesome/free-solid-svg-icons';
@@ -13,6 +13,7 @@ import EGender from '../../../include/EGender';
 import EOrientation from '../../../include/EOrientation';
 import { Button, WaitingForData } from '../../../components/styledComponents';
 import { ProfilePicture } from './ProfileComponent';
+import { deleteMatch, newMatch } from '../matches/matchesSlice';
 
 const Item = styled.li`
     width: 850px;
@@ -85,6 +86,8 @@ interface ProfileItemProps {
 }
 
 const ProfileItem = ({ id, isPending, inviting }: ProfileItemProps): JSX.Element => {
+    const dispatch = useDispatch();
+
     const profiles: IProfile[] = useSelector(getAllProfiles);
     const profile: IProfile = profiles?.find(p => p.authId === id);
 
@@ -127,6 +130,26 @@ const ProfileItem = ({ id, isPending, inviting }: ProfileItemProps): JSX.Element
             break;
     }
 
+    const handleChat = (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        console.log("//TODO");
+    }
+
+    const handleUnmatch = (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        dispatch(deleteMatch(profile.authId));
+    }
+
+    const handleDenyInvite = (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        dispatch(newMatch(profile.authId, { data: { isBlocked: true } }));
+    }
+
+    const handleAcceptInvite = (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        dispatch(newMatch(profile.authId));
+    }
+
     return (
         <Item>
             <ImageProfileContainer>
@@ -145,8 +168,12 @@ const ProfileItem = ({ id, isPending, inviting }: ProfileItemProps): JSX.Element
                 <Pending>En attente</Pending>
                 :
                 <Buttons>
-                    {inviting ? <CustomButton>Refuser</CustomButton> : <CustomButton>Chat</CustomButton>}
-                    {inviting ? <CustomButton primary>Accepter</CustomButton> : <CustomButton primary>Unmatch</CustomButton>}
+                    {inviting ?
+                        <CustomButton onClick={handleDenyInvite}>Refuser</CustomButton>
+                        : <CustomButton onClick={handleChat}>Chat</CustomButton>}
+                    {inviting ?
+                        <CustomButton primary onClick={handleAcceptInvite}>Accepter</CustomButton>
+                        : <CustomButton primary onClick={handleUnmatch}>Unmatch</CustomButton>}
                 </Buttons>
             }
         </Item >

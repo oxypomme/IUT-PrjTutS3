@@ -9,7 +9,10 @@ import {
     fetchMatchesFailed,
     createMatchSuccess,
     createMatchFailed,
-    newMatch
+    newMatch,
+    deleteMatchSuccess,
+    deleteMatchFailed,
+    deleteMatch
 } from "../../features/accounts/matches/matchesSlice";
 import { getAuthId } from "../../features/accounts/accountSlice";
 
@@ -60,11 +63,11 @@ function* createMatch(action) {
         }
 
         const { request } = action.payload;
-        const { targetId, ...params } = request.params;
+        const { targetId, data, ...params } = request.params;
         yield call(
             rsf.database[request.type],
             request.url + '/' + authId + '/' + targetId,
-            params
+            { ...data, ...params }
         );
         yield put(createMatchSuccess());
 
@@ -74,9 +77,33 @@ function* createMatch(action) {
     }
 }
 
+function* removeMatch(action) {
+    try {
+        const authId = yield select(getAuthId);
+        if (authId == "") {
+            throw new Error("User not connected");
+        }
+
+        const { request } = action.payload;
+        const { targetId, ...params } = request.params;
+        yield call(
+            rsf.database[request.type],
+            request.url + '/' + authId + '/' + targetId,
+            params
+        );
+
+        yield put(deleteMatchSuccess());
+
+        yield put(fetchMatches());
+    } catch (error) {
+        yield put(deleteMatchFailed(error.message));
+    }
+}
+
 export default function* matchesSagas() {
     yield all([
         takeLatest(fetchMatches.type, getMatches),
         takeLatest(newMatch.type, createMatch),
+        takeLatest(deleteMatch, removeMatch),
     ]);
 }

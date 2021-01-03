@@ -30,6 +30,18 @@ export const newMatch = createAction(
         },
     })
 );
+export const deleteMatch = createAction(
+    "DELETE_MATCH_REQUESTED",
+    (targetId: string, params = {}) => ({
+        payload: {
+            request: {
+                type: "delete",
+                url: "/matches",
+                params: { targetId, ...params }
+            }
+        }
+    })
+);
 
 export const matchSlice = createSlice({
     name: 'matches',
@@ -46,6 +58,11 @@ export const matchSlice = createSlice({
             error: ""
         }),
         [newMatch.type]: (state) => ({
+            ...state,
+            isWorking: true,
+            error: ""
+        }),
+        [deleteMatch.type]: (state) => ({
             ...state,
             isWorking: true,
             error: ""
@@ -77,6 +94,16 @@ export const matchSlice = createSlice({
             isWorking: false,
             error: message
         }),
+        deleteMatchSuccess: (state) => ({
+            ...state,
+            isWorking: false,
+            error: "",
+        }),
+        deleteMatchFailed: (state, { payload: message }) => ({
+            ...state,
+            isWorking: false,
+            error: message
+        }),
     }
 });
 
@@ -85,6 +112,8 @@ export const {
     fetchMatchesFailed,
     createMatchSuccess,
     createMatchFailed,
+    deleteMatchSuccess,
+    deleteMatchFailed,
 } = matchSlice.actions;
 
 export const getState = state => state.matches;
