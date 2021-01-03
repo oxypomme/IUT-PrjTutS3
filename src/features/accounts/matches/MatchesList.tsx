@@ -65,7 +65,6 @@ const MyMatches = (): JSX.Element => {
             </ProfileList>
         )
     }
-    console.log(outMatches, inMatches);
 
     return (
         <div>
