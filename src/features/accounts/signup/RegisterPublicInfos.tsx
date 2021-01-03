@@ -147,6 +147,7 @@ export function RegisterPublicInfos(): JSX.Element {
                     Description
                 </HiddenLabel>
             </TextBox>
+            <Button onClick={history.goBack}>Retour</Button>
             <Button primary>Suivant</Button>
         </form>
     );

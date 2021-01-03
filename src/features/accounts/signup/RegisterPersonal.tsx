@@ -112,7 +112,9 @@ const RegisterPersonal = (): JSX.Element => {
                 </HiddenLabel>
             </TextBox>
 
+            <Button onClick={history.goBack}>Retour</Button>
             <Button primary>Suivant</Button>
+
         </form >
     );
 };

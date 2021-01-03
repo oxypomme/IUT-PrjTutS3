@@ -51,6 +51,7 @@ const ResumeInfos = () => {
     return (
         <form onSubmit={handleOnSubmit}>
             <ProfileComponent profile={profile} />
+            <Button onClick={history.goBack}>Retour</Button>
             <Button primary>Créer le compte</Button>
         </form>
     );

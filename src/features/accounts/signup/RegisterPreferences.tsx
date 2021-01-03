@@ -136,7 +136,9 @@ export const RegisterPreferences = (): JSX.Element => {
                     }),
                 }}
             />
+            <Button onClick={history.goBack}>Retour</Button>
             <Button primary>Suivant</Button>
+
         </form>
     );
 };
