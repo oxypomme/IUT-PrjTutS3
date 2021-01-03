@@ -8,6 +8,7 @@ import IProfile, { instanceOfIProfile } from '../../../include/IProfile';
 import filterProfiles from '../../../tests/FilterProfiles';
 import ProfileCard from '../profile/ProfileCard';
 import { fetchArrayProfile, getCurrProfile } from '../profileSlice';
+import { getOutgoingMatches } from '../matches/matchesSlice';
 
 const ProfilesContainer = styled.div`
     & > div {
@@ -20,6 +21,7 @@ const SelectionProfiles = (): JSX.Element => {
     const [matchableKeys, setKeys] = React.useState<string[]>();
     const [loading, setLoading] = React.useState<boolean | null>(false);
     const currProfile: IProfile | Record<string, never> = useSelector(getCurrProfile);
+    const matches = useSelector(getOutgoingMatches);
 
     React.useEffect(() => {
         (async function getProfiles() {
@@ -41,7 +43,7 @@ const SelectionProfiles = (): JSX.Element => {
                 setLoading(null);
             }
         })();
-    }, [currProfile]);
+    }, [currProfile, matches]);
 
     return (
         <ProfilesContainer>

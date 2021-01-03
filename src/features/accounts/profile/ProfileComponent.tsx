@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import styled from '@emotion/styled';
 
@@ -12,7 +12,8 @@ import IProfile from '../../../include/IProfile';
 import ITag from '../../../include/IComboBoxItem';
 import EGender from '../../../include/EGender';
 import EOrientation from '../../../include/EOrientation';
-import { WaitingForData } from '../../../components/styledComponents';
+import { Button, WaitingForData } from '../../../components/styledComponents';
+import { newMatch } from '../matches/matchesSlice';
 
 export const ProfilePicture = styled.img <{ source?: string }> `
     width: 100%;
@@ -29,6 +30,7 @@ export const ProfilePicture = styled.img <{ source?: string }> `
 `
 
 const Profile = styled.div`
+    position: relative;
     border: 1px solid #888888;
     background-color: var(--background2);
     min-height: 80vh;
@@ -83,7 +85,20 @@ const Tags = styled.ul`
     }
 `
 
+const ButtonContainer = styled.div`
+    width: 390px;
+    display:flex;
+    position: absolute;
+    bottom: 10px;
+
+    &>button{
+        margin-right: 10px;
+    }
+`;
+
 const ProfileComponent = ({ profile }: { profile: IProfile }): JSX.Element => {
+    const dispatch = useDispatch();
+
     const tags: Array<ITag> = useSelector(getAllTags);
 
     let genderIcon = faUser;
@@ -125,6 +140,15 @@ const ProfileComponent = ({ profile }: { profile: IProfile }): JSX.Element => {
             break;
     }
 
+    const handleSkip = (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        dispatch(newMatch(profile.authId, { data: { isBlocked: true } }));
+    }
+    const handleMatch = (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        dispatch(newMatch(profile.authId));
+    }
+
     return (
         <Profile>
             <div>
@@ -146,6 +170,10 @@ const ProfileComponent = ({ profile }: { profile: IProfile }): JSX.Element => {
                         <li key={index}>- {tags.find(t => t.value === tag)?.label}</li>
                     )) || <WaitingForData length={16} />}
                 </Tags>
+                <ButtonContainer>
+                    <Button onClick={handleSkip}>Skip</Button>
+                    <Button onClick={handleMatch} primary>Match</Button>
+                </ButtonContainer>
             </div>
         </Profile>
     );
