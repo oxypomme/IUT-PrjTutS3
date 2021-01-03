@@ -9,7 +9,7 @@ import { getAllProfiles, getCurrProfile } from '../profileSlice';
 
 import { fetchMatches, getIngoingMatches, getOutgoingMatches } from './matchesSlice';
 import { Separator } from '../../../components/styledComponents';
-import { getScore } from '../../../tests/FilterProfiles';
+import { getScore } from '../selection/FilterProfiles';
 
 const ProfileList = styled.ul`
     list-style-type: none;

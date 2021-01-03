@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { WaitingForData } from '../../../components/styledComponents';
 import IProfile, { instanceOfIProfile } from '../../../include/IProfile';
 
-import filterProfiles from '../../../tests/FilterProfiles';
+import filterProfiles from './FilterProfiles';
 import ProfileCard from '../profile/ProfileCard';
 import { fetchArrayProfile, getCurrProfile } from '../profileSlice';
 import { getOutgoingMatches } from '../matches/matchesSlice';

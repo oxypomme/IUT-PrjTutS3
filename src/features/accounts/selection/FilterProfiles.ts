@@ -1,9 +1,9 @@
-import firebase from '../app/firebase';
+import firebase from '../../../app/firebase';
 import '@firebase/database'
 
-import EGender from '../include/EGender';
-import EOrientation from '../include/EOrientation';
-import IProfile from '../include/IProfile';
+import EGender from '../../../include/EGender';
+import EOrientation from '../../../include/EOrientation';
+import IProfile from '../../../include/IProfile';
 
 const db = firebase.database();
 const Pref = db.ref('/profiles');
