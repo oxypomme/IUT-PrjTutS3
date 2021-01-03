@@ -59,7 +59,7 @@ const MyMatches = (): JSX.Element => {
                             .map((target, index) =>
                                 (!(outMatches[target] && inMatches[target]) == isPending) && !outMatches[target]?.isBlocked ?
                                     <ProfileItem key={index} id={target} isPending={isPending} />
-                                    : <></>)
+                                    : <span key={index}></span>)
                         : <WaitingForData length={16} />
                 }
             </ProfileList>
@@ -79,7 +79,7 @@ const MyMatches = (): JSX.Element => {
                             .map((target, index) =>
                                 inMatches[target] && !outMatches[target] ?
                                     <ProfileItem key={index} id={target} inviting />
-                                    : <></>)
+                                    : <span key={index}></span>)
                         : <WaitingForData length={16} />
                 }
             </ProfileList>
