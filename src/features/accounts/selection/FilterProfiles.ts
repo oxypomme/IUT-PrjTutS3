@@ -53,7 +53,7 @@ const filterProfiles = async ({ sex: mySex, orientation: myOrientation, tags: my
                         profilesScore.push({ key, score });
                     }
                 }
-                else { // Men or Women
+                else if (profile.sex != EGender.NonBinary) { // Men or Women
                     if (myOrientation == EOrientation.Bisexual) {
                         if (profile.orientation == EOrientation.Homosexual) {
                             if (mySex == profile.sex) {
