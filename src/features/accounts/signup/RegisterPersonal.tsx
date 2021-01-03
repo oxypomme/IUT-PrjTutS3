@@ -1,10 +1,12 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useAlert } from "react-alert";
 
 import { Button, TextBox, HiddenLabel, ErrorLabel, ButtonFlex } from '../../../components/styledComponents';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCalendarAlt, faBuilding, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+
 import { addAge, addCity, addName, getNewAuth } from "../accountSlice";
 import { useHistory } from "react-router-dom";
 
@@ -13,11 +15,12 @@ import IError from "../../../include/IError";
 const RegisterPersonal = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const alert = useAlert();
 
     const auth = useSelector(getNewAuth);
     React.useEffect(() => {
         if (!auth || auth.passwd === "" || auth.email === "") {
-            alert("Vous n'avez pas rentré tous les champs nécéssaires.")
+            alert.error("Vous n'avez pas rentré tous les champs nécéssaires.")
             history.push('/Login');
         }
     }, [auth])

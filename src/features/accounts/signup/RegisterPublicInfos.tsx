@@ -2,11 +2,15 @@ import React from "react";
 import Webcam from "react-webcam";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { useAlert } from "react-alert";
+
 import { getUploadedFiles } from "../../firestorage/storageSlice";
+
 import { Button, ButtonFlex, ErrorLabel, HiddenLabel, TextBox } from "../../../components/styledComponents";
 import { ProfilePicture } from "../profile/ProfileComponent";
 import { addDesc, addPhoto, getInfos } from "../accountSlice";
-import { useHistory } from "react-router-dom";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle, faUser } from "@fortawesome/free-solid-svg-icons";
 import IError from "../../../include/IError";
@@ -16,11 +20,12 @@ export interface ICam { value: string, label: string; }
 export function RegisterPublicInfos(): JSX.Element {
     const dispatch = useDispatch();
     const history = useHistory();
+    const alert = useAlert();
 
     const profile = useSelector(getInfos);
     React.useEffect(() => {
         if (!profile || profile.sex < 0 || profile.orientation < 0 || profile.tags.lenght < 3) {
-            alert("Vous n'avez pas rentré tous les champs nécéssaires.")
+            alert.error("Vous n'avez pas rentré tous les champs nécéssaires.")
             history.push('/SignUp/2');
         }
     }, [profile])

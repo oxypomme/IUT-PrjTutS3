@@ -3,14 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import store from './app/store';
-import { Provider } from 'react-redux';
+import { Provider as ReactProvider } from 'react-redux';
+import { Provider as AlertProvider } from 'react-alert'; //https://www.npmjs.com/package/react-alert
 import * as serviceWorker from './serviceWorker';
+
+import AlertTemplate from './AlertTemplate';
+
+const alertOprions = {
+  //offset: '30px',
+}
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store()}>
+    <ReactProvider store={store()}>
+      <AlertProvider template={AlertTemplate} {...alertOprions}>
       <App />
-    </Provider>
+      </AlertProvider>
+    </ReactProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

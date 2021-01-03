@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
+import { useAlert } from "react-alert";
+
 import { fetchTags, getAllTags } from "../tagSlice";
 import { useHistory } from "react-router-dom";
 import { Button, ButtonFlex, ErrorLabel } from '../../../components/styledComponents';
@@ -21,11 +23,12 @@ const FontStyledIcon = styled(FontAwesomeIcon)`
 export const RegisterPreferences = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const alert = useAlert();
 
     const profile = useSelector(getInfos);
     React.useEffect(() => {
         if (!profile || profile.name === "" || profile.age < 18 || profile.town === "") {
-            alert("Vous n'avez pas rentré tous les champs nécéssaires.")
+            alert.error("Vous n'avez pas rentré tous les champs nécéssaires.")
             history.push('/SignUp/1');
         }
     }, [profile])

@@ -1,18 +1,22 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAlert } from 'react-alert';
+import { useHistory } from 'react-router-dom';
+
+import firebase from 'firebase/app';
+import '@firebase/auth';
 
 import { getInfos } from '../accountSlice';
-import { useDispatch, useSelector } from 'react-redux';
 import ProfileComponent from '../profile/ProfileComponent';
-import { useHistory } from 'react-router-dom';
 import { Button, ButtonFlex } from '../../../components/styledComponents';
 import { createProfile } from '../profileSlice';
 import CheckBox from '../../../components/CheckBox';
-import firebase from 'firebase';
 
 
 const ResumeInfos = () => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const alert = useAlert();
 
     const profile = useSelector(getInfos);
     const [persistence, setPersistence] = React.useState<boolean>(false);
@@ -21,17 +25,17 @@ const ResumeInfos = () => {
 
     React.useEffect(() => {
         if (!profile || profile.desc === "" || profile.imageURL === "") {
-            alert("Vous n'avez pas rentré tous les champs nécéssaires.")
+            alert.error("Vous n'avez pas rentré tous les champs nécéssaires.");
             history.push('/SignUp/3');
         }
     }, [profile])
 
     const onSigned = ({ error }) => {
         if (error) {
-            alert("ERREUR : " + error.message);
+            alert.show("ERREUR : " + error.message, { type: 'error' });
         }
         else {
-            alert('Vous êtes inscrits (et connecté).')
+            alert.show('Vous êtes inscrits (et connecté).')
             history.push('/index');
         }
     }
@@ -53,7 +57,7 @@ const ResumeInfos = () => {
                 })
             )
             .catch((error) => {
-                alert("ERREUR : " + error.message);
+                alert.error("ERREUR : " + error.message);
             });
     };
 
