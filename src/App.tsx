@@ -50,7 +50,7 @@ function App(): JSX.Element {
             }
             { !isConnected &&
                 <Switch>
-                    <Route exact path='/' component={PublicHome} />
+                    <Route exact path='/' component={Login} />
                     <Route exact path='/login' component={Login} />
                     <Route exact path='/SignUp/1' component={CreatePersonal} />
                     <Route exact path='/SignUp/2' component={CreatePreferences} />
