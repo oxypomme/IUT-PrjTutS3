@@ -211,6 +211,7 @@ function* deleteProfileSaga(action) {
         yield put(deleteProfileSuccess());
     } catch (error) {
         yield put(deleteProfileFailed(error.message));
+        throw error;
     }
 }
 
