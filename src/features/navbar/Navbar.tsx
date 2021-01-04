@@ -53,7 +53,7 @@ const NavButton = styled.a<{ isopened?: boolean }>`
     width: fit-content;
     position: absolute;
     right: 0;
-    top: 0;
+    top: 1px;
 
     & > svg{
         transform: rotate(${props => props.isopened ? "-90deg" : "0"});
