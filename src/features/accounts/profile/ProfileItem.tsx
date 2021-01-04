@@ -41,6 +41,7 @@ const Item = styled.li`
 
     & li {
         transition: padding 0.125s;
+        width: 115px;
     }
 
     &:hover {
