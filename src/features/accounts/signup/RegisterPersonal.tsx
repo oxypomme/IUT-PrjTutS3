@@ -38,7 +38,10 @@ const RegisterPersonal = (): JSX.Element => {
     //TODO: use a proper thing, not a simple textbox
     const handleSetTownOnChange = (event) => setTown(event.target.value);
 
-    const handleBack = (event) => history.goBack();
+    const handleBack = (event) => {
+        event.preventDefault();
+        history.goBack()
+    };
 
     const handleOnSubmit = (event) => {
         event.preventDefault();
@@ -63,7 +66,7 @@ const RegisterPersonal = (): JSX.Element => {
     }
 
     return (
-        <form onSubmit={handleOnSubmit}>
+        <form>
             {globalErrors.length > 0 &&
                 <ErrorLabel>
                     {globalErrors.map((error, index) => (
@@ -118,7 +121,7 @@ const RegisterPersonal = (): JSX.Element => {
 
             <ButtonFlex>
                 <Button onClick={handleBack}>Retour</Button>
-                <Button primary>Suivant</Button>
+                <Button primary onClick={handleOnSubmit}>Suivant</Button>
             </ButtonFlex>
         </form >
     );

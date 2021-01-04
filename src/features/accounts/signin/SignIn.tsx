@@ -94,7 +94,7 @@ const SignIn = (): JSX.Element => {
     }
 
     return (
-        <form onSubmit={handleOnSubmit}>
+        <form>
             {globalErrors.length > 0 &&
                 <ErrorLabel>
                     {globalErrors.map((error, index) => (
@@ -132,7 +132,7 @@ const SignIn = (): JSX.Element => {
                 content="Rester connecté"
                 onChange={handlePersistanceChange}
             ></CheckBox>
-            <Button primary>Connexion</Button>
+            <Button primary onClick={handleOnSubmit}>Connexion</Button>
         </form>
     );
 }

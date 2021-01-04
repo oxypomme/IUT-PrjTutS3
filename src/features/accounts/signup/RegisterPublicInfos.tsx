@@ -67,6 +67,11 @@ export function RegisterPublicInfos(): JSX.Element {
         // dispatch(uploadStringFile("profiles/2", imageUrl));
     }, [picture, setPicture]);
 
+    const handleSnap = (event) => {
+        event.preventDefault();
+        snap();
+    }
+
     const uploadLocalFile = React.useCallback((event) => {
         const file = event.target.files[0];
         if (file == undefined || !file.name.match(/.(jpg|jpeg|png|jfif|pjpeg|.pjp)$/i))
@@ -102,10 +107,13 @@ export function RegisterPublicInfos(): JSX.Element {
         }
     };
 
-    const handleBack = (event) => history.goBack();
+    const handleBack = (event) => {
+        event.preventDefault();
+        history.goBack()
+    };
 
     return (
-        <form onSubmit={handleOnSubmit}>
+        <form>
             {globalErrors.length > 0 &&
                 <ErrorLabel>
                     {globalErrors.map((error, index) => (
@@ -130,7 +138,7 @@ export function RegisterPublicInfos(): JSX.Element {
                 screenshotFormat="image/jpeg"
                 style={{ display: "block", border: "2px solid black", width: 720 }}
             />
-            <Button onClick={snap}>Prendre une photo</Button>
+            <Button onClick={handleSnap}>Prendre une photo</Button>
             <input type="file" onChange={uploadLocalFile} accept="image/png, image/jpeg" style={{ display: 'block' }} />
             {picture &&
                 <div style={{ width: 320, height: 480 }}>
@@ -155,7 +163,7 @@ export function RegisterPublicInfos(): JSX.Element {
             </TextBox>
             <ButtonFlex>
                 <Button onClick={handleBack}>Retour</Button>
-                <Button primary>Suivant</Button>
+                <Button primary onClick={handleOnSubmit}>Suivant</Button>
             </ButtonFlex>
         </form>
     );

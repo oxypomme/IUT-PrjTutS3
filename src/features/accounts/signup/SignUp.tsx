@@ -45,7 +45,7 @@ const SignUp = (): JSX.Element => {
     };
 
     return (
-        <form onSubmit={handleOnSubmit}>
+        <form>
             {globalErrors.length > 0 &&
                 <ErrorLabel>
                     {globalErrors.map((error, index) => (
@@ -99,7 +99,7 @@ const SignUp = (): JSX.Element => {
                 </HiddenLabel>
             </TextBox>
 
-            <Button>Inscription</Button>
+            <Button onClick={handleOnSubmit}>Inscription</Button>
         </form >
     );
 };

@@ -171,6 +171,7 @@ function* deleteProfileSaga(action) {
         const authId = yield select(getAuthId);
         const { request } = action.payload;
         for (let i = 0; i < request.urls.length; i++) {
+            // By using this I avoid an error when deleting a profile without matches
             try {
                 yield call(
                     rsf.database[request.type],

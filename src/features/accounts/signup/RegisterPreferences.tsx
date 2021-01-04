@@ -79,10 +79,13 @@ export const RegisterPreferences = (): JSX.Element => {
         }
     }
 
-    const handleBack = (event) => history.goBack();
+    const handleBack = (event) => {
+        event.preventDefault();
+        history.goBack()
+    };
 
     return (
-        <form onSubmit={handleOnSubmit}>
+        <form>
             {globalErrors.length > 0 &&
                 <ErrorLabel>
                     {globalErrors.map((error, index) => (
@@ -145,7 +148,7 @@ export const RegisterPreferences = (): JSX.Element => {
             />
             <ButtonFlex>
                 <Button onClick={handleBack}>Retour</Button>
-                <Button primary>Suivant</Button>
+                <Button primary onClick={handleOnSubmit}>Suivant</Button>
             </ButtonFlex>
         </form>
     );

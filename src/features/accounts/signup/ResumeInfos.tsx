@@ -36,7 +36,7 @@ const ResumeInfos = () => {
         }
         else {
             alert.success('Vous êtes inscrit (et connecté)')
-            history.push('/index');
+            history.push('/');
         }
     }
 
@@ -61,15 +61,19 @@ const ResumeInfos = () => {
             });
     };
 
-    const handleBack = (event) => history.goBack();
+    const handleBack = (event) => {
+        event.preventDefault();
+        history.goBack()
+    };
 
     return (
-        <form onSubmit={handleOnSubmit}>
+        <form>
             <ProfileComponent profile={profile} />
             <ButtonFlex>
                 <Button onClick={handleBack}>Retour</Button>
                 <div>
-                    <Button primary>Créer le compte</Button>
+                    <Button primary onClick={handleOnSubmit}>Créer le compte</Button>
+
                     <CheckBox
                         content="Rester connecté"
                         onChange={handlePersistanceChange}
