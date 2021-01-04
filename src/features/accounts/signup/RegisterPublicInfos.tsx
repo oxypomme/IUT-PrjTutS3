@@ -39,15 +39,15 @@ export function RegisterPublicInfos(): JSX.Element {
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
 
-    const [pendingUploadUrl, setPendingUploadUrl] = React.useState<string>("");
+    // const [pendingUploadUrl, setPendingUploadUrl] = React.useState<string>("");
 
 
-    const uploadedLinks = useSelector(getUploadedFiles);
-    let mylink;
-    if ((mylink = uploadedLinks.find(u => u.url === pendingUploadUrl)) !== undefined) {
-        setPendingUploadUrl(undefined);
-        console.log(mylink, mylink.dlUrl);
-    }
+    // const uploadedLinks = useSelector(getUploadedFiles);
+    // let mylink;
+    // if ((mylink = uploadedLinks.find(u => u.url === pendingUploadUrl)) !== undefined) {
+    //     setPendingUploadUrl(undefined);
+    //     console.log(mylink, mylink.dlUrl);
+    // }
 
     React.useEffect(() => {
         const getDevices = async () => {
@@ -76,7 +76,7 @@ export function RegisterPublicInfos(): JSX.Element {
         const file = event.target.files[0];
         if (file == undefined || !file.name.match(/.(jpg|jpeg|png|jfif|pjpeg|.pjp)$/i))
             return;
-        setPendingUploadUrl("profiles/1");
+        // setPendingUploadUrl("profiles/1");
         // dispatch(uploadFile("profiles/1", file));
 
         const reader = new FileReader();
@@ -102,7 +102,8 @@ export function RegisterPublicInfos(): JSX.Element {
         setGlobalErrors(errors);
         if (errors.length < 1) {
             dispatch(addDesc(description));
-            dispatch(addPhoto("https://i.ytimg.com/vi/BHc4sA3k8pA/maxresdefault.jpg")); //TODO fix to the link of the image
+            // dispatch(addPhoto("https://i.ytimg.com/vi/BHc4sA3k8pA/maxresdefault.jpg")); //TODO fix to the link of the image
+            dispatch(addPhoto(picture));
             history.push('/SignUp/4');
         }
     };
