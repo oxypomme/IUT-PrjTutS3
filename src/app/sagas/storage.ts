@@ -6,6 +6,9 @@ import { rsf } from '../firebase'
 import '@firebase/storage'
 
 import {
+    deleteAvatar,
+    deleteAvatarFailed,
+    deleteAvatarSuccess,
     uploadFile,
     uploadFileFailed,
     uploadFileSuccess,
@@ -29,14 +32,31 @@ function* uploadFileSaga(action) {
         yield put(uploadFileSuccess({ url: request.url, dlUrl }));
     } catch (error) {
         yield put(uploadFileFailed(error.message));
-        throw error;
+        //throw error;
     }
 
 }
 
+function* deleteAvatarSaga(action) {
+    try {
+        const { request } = action.payload;
+        const { authId, ...params } = request.params;
+        yield call(
+            rsf.storage[request.type],
+            request.url + '/' + authId,
+            params
+        );
+
+        yield put(deleteAvatarSuccess());
+    } catch (error) {
+        yield put(deleteAvatarFailed(error.message));
+        //throw error;
+    }
+}
+
 export default function* storageSagas() {
     yield all([
-        takeLatest(uploadFile.type, withCallback(uploadFileSaga)),
-        takeLatest(uploadStringFile.type, withCallback(uploadFileSaga)),
+        takeLatest([uploadFile.type, uploadStringFile.type], uploadFileSaga),
+        takeLatest(deleteAvatar.type, deleteAvatarSaga),
     ]);
 }

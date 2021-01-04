@@ -47,7 +47,7 @@ import {
     fetchTagSuccess,
     getTagError
 } from '../../features/accounts/tagSlice';
-import { getStorageError, getUploadedFiles, uploadFileFailed, uploadFileSuccess, uploadStringFile } from '../../features/firestorage/storageSlice';
+import { deleteAvatar, getStorageError, getUploadedFiles, uploadFileFailed, uploadFileSuccess, uploadStringFile } from '../../features/firestorage/storageSlice';
 
 function* getProfile(action) {
     try {
@@ -185,7 +185,12 @@ function* updateProfileSaga(action) {
 
 function* deleteProfileSaga(action) {
     try {
-        // It's actually log you out
+        const authId = yield select(getAuthId);
+
+        // delete before login out
+        yield put(deleteAvatar(authId));
+
+        // It actually log you out
         yield put(deleteAccount());
         yield take([deleteAccountSuccess, deleteAccountFailed]);
         const accountError = yield select(getAccountError);
@@ -193,7 +198,6 @@ function* deleteProfileSaga(action) {
             throw new Error(accountError);
         }
 
-        const authId = yield select(getAuthId);
         const { request } = action.payload;
         for (let i = 0; i < request.urls.length; i++) {
             // By using this I avoid an error when deleting a profile without matches

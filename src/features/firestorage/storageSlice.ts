@@ -14,6 +14,19 @@ export const uploadFile = createAction(
     })
 )
 
+export const deleteAvatar = createAction(
+    "DELETE_AVATAR_REQUESTED",
+    (authId: string, params = {}) => ({
+        payload: {
+            request: {
+                type: "deleteFile",
+                url: "/profiles",
+                params: { authId, ...params }
+            }
+        }
+    })
+)
+
 export const uploadStringFile = createAction(
     "UPLOAD_STRING_FILE_REQUESTED",
     (url: string, file: string) => ({
@@ -41,6 +54,16 @@ export const storageSlice = createSlice({
             isWorking: true,
             error: ""
         }),
+        [deleteAvatar.type]: (state) => ({
+            ...state,
+            isWorking: true,
+            error: ""
+        }),
+        [uploadStringFile.type]: (state) => ({
+            ...state,
+            isWorking: true,
+            error: ""
+        }),
     },
     reducers: {
         uploadFileSuccess: (state, { payload: upContent }) => ({
@@ -54,12 +77,24 @@ export const storageSlice = createSlice({
             isWorking: false,
             error: message
         }),
+        deleteAvatarSuccess: (state) => ({
+            ...state,
+            isWorking: false,
+            error: ""
+        }),
+        deleteAvatarFailed: (state, { payload: message }) => ({
+            ...state,
+            isWorking: false,
+            error: message
+        }),
     }
 });
 
 export const {
     uploadFileSuccess,
     uploadFileFailed,
+    deleteAvatarSuccess,
+    deleteAvatarFailed,
 } = storageSlice.actions;
 
 export const getState = state => state.storage;
