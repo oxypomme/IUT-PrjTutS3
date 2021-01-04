@@ -1,6 +1,8 @@
 import { createAction, createSelector, createSlice } from "@reduxjs/toolkit";
 
 import IProfile from "../../include/IProfile";
+import TCallback from "../../include/TCallback";
+import TCustomAction from "../../include/TCustomAction";
 
 export const fetchProfile = createAction(
     "FETCH_PROFILE_REQUESTED",
@@ -39,7 +41,7 @@ export const fetchCurrProfile = createAction(
     })
 );
 
-export const createProfile = (onComplete?: (args?: unknown) => void, params = {}) => ({
+export const createProfile = (onComplete?: TCallback, params = {}): TCustomAction => ({
     type: createProfile.type,
     payload: {
         request: {
@@ -47,7 +49,8 @@ export const createProfile = (onComplete?: (args?: unknown) => void, params = {}
             url: "/profiles",
             params
         }
-    }
+    },
+    onComplete
 })
 createProfile.type = "CREATE_PROFILE_REQUESTED";
 
@@ -64,7 +67,7 @@ export const updateProfile = createAction(
     })
 );
 
-export const deleteProfile = (onComplete?: (args?: unknown) => void, params = {}) => ({
+export const deleteProfile = (onComplete?: TCallback, params = {}): TCustomAction => ({
     type: deleteProfile.type,
     payload: {
         request: {
