@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { useHistory } from "react-router-dom";
 import Select from "react-select";
+import Creatable, { components, MenuProps } from "react-select";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle, faGenderless, faHelicopter, faHorse, faMarsDouble, faTransgender, faVenusDouble, faVenusMars } from "@fortawesome/free-solid-svg-icons";
@@ -14,6 +15,7 @@ import { addGender, addPrefs, addTags, getInfos } from "../accountSlice";
 import EOrientation from "../../../include/EOrientation";
 import EGender from "../../../include/EGender";
 import IError from "../../../include/IError";
+import ITag from "../../../include/IComboBoxItem";
 
 import IComboBoxItem from '../../../include/IComboBoxItem';
 import { Button, ButtonFlex, ErrorLabel } from '../../../components/styledComponents';
@@ -21,6 +23,24 @@ import { Button, ButtonFlex, ErrorLabel } from '../../../components/styledCompon
 const FontStyledIcon = styled(FontAwesomeIcon)`
     margin-right: 5px;
 `;
+
+const MaxTagLimitAchieved = styled.div`
+    margin: 15px;
+`;
+
+const Menu = (props: MenuProps<ITag, true>) => {
+    const optionSelectedLength = props.getValue().length || 0;
+    return (
+        <components.Menu {...props}>
+            {optionSelectedLength < 20 ? ( //? max amount of selectable props
+                props.children
+            ) : (
+                    <MaxTagLimitAchieved>Limite atteinte</MaxTagLimitAchieved>
+                )}
+        </components.Menu>
+    );
+};
+
 
 export const RegisterPreferences = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -128,7 +148,8 @@ export const RegisterPreferences = (): JSX.Element => {
                     }),
                 }}
             />
-            <Select
+            <Creatable
+                components={{ Menu }}
                 borderColor="red"
                 isMulti
                 isSearchable={true}
