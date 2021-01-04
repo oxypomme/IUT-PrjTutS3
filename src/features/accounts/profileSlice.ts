@@ -59,19 +59,13 @@ export const updateProfile = createAction(
     })
 );
 
-export const deleteProfile = createAction(
-    "DELETE_PROFILE_REQUESTED",
-    (onComplete?: ({ error, cancelled, data }) => void, params = {}) => ({
-        payload: {
-            request: {
-                type: "delete",
-                urls: ["/profiles", "/matchs"],
-                params
-            }
-        },
-        onComplete
-    })
-);
+/**
+ * Only used for type reference.
+ * 
+ * Must have this payload :
+ * request: { type: "delete", urls: ["/profiles", "/matchs"], params: {} }
+ */
+export const deleteProfile = createAction("DELETE_PROFILE_REQUESTED");
 
 export const profileSlice = createSlice({
     name: "profiles",

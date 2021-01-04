@@ -155,7 +155,7 @@ const ProfileComponent = ({ profile, isMatchable, isDeletable }: { profile: IPro
     }
     const handleDelete = (event: React.SyntheticEvent) => {
         event.preventDefault();
-        dispatch(deleteProfile(({ error }) => {
+        const onDelete = ({ error }) => {
             if (error) {
                 alert.error(error.message);
             }
@@ -163,7 +163,17 @@ const ProfileComponent = ({ profile, isMatchable, isDeletable }: { profile: IPro
                 alert.success('Vous avez bien supprimé votre compte')
                 history.push('/');
             }
-        }));
+        };
+        dispatch({
+            type: deleteProfile.type,
+            payload: {
+                request: {
+                    type: "delete",
+                    urls: ["/profiles", "/matchs"]
+                }
+            },
+            onComplete: onDelete
+        })
     }
 
     return (
