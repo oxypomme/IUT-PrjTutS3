@@ -38,13 +38,18 @@ export const fetchCurrProfile = createAction(
         }
     })
 );
-/**
- * Only used for type reference.
- * 
- * Must have this payload :
- * request: { type: "update", url: "/profiles", params: {} }
- */
-export const createProfile = createAction("CREATE_PROFILE_REQUESTED");
+
+export const createProfile = (onComplete?: (args?: unknown) => void, params = {}) => ({
+    type: createProfile.type,
+    payload: {
+        request: {
+            type: "update",
+            url: "/profiles",
+            params
+        }
+    }
+})
+createProfile.type = "CREATE_PROFILE_REQUESTED";
 
 export const updateProfile = createAction(
     "EDIT_PROFILE_REQUESTED",
@@ -59,13 +64,18 @@ export const updateProfile = createAction(
     })
 );
 
-/**
- * Only used for type reference.
- * 
- * Must have this payload :
- * request: { type: "delete", urls: ["/profiles", "/matchs"], params: {} }
- */
-export const deleteProfile = createAction("DELETE_PROFILE_REQUESTED");
+export const deleteProfile = (onComplete?: (args?: unknown) => void, params = {}) => ({
+    type: deleteProfile.type,
+    payload: {
+        request: {
+            type: "delete",
+            urls: ["/profiles", "/matchs"],
+            params
+        }
+    },
+    onComplete
+});
+deleteProfile.type = "DELETE_PROFILE_REQUESTED";
 
 export const profileSlice = createSlice({
     name: "profiles",

@@ -30,31 +30,21 @@ const ResumeInfos = () => {
         }
     }, [profile])
 
-    const onSigned = ({ error }) => {
-        if (error) {
-            alert.error(error.message);
-        }
-        else {
-            alert.success('Vous êtes inscrit (et connecté)')
-            history.push('/');
-        }
-    }
-
     const handleOnSubmit = (event) => {
         event.preventDefault();
         firebase.auth().setPersistence(persistence ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION)
             .then(() =>
-                dispatch({
-                    type: createProfile.type,
-                    payload: {
-                        request: {
-                            type: "update",
-                            url: "/profiles",
-                            params: {},
+                dispatch(
+                    createProfile(({ error }) => {
+                        if (error) {
+                            alert.error(error.message);
                         }
-                    },
-                    onComplete: onSigned
-                })
+                        else {
+                            alert.success('Vous êtes inscrit (et connecté)')
+                            history.push('/');
+                        }
+                    })
+                )
             )
             .catch((error) => {
                 alert.error(error.message);

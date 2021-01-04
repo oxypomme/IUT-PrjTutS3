@@ -10,20 +10,30 @@ export const createAccount = createAction(
         }
     })
 );
-/**
- * Only used for type reference.
- * 
- * Must have this payload :
- * request: { type: "signInWithEmailAndPassword", email, passwd }
- */
-export const loginAccount = createAction('LOGIN-EMAIL_AUTH_REQUESTED');
-/**
- * Only used for type reference.
- * 
- * Must have this payload :
- * request: { type: "signOut" }
- */
-export const logoutAccount = createAction('LOGIN-LOGOUT_AUTH_REQUESTED');
+
+export const loginAccount = (email: string, passwd: string, onComplete?: (args?: unknown) => void) => ({
+    type: loginAccount.type,
+    payload: {
+        request: {
+            type: "signInWithEmailAndPassword",
+            email,
+            passwd
+        }
+    },
+    onComplete
+});
+loginAccount.type = "LOGIN-EMAIL_AUTH_REQUESTED";
+
+export const logoutAccount = (onComplete?: (args?: unknown) => void) => ({
+    type: logoutAccount.type,
+    payload: {
+        request: {
+            type: "signOut"
+        }
+    },
+    onComplete
+});
+logoutAccount.type = "LOGIN-LOGOUT_AUTH_REQUESTED";
 
 export const updateEmailAccount = createAction(
     'UPDATE-EMAIL_AUTH_REQUESTED',

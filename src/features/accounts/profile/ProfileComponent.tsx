@@ -155,25 +155,17 @@ const ProfileComponent = ({ profile, isMatchable, isDeletable }: { profile: IPro
     }
     const handleDelete = (event: React.SyntheticEvent) => {
         event.preventDefault();
-        const onDelete = ({ error }) => {
-            if (error) {
-                alert.error(error.message);
-            }
-            else {
-                alert.success('Vous avez bien supprimé votre compte')
-                history.push('/');
-            }
-        };
-        dispatch({
-            type: deleteProfile.type,
-            payload: {
-                request: {
-                    type: "delete",
-                    urls: ["/profiles", "/matchs"]
+        dispatch(
+            deleteProfile(({ error }) => {
+                if (error) {
+                    alert.error(error.message);
                 }
-            },
-            onComplete: onDelete
-        })
+                else {
+                    alert.success('Vous avez bien supprimé votre compte')
+                    history.push('/');
+                }
+            })
+        );
     }
 
     return (

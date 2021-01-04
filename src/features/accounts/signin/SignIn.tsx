@@ -42,16 +42,6 @@ const SignIn = (): JSX.Element => {
 
     const handlePersistanceChange = (event) => setPersistence(event.target.checked);
 
-    const onLogged = ({ error }) => {
-        if (error) {
-            alert.error("ERREUR : " + error.message);
-        }
-        else {
-            alert.success('Vous êtes connecté')
-            history.goBack();
-        }
-    }
-
     const handleOnSubmit = async (event) => {
         event.preventDefault();
         let errors = [];
@@ -61,21 +51,23 @@ const SignIn = (): JSX.Element => {
             errors = [...errors, { component: "passwd", label: "Le mot de passe doit être remplie." } as IError];
 
         setGlobalErrors(errors);
+        console.log(loginAccount.type);
+
         if (errors.length < 1) {
             firebase.auth().setPersistence(persistence ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION)
-                .then(() =>
-                    dispatch({
-                        type: loginAccount.type,
-                        payload: {
-                            request: {
-                                type: "signInWithEmailAndPassword",
-                                email,
-                                passwd
+                .then(() => dispatch(
+                    loginAccount(email, passwd,
+                        ({ error }) => {
+                            if (error) {
+                                alert.error("ERREUR : " + error.message);
                             }
-                        },
-                        onComplete: onLogged
-                    })
-                )
+                            else {
+                                alert.success('Vous êtes connecté')
+                                history.goBack();
+                            }
+                        }
+                    )
+                ))
                 .catch((error) => {
                     alert.error(error.message);
                 });
