@@ -5,6 +5,7 @@ import { rsf } from '../firebase'
 import '@firebase/database'
 
 import {
+    addPhoto,
     createAccount,
     createAccountFailed,
     createAccountSuccess,
@@ -46,6 +47,7 @@ import {
     fetchTagSuccess,
     getTagError
 } from '../../features/accounts/tagSlice';
+import { getStorageError, getUploadedFiles, uploadFileFailed, uploadFileSuccess, uploadStringFile } from '../../features/firestorage/storageSlice';
 
 function* getProfile(action) {
     try {
@@ -105,6 +107,9 @@ function* getCurrProfile(action) {
             request.url + '/' + authId,
             request.params
         )
+        if (!profile) {
+            throw new Error("Profile not found at authId: " + authId);
+        }
         yield put(fetchCurrProfilesSuccess({ ...profile, authId }));
 
         yield put(fetchArrayTag(profile.tags));
@@ -131,10 +136,30 @@ function* createProfileSaga(action) {
         const { request } = action.payload;
         const authid = yield select(getAuthId);
         const newProfile = yield select(getInfos);
+
+        yield put(uploadStringFile("profiles/" + authid, newProfile.imageURL));
+        yield take([uploadFileSuccess, uploadFileFailed])
+
+        const storageError = yield select(getStorageError);
+        if (storageError != "") {
+            throw new Error(storageError);
+        }
+
+        const profile = { ...newProfile };
+        const files = yield select(getUploadedFiles);
+        console.log(files);
+
+        let mylink;
+        if ((mylink = files.find(u => u.url === "profiles/" + authid)) !== undefined) {
+            profile.imageURL = mylink.dlUrl;
+        } else {
+            throw new Error("File upload failed.");
+        }
+
         yield call(
             rsf.database[request.type],
             request.url + '/' + authid,
-            { ...newProfile, ...request.params }
+            { ...profile, ...request.params }
         );
 
         yield put(createProfileSuccess());
