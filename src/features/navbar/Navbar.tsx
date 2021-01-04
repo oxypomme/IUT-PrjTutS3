@@ -140,28 +140,20 @@ export const Navbar = (): JSX.Element => {
         )
     }, [openState, dispatch]);
 
-    const onUnlogged = ({ error }) => {
-        if (error) {
-            alert.error(error.message);
-        }
-        else {
-            alert.success('Vous êtes déconnecté')
-            history.push('/');
-        }
-    }
-
     const handleLogout = async (event) => {
         event.preventDefault();
 
-        dispatch({
-            type: logoutAccount.type,
-            payload: {
-                request: {
-                    type: "signOut"
-                },
-            },
-            onComplete: onUnlogged
-        });
+        dispatch(
+            logoutAccount(({ error }) => {
+                if (error) {
+                    alert.error(error.message);
+                }
+                else {
+                    alert.success('Vous êtes déconnecté')
+                    history.push('/');
+                }
+            })
+        );
     }
 
     const handleOpening = async (event) => {
