@@ -9,9 +9,14 @@ import {
     createAccountFailed,
     createAccountSuccess,
     deleteAccount,
+    deleteAccountFailed,
+    deleteAccountSuccess,
     getAccountError,
     getAuthId,
-    getInfos
+    getInfos,
+    logoutAccount,
+    logoutAccountFailed,
+    logoutAccountSuccess
 } from '../../features/accounts/accountSlice';
 
 import {
@@ -155,7 +160,9 @@ function* updateProfileSaga(action) {
 
 function* deleteProfileSaga(action) {
     try {
-        yield call(deleteAccount);
+        // It's actually log you out
+        yield put(deleteAccount());
+        yield take([deleteAccountSuccess, deleteAccountFailed]);
         const accountError = yield select(getAccountError);
         if (accountError !== "") {
             throw new Error(accountError);
@@ -164,11 +171,15 @@ function* deleteProfileSaga(action) {
         const authId = yield select(getAuthId);
         const { request } = action.payload;
         for (let i = 0; i < request.urls.length; i++) {
-            yield call(
-                rsf.database[request.type],
-                request.urls[i] + '/' + authId,
-                request.params
-            );
+            try {
+                yield call(
+                    rsf.database[request.type],
+                    request.urls[i] + '/' + authId,
+                    request.params
+                );
+            } catch (error) {
+                break;
+            }
         }
 
         yield put(deleteProfileSuccess());
@@ -184,6 +195,6 @@ export default function* profilesSagas() {
         takeLatest(fetchCurrProfile.type, getCurrProfile),
         takeLatest(createProfile.type, withCallback(createProfileSaga)),
         takeLatest(updateProfile.type, updateProfileSaga),
-        takeLatest(deleteProfile.type, deleteProfileSaga),
+        takeLatest(deleteProfile.type, withCallback(deleteProfileSaga)),
     ]);
 }

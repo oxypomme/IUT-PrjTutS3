@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from "react-redux";
+import { useAlert } from 'react-alert';
+import { useHistory } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHorse, faCalendarAlt, faBuilding, faVenusMars, faVenusDouble, faNeuter, faHelicopter, faMarsDouble, faTransgender, faGenderless } from '@fortawesome/free-solid-svg-icons';
@@ -14,6 +16,7 @@ import EOrientation from '../../../include/EOrientation';
 
 import { Button, WaitingForData } from '../../../components/styledComponents';
 import { newMatch } from '../matches/matchesSlice';
+import { deleteProfile } from '../profileSlice';
 
 export const ProfilePicture = styled.img <{ source?: string }> `
     width: 100%;
@@ -96,8 +99,10 @@ const ButtonContainer = styled.div`
     }
 `;
 
-const ProfileComponent = ({ profile, isMatchable }: { profile: IProfile, isMatchable: boolean }): JSX.Element => {
+const ProfileComponent = ({ profile, isMatchable, isDeletable }: { profile: IProfile, isMatchable?: boolean, isDeletable?: boolean }): JSX.Element => {
     const dispatch = useDispatch();
+    const alert = useAlert();
+    const history = useHistory();
 
     const tags: Array<ITag> = useSelector(getAllTags);
 
@@ -148,6 +153,18 @@ const ProfileComponent = ({ profile, isMatchable }: { profile: IProfile, isMatch
         event.preventDefault();
         dispatch(newMatch(profile.authId));
     }
+    const handleDelete = (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        dispatch(deleteProfile(({ error }) => {
+            if (error) {
+                alert.error(error.message);
+            }
+            else {
+                alert.success('Vous avez bien supprimé votre compte')
+                history.push('/');
+            }
+        }));
+    }
 
     return (
         <Profile>
@@ -176,6 +193,12 @@ const ProfileComponent = ({ profile, isMatchable }: { profile: IProfile, isMatch
                         <Button onClick={handleMatch} primary>Match</Button>
                     </ButtonContainer>
                     : <></>}
+                {isDeletable ?
+                    <ButtonContainer>
+                        <Button onClick={handleDelete} danger style={{ width: "100%" }}>Supprimer le compte</Button>
+                    </ButtonContainer>
+                    : <></>
+                }
             </div>
         </Profile>
     );

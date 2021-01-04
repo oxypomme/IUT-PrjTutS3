@@ -35,7 +35,7 @@ const ResumeInfos = () => {
             alert.error(error.message);
         }
         else {
-            alert.success('Vous êtes inscrits (et connecté)')
+            alert.success('Vous êtes inscrit (et connecté)')
             history.push('/index');
         }
     }
@@ -65,7 +65,7 @@ const ResumeInfos = () => {
 
     return (
         <form onSubmit={handleOnSubmit}>
-            <ProfileComponent profile={profile} isMatchable={false} />
+            <ProfileComponent profile={profile} />
             <ButtonFlex>
                 <Button onClick={handleBack}>Retour</Button>
                 <div>

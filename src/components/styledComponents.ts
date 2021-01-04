@@ -38,11 +38,11 @@ export const TextBox = styled.div<{ borderColor?: string, width?: number }>`
   }
 `;
 
-export const Button = styled.button<{ primary?: boolean }>`
+export const Button = styled.button<{ primary?: boolean, danger?: boolean }>`
   margin-top: 10px;
   width: 220px;
   height: 32px;
-  background-color: ${props => props.primary ? 'var(--accent1)' : 'var(--accent2)'};
+  background-color: ${props => props.primary ? 'var(--accent1)' : props.danger ? '#FF3232' : 'var(--accent2)'};
   border: none;
   border-radius: 5px;
   outline: 0;
@@ -51,8 +51,8 @@ export const Button = styled.button<{ primary?: boolean }>`
   transition: .5s;
 
   &:hover{
-    border: 1px solid ${props => props.primary ? 'var(--accent1)' : 'var(--accent2)'};
-    color: ${props => props.primary ? 'var(--accent1)' : 'var(--accent2)'};
+    border: 1px solid ${props => props.primary ? 'var(--accent1)' : props.danger ? '#FF3232' : 'var(--accent2)'};
+    color: ${props => props.primary ? 'var(--accent1)' : props.danger ? '#FF3232' : 'var(--accent2)'};
     background: var(--background2);
   }
 `;

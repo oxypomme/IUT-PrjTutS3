@@ -58,16 +58,18 @@ export const updateProfile = createAction(
         }
     })
 );
+
 export const deleteProfile = createAction(
     "DELETE_PROFILE_REQUESTED",
-    (params = {}) => ({
+    (onComplete?: ({ error, cancelled, data }) => void, params = {}) => ({
         payload: {
             request: {
                 type: "delete",
                 urls: ["/profiles", "/matchs"],
                 params
             }
-        }
+        },
+        onComplete
     })
 );
 
