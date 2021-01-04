@@ -94,7 +94,7 @@ export function RegisterPublicInfos(): JSX.Element {
         let errors = [];
 
         if (!picture)
-            errors = [...errors, { component: "picture", label: "Veuillez séléctionner une photo de profile." } as IError];
+            errors = [...errors, { component: "picture", label: "Veuillez séléctionner une photo de profil." } as IError];
 
         if (!description)
             errors = [...errors, { component: "description", label: "Veuillez spécifier votre description." } as IError];
