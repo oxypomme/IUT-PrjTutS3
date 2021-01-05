@@ -50,7 +50,8 @@ export const Button = styled.button<{ primary?: boolean, danger?: boolean }>`
   cursor: pointer;
   transition: .5s;
 
-  &:hover{
+  &:hover,
+  &:focus {
     border: 1px solid ${props => props.primary ? 'var(--accent1)' : props.danger ? '#FF3232' : 'var(--accent2)'};
     color: ${props => props.primary ? 'var(--accent1)' : props.danger ? '#FF3232' : 'var(--accent2)'};
     background: var(--background2);
