@@ -3,7 +3,9 @@ import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useAlert } from 'react-alert';
-import firebase from 'firebase';
+
+import firebase from 'firebase/app';
+import '@firebase/auth';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
