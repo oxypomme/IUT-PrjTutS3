@@ -1,4 +1,6 @@
 import { createAction, createSelector, createSlice } from "@reduxjs/toolkit";
+import TCallback from "../../include/TCallback";
+import TCustomAction from "../../include/TCustomAction";
 
 export const createAccount = createAction(
     'CREATE-EMAIL_AUTH_REQUESTED',
@@ -11,7 +13,7 @@ export const createAccount = createAction(
     })
 );
 
-export const loginAccount = (email: string, passwd: string, onComplete?: (args?: unknown) => void) => ({
+export const loginAccount = (email: string, passwd: string, onComplete?: TCallback): TCustomAction => ({
     type: loginAccount.type,
     payload: {
         request: {
@@ -24,7 +26,7 @@ export const loginAccount = (email: string, passwd: string, onComplete?: (args?:
 });
 loginAccount.type = "LOGIN-EMAIL_AUTH_REQUESTED";
 
-export const logoutAccount = (onComplete?: (args?: unknown) => void) => ({
+export const logoutAccount = (onComplete?: TCallback): TCustomAction => ({
     type: logoutAccount.type,
     payload: {
         request: {
