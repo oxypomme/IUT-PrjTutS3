@@ -16,6 +16,7 @@ import { PublicHome } from "./views/Home/PublicHome";
 import { Camera } from "./../src/features/camera/Camera";
 import { Profile } from "./views/Profile";
 import Matches from "./views/Matches";
+import Chat from "./views/Chat";
 import { CreatePersonal, CreatePreferences, CreateFinishing, CreateConfirm } from "./views/CreateProfile";
 
 import "./App.css";
@@ -45,6 +46,7 @@ function App(): JSX.Element {
                     <Route exact path='/profile' component={Profile} />
                     <Route exact path='/camera' component={Camera} />
                     <Route exact path='/matches' component={Matches} />
+                    <Route exact path='/chat' component={Chat} />
                     <Route component={NotFound} />
                 </Switch>
             }
