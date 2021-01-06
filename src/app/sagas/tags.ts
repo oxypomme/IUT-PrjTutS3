@@ -56,7 +56,7 @@ function* getArrayTagsChannel() {
     // eslint-disable-next-line no-constant-condition
     while (true) {
         const { payload } = yield take([
-            fetchTags.type,
+            fetchArrayTag.type,
         ]);
         yield put(chan, payload);
     }
