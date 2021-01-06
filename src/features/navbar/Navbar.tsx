@@ -142,9 +142,6 @@ export const Navbar = (): JSX.Element => {
                 <NavItem>
                     <NavLink exact to="/"><CompactableIcon icon={faHome} isopened={openState.toString()} />Accueil</NavLink>
                 </NavItem>
-                <NavItem>
-                    <NavLink to="/camera">Test caméra</NavLink>
-                </NavItem>
                 {isConnected &&
                     <div>
                         <CompactableSeparator isopened={openState.toString()} />
