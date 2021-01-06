@@ -23,6 +23,7 @@ import {
 import { getIsConnected, logoutAccount } from '../accounts/accountSlice';
 
 import logo from '../../logo.svg';
+import { Separator } from '../../components/styledComponents';
 
 const NavBar = styled.nav<{ isopened?: boolean }>`
     position: fixed;
@@ -93,15 +94,11 @@ const CompactableIcon = styled(FontAwesomeIcon) <{ isopened?: string }>`
     transition: transform 0.5s;
     right: 5px;
 `;
-const NavDropdownContainer = styled.ul`
-    list-style-type: none;
-    padding: 0;
-    display: none;
-    background-color: #262626;
 
-    & > li {
-        padding-left: 16px;
-    }
+const CompactableSeparator = styled(Separator) <{ isopened?: string }>`
+    transform: translateX(${props => props.isopened == "true" ? "0" : "85px"});
+    width: ${props => props.isopened == "true" ? "65%" : "24px"};
+    transition: transform 0.5s, width 0.5s;
 `;
 
 export const Navbar = (): JSX.Element => {
@@ -111,34 +108,6 @@ export const Navbar = (): JSX.Element => {
     const alert = useAlert();
 
     const [openState, setOpenState] = React.useState<boolean>(false);
-
-    const Dropdown = React.useCallback(({
-        icon,
-        defaultValue,
-        label,
-        children
-    }: InferProps<typeof Dropdown.propTypes>): JSX.Element => {
-        const [isOpened, setIsOpened] = React.useState<boolean>(defaultValue);
-
-        const handleDropdown = (event) => {
-            event.preventDefault();
-
-            setIsOpened(!isOpened);
-            console.log(isOpened);
-            setOpenState(true);
-        }
-
-        return (
-            <NavItem>
-                <a href="#" className={isOpened ? "active" : ""} onClick={handleDropdown}>
-                    <CompactableIcon icon={icon} isopened={openState.toString()} />{label} <FontAwesomeIcon icon={isOpened ? faCaretUp : faCaretDown} />
-                </a>
-                <NavDropdownContainer style={{ display: isOpened ? "block" : "none" }}>
-                    {children}
-                </NavDropdownContainer>
-            </NavItem>
-        )
-    }, [openState, dispatch]);
 
     const handleLogout = async (event) => {
         event.preventDefault();
@@ -177,27 +146,25 @@ export const Navbar = (): JSX.Element => {
                     <NavLink to="/camera">Test caméra</NavLink>
                 </NavItem>
                 {isConnected &&
-                    <Dropdown defaultValue={false} icon={faUsers} label={"NomADefinir"}>
+                    <div>
+                        <CompactableSeparator isopened={openState.toString()} />
                         <NavItem>
-                            <NavLink to="/matches"><FontAwesomeIcon icon={faHeart} />Mes matchs</NavLink>
+                            <NavLink to="/matches"><CompactableIcon icon={faHeart} isopened={openState.toString()} />Mes matchs</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink to="/surprise"><FontAwesomeIcon icon={faGift} />Tinder Surprise</NavLink>
+                            <NavLink to="/surprise"><CompactableIcon icon={faGift} isopened={openState.toString()} />Tinder Surprise</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink to="/chat"><FontAwesomeIcon icon={faCommentAlt} />Mes Conversations</NavLink>
+                            <NavLink to="/chat"><CompactableIcon icon={faCommentAlt} isopened={openState.toString()} />Mes Conversations</NavLink>
                         </NavItem>
-                    </Dropdown>
-                }
-                {isConnected &&
-                    <NavItem>
-                        <NavLink to="/profile"><CompactableIcon icon={faUser} isopened={openState.toString()} />Mon profil</NavLink>
-                    </NavItem>
-                }
-                {isConnected &&
-                    <NavItem>
-                        <a href="#" onClick={handleLogout}><CompactableIcon icon={faSignOutAlt} isopened={openState.toString()} />Déconnexion</a>
-                    </NavItem>
+                        <CompactableSeparator isopened={openState.toString()} />
+                        <NavItem>
+                            <NavLink to="/profile"><CompactableIcon icon={faUser} isopened={openState.toString()} />Mon profil</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <a href="#" onClick={handleLogout}><CompactableIcon icon={faSignOutAlt} isopened={openState.toString()} />Déconnexion</a>
+                        </NavItem>
+                    </div>
                 }
             </NavList>
         </NavBar >
