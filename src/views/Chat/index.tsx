@@ -9,7 +9,7 @@ const ChatApp = styled.div`
 
 const ChatMenuContainer = styled.div`
     height: 100%;
-    width: 15%;
+    width: 280px;
     background: white;
 `;
 
