@@ -1,11 +1,11 @@
-import { call, put, takeLatest, take, select, all, actionChannel, fork, putResolve } from 'redux-saga/effects'
+import { channel } from 'redux-saga';
+import { call, put, takeLatest, take, select, all, fork } from 'redux-saga/effects'
 import { withCallback } from 'redux-saga-callback';
 
 import { rsf } from '../firebase'
 import '@firebase/database'
 
 import {
-    addPhoto,
     createAccount,
     createAccountFailed,
     createAccountSuccess,
@@ -14,10 +14,7 @@ import {
     deleteAccountSuccess,
     getAccountError,
     getAuthId,
-    getInfos,
-    logoutAccount,
-    logoutAccountFailed,
-    logoutAccountSuccess
+    getInfos
 } from '../../features/accounts/accountSlice';
 
 import {
@@ -48,8 +45,7 @@ import {
     getTagError
 } from '../../features/accounts/tagSlice';
 import { deleteAvatar, getStorageError, getUploadedFiles, uploadFileFailed, uploadFileSuccess, uploadStringFile } from '../../features/firestorage/storageSlice';
-import { syncInMatchesSuccessAction, syncOutMatchesSuccessAction } from "../../features/accounts/matches/matchesSlice";
-import { channel } from 'redux-saga';
+import { syncInMatchesSuccess, syncOutMatchesSuccess } from "../../features/accounts/matches/matchesSlice";
 
 function* getProfile(action) {
     try {
@@ -196,8 +192,8 @@ function* getArrayProfileChannel() {
     while (true) {
         const { payload } = yield take([
             fetchArrayProfile.type,
-            syncOutMatchesSuccessAction,
-            syncInMatchesSuccessAction,
+            syncOutMatchesSuccess,
+            syncInMatchesSuccess,
         ]);
         yield put(chan, payload);
     }

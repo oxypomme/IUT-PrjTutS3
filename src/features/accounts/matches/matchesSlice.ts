@@ -75,13 +75,13 @@ export const matchSlice = createSlice({
         }),
     },
     reducers: {
-        syncInMatchesSuccessAction: (state, { payload: matches }) => ({
+        syncInMatchesSuccess: (state, { payload: matches }) => ({
             ...state,
             isWorking: false,
             error: "",
             incomingMatches: matches
         }),
-        syncOutMatchesSuccessAction: (state, { payload: matches }) => ({
+        syncOutMatchesSuccess: (state, { payload: matches }) => ({
             ...state,
             isWorking: false,
             error: "",
@@ -140,8 +140,8 @@ export const {
     deleteMatchSuccess,
     deleteMatchFailed,
     syncMatchesFailed,
-    syncOutMatchesSuccessAction,
-    syncInMatchesSuccessAction
+    syncOutMatchesSuccess,
+    syncInMatchesSuccess
 } = matchSlice.actions;
 
 export const getState = state => state.matches;

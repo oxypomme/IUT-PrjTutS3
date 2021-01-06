@@ -15,8 +15,8 @@ import {
     updateMatchFailed,
     updateMatchSuccess,
     syncMatchesFailed,
-    syncOutMatchesSuccessAction,
-    syncInMatchesSuccessAction
+    syncOutMatchesSuccess,
+    syncInMatchesSuccess
 } from "../../features/accounts/matches/matchesSlice";
 
 import { getAuthId } from "../../features/accounts/accountSlice";
@@ -95,7 +95,7 @@ function* syncMatches() {
             rsf.database.sync,
             firebase.database().ref('/matches').orderByChild('/sender').equalTo(authId),
             {
-                successActionCreator: syncOutMatchesSuccessAction,
+                successActionCreator: syncOutMatchesSuccess,
                 transform: ({ value: rawMatch }) => {
                     const matchs = {};
                     Object.keys(rawMatch)?.forEach((key) => {
@@ -118,7 +118,7 @@ function* syncMatches() {
             rsf.database.sync,
             firebase.database().ref('/matches').orderByChild('/target').equalTo(authId),
             {
-                successActionCreator: syncInMatchesSuccessAction,
+                successActionCreator: syncInMatchesSuccess,
                 transform: ({ value: rawMatch }) => {
                     const matchs = {};
                     Object.keys(rawMatch)?.forEach((key) => {
