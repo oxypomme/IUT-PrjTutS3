@@ -21,7 +21,7 @@ const RegisterPersonal = (): JSX.Element => {
     React.useEffect(() => {
         if (!auth || auth.passwd === "" || auth.email === "") {
             alert.error("Vous n'avez pas rentré tous les champs nécéssaires")
-            history.push('/Login');
+            history.push('/');
         }
     }, [auth])
 

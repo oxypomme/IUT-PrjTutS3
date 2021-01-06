@@ -199,11 +199,6 @@ export const Navbar = (): JSX.Element => {
                         <a href="#" onClick={handleLogout}><CompactableIcon icon={faSignOutAlt} isopened={openState.toString()} />Déconnexion</a>
                     </NavItem>
                 }
-                {!isConnected &&
-                    <NavItem>
-                        <NavLink to="/login"><CompactableIcon icon={faSignInAlt} isopened={openState.toString()} />Connexion</NavLink>
-                    </NavItem>
-                }
             </NavList>
         </NavBar >
     );
