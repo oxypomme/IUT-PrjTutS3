@@ -1,4 +1,4 @@
-import { call, put, takeLatest, take, select, all } from 'redux-saga/effects'
+import { call, put, takeLatest, take, select, all, actionChannel, fork, putResolve } from 'redux-saga/effects'
 import { withCallback } from 'redux-saga-callback';
 
 import { rsf } from '../firebase'
@@ -48,6 +48,8 @@ import {
     getTagError
 } from '../../features/accounts/tagSlice';
 import { deleteAvatar, getStorageError, getUploadedFiles, uploadFileFailed, uploadFileSuccess, uploadStringFile } from '../../features/firestorage/storageSlice';
+import { syncInMatchesSuccessAction, syncOutMatchesSuccessAction } from "../../features/accounts/matches/matchesSlice";
+import { channel } from 'redux-saga';
 
 function* getProfile(action) {
     try {
@@ -64,36 +66,6 @@ function* getProfile(action) {
         yield put(fetchArrayTag(profile.tags));
     } catch (error) {
         yield put(fetchProfilesFailed(error.message));
-    }
-}
-
-function* getArrayProfile(action) {
-    try {
-        const { request } = action.payload;
-        const { authIds, ...params } = request.params;
-
-        let profiles = [];
-        let tags = [];
-
-        for (let i = 0; i < authIds.length; i++) {
-            const authId = authIds[i];
-            const profile = yield call(
-                rsf.database[request.type],
-                request.url + '/' + authId,
-                params
-            );
-            profiles = [...profiles, { ...profile, authId }];
-            profile.tags.forEach(tag => {
-                if (!tags.includes(tag)) {
-                    tags = [...tags, tag];
-                }
-            });
-        }
-        yield put(fetchArrayProfilesSuccess(profiles));
-
-        yield put(fetchArrayTag(tags));
-    } catch (error) {
-        yield put(fetchArrayProfilesFailed(error.message));
     }
 }
 
@@ -215,13 +187,71 @@ function* deleteProfileSaga(action) {
     }
 }
 
+function* getArrayProfileChannel() {
+    const chan = yield call(channel);
+    for (let i = 0; i < 2; i++) {
+        yield fork(getArrayProfile, chan)
+    }
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        const { payload } = yield take([
+            fetchArrayProfile.type,
+            syncOutMatchesSuccessAction,
+            syncInMatchesSuccessAction,
+        ]);
+        yield put(chan, payload);
+    }
+}
+
+function* getArrayProfile(chan) {
+    const payload = yield take(chan)
+    try {
+        let request = {
+            type: "read",
+            url: "/profiles",
+        };
+        let authIds = Object.keys(payload);
+        let fparams = {};
+        if (payload.request) {
+            request = payload.request;
+            const { authIds: tmpIds, ...params } = payload.request.params;
+            authIds = tmpIds;
+            fparams = params;
+        }
+
+        let profiles = [];
+        let tags = [];
+
+        for (let i = 0; i < authIds.length; i++) {
+            const authId = authIds[i];
+            const profile = yield call(
+                rsf.database[request.type],
+                request.url + '/' + authId,
+                fparams
+            );
+            profiles = [...profiles, { ...profile, authId }];
+            profile.tags.forEach(tag => {
+                if (!tags.includes(tag)) {
+                    tags = [...tags, tag];
+                }
+            });
+        }
+        yield put(fetchArrayProfilesSuccess(profiles));
+
+        yield put(fetchArrayTag(tags));
+    }
+    catch (error) {
+        yield put(fetchArrayProfilesFailed(error.message));
+    }
+}
+
 export default function* profilesSagas() {
     yield all([
         takeLatest(fetchProfile.type, getProfile),
-        takeLatest(fetchArrayProfile.type, getArrayProfile),
         takeLatest(fetchCurrProfile.type, getCurrProfile),
         takeLatest(createProfile.type, withCallback(createProfileSaga)),
         takeLatest(updateProfile.type, updateProfileSaga),
         takeLatest(deleteProfile.type, withCallback(deleteProfileSaga)),
+        fork(getArrayProfileChannel),
     ]);
 }

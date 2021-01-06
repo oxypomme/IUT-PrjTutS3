@@ -1,4 +1,4 @@
-import { call, put, takeLatest, all } from "redux-saga/effects";
+import { call, put, takeLatest, all, take, fork } from "redux-saga/effects";
 
 import { rsf } from "../firebase";
 import "@firebase/database";
@@ -14,6 +14,7 @@ import {
     fetchArrayTagSuccess,
     fetchArrayTagFailed,
 } from "../../features/accounts/tagSlice";
+import { channel } from "redux-saga";
 
 function* getTags(action) {
     try {
@@ -45,9 +46,40 @@ function* getTag(action) {
     }
 }
 
-function* getArrayTag(action) {
+function* getArrayTagsChannel() {
+    const chan = yield call(channel);
+
+    for (let i = 0; i < 5; i++) {
+        yield fork(getArrayTag, chan)
+    }
+
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        const { payload } = yield take([
+            fetchTags.type,
+        ]);
+        yield put(chan, payload);
+    }
+}
+
+function* getArrayTag(chan) {
+    const payload = yield take(chan)
     try {
-        const { request } = action.payload;
+        /*
+        let request = {
+            type: "read",
+            url: "/profiles",
+        };
+        let authIds = Object.keys(payload);
+        let fparams = {};
+        if (payload.request) {
+            request = payload.request;
+            const { authIds: tmpIds, ...params } = payload.request.params;
+            authIds = tmpIds;
+            fparams = params;
+        }
+        */
+        const { request } = payload;
         const { tagsIds, ...params } = request.params;
 
         let tags = [];
@@ -63,7 +95,8 @@ function* getArrayTag(action) {
         }
 
         yield put(fetchArrayTagSuccess(tags));
-    } catch (error) {
+    }
+    catch (error) {
         yield put(fetchArrayTagFailed(error.message));
     }
 }
@@ -72,6 +105,6 @@ export default function* tagsSagas() {
     yield all([
         takeLatest(fetchTags.type, getTags),
         takeLatest(fetchTag.type, getTag),
-        takeLatest(fetchArrayTag.type, getArrayTag),
+        fork(getArrayTagsChannel),
     ]);
 }

@@ -7,7 +7,7 @@ import IProfile from '../../../include/IProfile';
 
 import { getAllProfiles, getCurrProfile } from '../profileSlice';
 
-import { fetchMatches, getIngoingMatches, getOutgoingMatches } from './matchesSlice';
+import { getIngoingMatches, getOutgoingMatches } from './matchesSlice';
 import { Separator } from '../../../components/styledComponents';
 import { getScore } from '../selection/FilterProfiles';
 
@@ -30,19 +30,10 @@ interface IMatch {
 }
 
 const MyMatches = (): JSX.Element => {
-    const dispatch = useDispatch();
     const currProfile: IProfile | Record<string, never> = useSelector(getCurrProfile);
     const profiles: IProfile[] = useSelector(getAllProfiles);
     const outMatches: IMatch = useSelector(getOutgoingMatches);
     const inMatches: IMatch = useSelector(getIngoingMatches);
-
-    React.useEffect(() => {
-        try {
-            dispatch(fetchMatches());
-        } catch (error) {
-            console.log(error);
-        }
-    }, [currProfile]);
 
     const compScore = (authId: string) => getScore((profiles.find(p => p.authId == authId))?.tags, currProfile.tags)
 

@@ -15,7 +15,7 @@ import EGender from '../../../include/EGender';
 import EOrientation from '../../../include/EOrientation';
 
 import { Button, WaitingForData } from '../../../components/styledComponents';
-import { newMatch } from '../matches/matchesSlice';
+import { newMatch, updateMatch } from '../matches/matchesSlice';
 import { deleteProfile } from '../profileSlice';
 
 export const ProfilePicture = styled.img <{ source?: string }> `
@@ -99,7 +99,13 @@ const ButtonContainer = styled.div`
     }
 `;
 
-const ProfileComponent = ({ profile, isMatchable, isDeletable }: { profile: IProfile, isMatchable?: boolean, isDeletable?: boolean }): JSX.Element => {
+type PropsType = {
+    profile: IProfile,
+    isMatchable?: boolean,
+    isDeletable?: boolean
+}
+
+const ProfileComponent = ({ profile, isMatchable, isDeletable }: PropsType): JSX.Element => {
     const dispatch = useDispatch();
     const alert = useAlert();
     const history = useHistory();

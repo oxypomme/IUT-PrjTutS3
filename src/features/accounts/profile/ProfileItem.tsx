@@ -165,7 +165,8 @@ const ProfileItem = ({ id, isPending, inviting, isBlocked, match }: ProfileItemP
 
     const handleDenyInvite = (event: React.SyntheticEvent) => {
         event.preventDefault();
-        dispatch(updateMatch(match, profile.authId));
+        dispatch(updateMatch(match)); // block me in the source profile
+        dispatch(newMatch(profile.authId, true)); // block the profile in me
     }
 
     const handleAcceptInvite = (event: React.SyntheticEvent) => {

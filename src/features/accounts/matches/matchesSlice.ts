@@ -1,17 +1,5 @@
 import { createAction, createSelector, createSlice } from "@reduxjs/toolkit";
 
-export const fetchMatches = createAction(
-    "FETCH_MATCHES_REQUESTED",
-    (params = {}) => ({
-        payload: {
-            request: {
-                type: "read",
-                url: "/matches",
-                params,
-            },
-        },
-    })
-);
 export const newMatch = createAction(
     "CREATE_MATCH_REQUESTED",
     (targetId: string, isBlocked = false, params = {}) => ({
@@ -32,15 +20,14 @@ export const newMatch = createAction(
 );
 export const updateMatch = createAction(
     "UPDATE_MATCH_REQUESTED",
-    (matchId: string, targetId: string, params = {}) => ({
+    (matchId: string, params = {}) => ({
         payload: {
             request: {
-                type: "update",
+                type: "patch",
                 url: "/matches",
                 params: {
                     matchId,
                     data: {
-                        target: targetId,
                         isBlocked: true
                     },
                     ...params
@@ -71,11 +58,6 @@ export const matchSlice = createSlice({
         error: ""
     },
     extraReducers: {
-        [fetchMatches.type]: (state) => ({
-            ...state,
-            isWorking: true,
-            error: ""
-        }),
         [newMatch.type]: (state) => ({
             ...state,
             isWorking: true,
@@ -93,22 +75,31 @@ export const matchSlice = createSlice({
         }),
     },
     reducers: {
-        fetchMatchesSuccess: (state, { payload: matches }) => {
-            const { incomingMatches, outgoingMatches } = matches;
+        syncInMatchesSuccessAction: (state, { payload: matches }) => ({
+            ...state,
+            isWorking: false,
+            error: "",
+            incomingMatches: matches
+        }),
+        syncOutMatchesSuccessAction: (state, { payload: matches }) => ({
+            ...state,
+            isWorking: false,
+            error: "",
+            matches
+        }),
+        syncMatchesFailed: (state, { payload: error }) => {
+            let errorToShow = error;
+            if (typeof error != "string") {
+                errorToShow = error.message;
+            }
+
             return {
                 ...state,
                 isWorking: false,
-                error: "",
-                matches: outgoingMatches,
-                incomingMatches
+                error: errorToShow
             }
         },
-        fetchMatchesFailed: (state, { payload: message }) => ({
-            ...state,
-            isWorking: false,
-            error: message
-        }),
-        createMatchSuccess: (state, payload) => ({
+        createMatchSuccess: (state) => ({
             ...state,
             isWorking: false,
             error: "",
@@ -142,14 +133,15 @@ export const matchSlice = createSlice({
 });
 
 export const {
-    fetchMatchesSuccess,
-    fetchMatchesFailed,
     createMatchSuccess,
     createMatchFailed,
     updateMatchSuccess,
     updateMatchFailed,
     deleteMatchSuccess,
     deleteMatchFailed,
+    syncMatchesFailed,
+    syncOutMatchesSuccessAction,
+    syncInMatchesSuccessAction
 } = matchSlice.actions;
 
 export const getState = state => state.matches;

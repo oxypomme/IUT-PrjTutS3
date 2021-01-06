@@ -65,7 +65,7 @@ const SignIn = (): JSX.Element => {
                             }
                             else {
                                 alert.success('Vous êtes connecté')
-                                history.goBack();
+                                history.push('/');
                             }
                         }
                     )
