@@ -13,7 +13,7 @@ import EOrientation from '../../../include/EOrientation';
 
 import { Button, WaitingForData } from '../../../components/styledComponents';
 import { ProfilePicture } from './ProfileComponent';
-import { deleteMatch, newMatch } from '../matches/matchesSlice';
+import { deleteMatch, newMatch, updateMatch } from '../matches/matchesSlice';
 
 const Item = styled.li`
     width: 850px;
@@ -102,12 +102,13 @@ const StatusText = styled.p`
 
 interface ProfileItemProps {
     id: number | string,
+    match: string,
     isPending?: boolean,
     inviting?: boolean,
     isBlocked?: boolean
 }
 
-const ProfileItem = ({ id, isPending, inviting, isBlocked }: ProfileItemProps): JSX.Element => {
+const ProfileItem = ({ id, isPending, inviting, isBlocked, match }: ProfileItemProps): JSX.Element => {
     const dispatch = useDispatch();
 
     const profiles: IProfile[] = useSelector(getAllProfiles);
@@ -159,12 +160,12 @@ const ProfileItem = ({ id, isPending, inviting, isBlocked }: ProfileItemProps): 
 
     const handleUnmatch = (event: React.SyntheticEvent) => {
         event.preventDefault();
-        dispatch(deleteMatch(profile.authId));
+        dispatch(deleteMatch(match));
     }
 
     const handleDenyInvite = (event: React.SyntheticEvent) => {
         event.preventDefault();
-        dispatch(newMatch(profile.authId, { data: { isBlocked: true } }));
+        dispatch(updateMatch(match, profile.authId));
     }
 
     const handleAcceptInvite = (event: React.SyntheticEvent) => {

@@ -147,7 +147,7 @@ const ProfileComponent = ({ profile, isMatchable, isDeletable }: { profile: IPro
 
     const handleSkip = (event: React.SyntheticEvent) => {
         event.preventDefault();
-        dispatch(newMatch(profile.authId, { data: { isBlocked: true } }));
+        dispatch(newMatch(profile.authId, true));
     }
     const handleMatch = (event: React.SyntheticEvent) => {
         event.preventDefault();

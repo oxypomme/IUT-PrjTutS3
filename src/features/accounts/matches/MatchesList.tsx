@@ -24,7 +24,8 @@ const ProfileList = styled.ul`
 
 interface IMatch {
     [target: string]: {
-        isBlocked: boolean
+        isBlocked: boolean,
+        key: string
     }
 }
 
@@ -58,7 +59,7 @@ const MyMatches = (): JSX.Element => {
                         Object.keys(outMatches).sort((a, b) => compScore(b) - compScore(a))
                             .filter((target) => (!(outMatches[target] && inMatches[target]) == isPending) && !outMatches[target]?.isBlocked)
                             .map((target, index) =>
-                                <ProfileItem key={index} id={target} isPending={isPending} />
+                                <ProfileItem key={index} id={target} match={outMatches[target]?.key} isPending={isPending} />
                             )
                         : <></>
                 }
@@ -78,7 +79,7 @@ const MyMatches = (): JSX.Element => {
                         Object.keys(inMatches).sort((a, b) => compScore(b) - compScore(a))
                             .filter((target) => inMatches[target] && !(outMatches && outMatches[target]))
                             .map((target, index) =>
-                                <ProfileItem key={index} id={target} inviting />
+                                <ProfileItem key={index} id={target} match={inMatches[target]?.key} inviting />
                             )
                         : <></>
                 }
@@ -90,7 +91,7 @@ const MyMatches = (): JSX.Element => {
                         Object.keys(outMatches).sort((a, b) => compScore(b) - compScore(a))
                             .filter((target) => (outMatches[target]?.isBlocked))
                             .map((target, index) =>
-                                <ProfileItem key={index} id={target} isBlocked />
+                                <ProfileItem key={index} id={target} match={outMatches[target]?.key} isBlocked />
                             )
                         : <></>
                 }

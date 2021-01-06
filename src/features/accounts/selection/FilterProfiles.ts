@@ -37,7 +37,7 @@ const filterProfiles = async ({ sex: mySex, orientation: myOrientation, tags: my
     //TODO: Move to SAGA ?
     const profiles = (await Pref.once('value')).val();
 
-    const Mref = db.ref('/matches/' + myProfileId);
+    const Mref = db.ref('/matches/').orderByChild('sender').equalTo(myProfileId);
     const matches = (await Mref.once('value')).val();
 
     const calcScore = (profile) => getScore(profile.tags, myTags);
@@ -47,7 +47,7 @@ const filterProfiles = async ({ sex: mySex, orientation: myOrientation, tags: my
         const profile = profiles[key];
         if (myProfileId != key) {
             const score = calcScore(profile);
-            if (score > 10 && (!matches || !Object.keys(matches).find(target => target === key))) {
+            if (score > 10 && (!matches || !Object.keys(matches).find(matchId => matches[matchId]?.target === key))) {
                 if (mySex == EGender.NonBinary) {
                     if (profile.sex == EGender.NonBinary) {
                         profilesScore.push({ key, score });

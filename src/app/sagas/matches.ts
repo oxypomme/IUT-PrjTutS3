@@ -13,7 +13,10 @@ import {
     newMatch,
     deleteMatchSuccess,
     deleteMatchFailed,
-    deleteMatch
+    deleteMatch,
+    updateMatch,
+    updateMatchFailed,
+    updateMatchSuccess
 } from "../../features/accounts/matches/matchesSlice";
 import { getAuthId } from "../../features/accounts/accountSlice";
 
@@ -29,26 +32,29 @@ function* getMatches(action) {
         }
 
         const { request } = action.payload;
-        const outgoingMatches = yield call(
+        const outgoingRawMatches = yield call(
             rsf.database[request.type],
-            request.url + '/' + authId,
+            firebase.database().ref(request.url).orderByChild('/sender').equalTo(authId),
             request.params
         );
+        const outgoingMatches = {};
+        Object.keys(outgoingRawMatches).forEach(matchId => {
+            const { target, isBlocked } = outgoingRawMatches[matchId];
+            outgoingMatches[target] = { key: matchId };
+            outgoingMatches[target]["isBlocked"] = isBlocked;
+        });
 
-        // Récupère tout les matchs des personnes qui m'ont matchés
         const incomingRawMatches = yield call(
             rsf.database[request.type],
-            firebase.database().ref(request.url).orderByChild(authId + '/isBlocked').equalTo(false),
+            firebase.database().ref(request.url).orderByChild('/target').equalTo(authId),
             request.params
         );
         const incomingMatches = {};
-        if (incomingRawMatches) {
-            Object.getOwnPropertyNames(incomingRawMatches)?.forEach(key => {
-                if (incomingRawMatches[key][authId]) {
-                    incomingMatches[key] = incomingRawMatches[key][authId];
-                }
-            });
-        }
+        Object.keys(incomingRawMatches).forEach(matchId => {
+            const { sender, isBlocked } = incomingRawMatches[matchId];
+            incomingMatches[sender] = { key: matchId };
+            incomingMatches[sender]["isBlocked"] = isBlocked;
+        });
 
         yield put(fetchMatchesSuccess({ incomingMatches, outgoingMatches }));
 
@@ -66,13 +72,17 @@ function* createMatch(action) {
         }
 
         const { request } = action.payload;
-        const { targetId, data, ...params } = request.params;
+        const { data, ...params } = request.params;
         yield call(
             rsf.database[request.type],
-            request.url + '/' + authId + '/' + targetId,
-            { ...data, ...params }
+            request.url,
+            {
+                sender: authId,
+                ...data,
+                ...params
+            }
         );
-        yield put(createMatchSuccess());
+        yield put(createMatchSuccess(data));
 
         yield put(fetchMatches());
     } catch (error) {
@@ -80,7 +90,7 @@ function* createMatch(action) {
     }
 }
 
-function* removeMatch(action) {
+function* updaMatch(action) {
     try {
         const authId = yield select(getAuthId);
         if (authId == "") {
@@ -88,10 +98,31 @@ function* removeMatch(action) {
         }
 
         const { request } = action.payload;
-        const { targetId, ...params } = request.params;
+        const { matchId, data, ...params } = request.params;
         yield call(
             rsf.database[request.type],
-            request.url + '/' + authId + '/' + targetId,
+            request.url + '/' + matchId,
+            {
+                sender: authId,
+                ...data,
+                ...params
+            }
+        );
+        yield put(updateMatchSuccess());
+
+        yield put(fetchMatches());
+    } catch (error) {
+        yield put(updateMatchFailed(error.message));
+    }
+}
+
+function* removeMatch(action) {
+    try {
+        const { request } = action.payload;
+        const { matchId, ...params } = request.params;
+        yield call(
+            rsf.database[request.type],
+            request.url + '/' + matchId,
             params
         );
 
@@ -107,6 +138,7 @@ export default function* matchesSagas() {
     yield all([
         takeLatest(fetchMatches.type, getMatches),
         takeLatest(newMatch.type, createMatch),
+        takeLatest(updateMatch.type, updaMatch),
         takeLatest(deleteMatch, removeMatch),
     ]);
 }

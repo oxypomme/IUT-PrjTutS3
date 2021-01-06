@@ -199,18 +199,14 @@ function* deleteProfileSaga(action) {
         }
 
         const { request } = action.payload;
-        for (let i = 0; i < request.urls.length; i++) {
-            // By using this I avoid an error when deleting a profile without matches
-            try {
-                yield call(
-                    rsf.database[request.type],
-                    request.urls[i] + '/' + authId,
-                    request.params
-                );
-            } catch (error) {
-                break;
-            }
-        }
+
+        yield call(
+            rsf.database[request.type],
+            request.urls[0] + '/' + authId,
+            request.params
+        );
+
+        //TODO: delete matches
 
         yield put(deleteProfileSuccess());
     } catch (error) {
