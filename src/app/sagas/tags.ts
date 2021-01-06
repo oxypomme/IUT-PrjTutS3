@@ -48,16 +48,12 @@ function* getTag(action) {
 
 function* getArrayTagsChannel() {
     const chan = yield call(channel);
-
-    for (let i = 0; i < 5; i++) {
-        yield fork(getArrayTag, chan)
-    }
-
     // eslint-disable-next-line no-constant-condition
     while (true) {
         const { payload } = yield take([
             fetchArrayTag.type,
         ]);
+        yield fork(getArrayTag, chan);
         yield put(chan, payload);
     }
 }

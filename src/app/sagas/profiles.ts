@@ -185,9 +185,6 @@ function* deleteProfileSaga(action) {
 
 function* getArrayProfileChannel() {
     const chan = yield call(channel);
-    for (let i = 0; i < 5; i++) {
-        yield fork(getArrayProfile, chan)
-    }
     // eslint-disable-next-line no-constant-condition
     while (true) {
         const { payload } = yield take([
@@ -195,6 +192,7 @@ function* getArrayProfileChannel() {
             syncOutMatchesSuccess,
             syncInMatchesSuccess,
         ]);
+        yield fork(getArrayProfile, chan);
         yield put(chan, payload);
     }
 }
