@@ -85,7 +85,7 @@ const ChatMenuItem = ({ onClick, profile }: PropsType) => {
                 </ImageProfileContainer>
                 <div>
                     <h2>{profile?.name || <WaitingForData length={8} />}</h2>
-                    <p>hh:mm</p>
+                    <p>{lastMessage?.date.toLocaleString() || < WaitingForData length={5} />}</p>
                 </div>
             </TitleContainer>
             <p>{lastMessage?.content?.text || <WaitingForData length={16} />}</p>
