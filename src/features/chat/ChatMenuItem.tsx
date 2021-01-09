@@ -6,11 +6,12 @@ import IMessage from '../../include/IMessage';
 import { WaitingForData } from '../../components/styledComponents';
 
 const Item = styled.li<{ read?: boolean }>`
-    width: calc(100% - 5px);
+    width: 100%;
     padding: 5px;
+    margin: 0;
     padding-right: 0;
     cursor: pointer;
-    border-left: ${props => (props.read ? "8px solid var(--accent1)" : "none")};
+    border-left: ${props => "8px solid " + (props.read ? "var(--accent1)" : "#00000000")};
     box-sizing: border-box;
 
     p {
@@ -29,8 +30,12 @@ const Item = styled.li<{ read?: boolean }>`
         text-overflow: ellipsis;
     }
 
-    &:hover {
+    &:hover,
+    &:active {
         background: silver;
+    }
+
+    &:active {
         border-left: 8px solid var(--accent2);
     }
 `;
@@ -67,7 +72,7 @@ const lastMessage: IMessage = {
         text: "Ce message est trop long pour faire des tests :eyes:",
         media: ""
     },
-    read: false,
+    read: true,
     date: new Date(2021, 0, 8, 15, 28, 46)
 }
 
