@@ -5,6 +5,7 @@ interface IMessage {
         text?: string,
         media?: string
     },
+    read: boolean,
     date: string | Date // type to define with firebase
 }
 
