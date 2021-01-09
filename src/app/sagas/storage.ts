@@ -1,5 +1,5 @@
 import { eventChannel } from 'redux-saga';
-import { call, put, takeLatest, take, all } from 'redux-saga/effects'
+import { call, put, takeLatest, take, all, select } from 'redux-saga/effects'
 import { withCallback } from 'redux-saga-callback';
 
 import { rsf } from '../firebase'
@@ -9,6 +9,10 @@ import {
     deleteAvatar,
     deleteAvatarFailed,
     deleteAvatarSuccess,
+    getDlUrl,
+    getDlUrlFailed,
+    getDlUrlSuccess,
+    getStorageError,
     uploadFile,
     uploadFileFailed,
     uploadFileSuccess,
@@ -27,7 +31,12 @@ function* uploadFileSaga(action) {
         // Wait for upload to complete
         yield task
 
-        const dlUrl = yield call(rsf.storage.getDownloadURL, request.url);
+        yield put(getDlUrl(request.url));
+        const dlUrl = yield take([getDlUrlSuccess, getDlUrlFailed]);
+        const urlError = yield select(getStorageError);
+        if (urlError != "") {
+            throw new Error(urlError);
+        }
 
         yield put(uploadFileSuccess({ url: request.url, dlUrl }));
     } catch (error) {
@@ -35,6 +44,21 @@ function* uploadFileSaga(action) {
         //throw error;
     }
 
+}
+
+function* fetchDlUrl(action) {
+    try {
+        const { request } = action.payload;
+        const dlUrl = yield call(
+            rsf.storage[request.type],
+            request.url,
+            request.params
+        );
+
+        yield put(getDlUrlSuccess(dlUrl));
+    } catch (error) {
+        yield put(getDlUrlFailed(error.message));
+    }
 }
 
 function* deleteAvatarSaga(action) {
@@ -58,5 +82,6 @@ export default function* storageSagas() {
     yield all([
         takeLatest([uploadFile.type, uploadStringFile.type], uploadFileSaga),
         takeLatest(deleteAvatar.type, deleteAvatarSaga),
+        takeLatest(getDlUrl.type, fetchDlUrl),
     ]);
 }

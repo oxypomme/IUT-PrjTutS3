@@ -5,13 +5,14 @@ import "@firebase/database";
 
 function* fnc(action) {
     try {
-        yield "yolo"
+
+        yield "yolo";
     } catch (error) {
         yield "erreur";
     }
 }
 
-export default function* messagesSagas() {
+export default function* chatSagas() {
     yield all([
         takeLatest("type", fnc),
     ]);

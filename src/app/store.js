@@ -6,6 +6,7 @@ import tagsReducer from '../features/accounts/tagSlice';
 import profilesReducer, {createProfile} from '../features/accounts/profileSlice';
 import storageReducer from '../features/firestorage/storageSlice';
 import matchesReducer from '../features/accounts/matches/matchesSlice';
+import chatReducer from '../features/chat/chatSlice';
 
 import rootSaga from './sagas';
 
@@ -19,6 +20,7 @@ export default () => {
       profiles: profilesReducer,
       storage: storageReducer,
       matches: matchesReducer,
+      chat: chatReducer,
     },
     middleware: [...getDefaultMiddleware({
       thunk: false,
