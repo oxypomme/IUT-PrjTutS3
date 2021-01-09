@@ -11,7 +11,8 @@ const List = styled.ul`
     margin: 0;
     text-align: left;
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    overflow-y: auto;
 `;
 
 const ChatMenu = () => {
