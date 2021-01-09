@@ -2,12 +2,16 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { ProfilePicture } from '../accounts/profile/ProfileComponent';
 import IProfile from '../../include/IProfile';
+import IMessage from '../../include/IMessage';
+import { WaitingForData } from '../../components/styledComponents';
 
-const Item = styled.li`
+const Item = styled.li<{ read?: boolean }>`
     width: calc(100% - 5px);
     padding: 5px;
     padding-right: 0;
     cursor: pointer;
+    border-left: ${props => (props.read ? "8px solid var(--accent1)" : "none")};
+    box-sizing: border-box;
 
     p {
         margin: 4px 6px;
@@ -27,6 +31,7 @@ const Item = styled.li`
 
     &:hover {
         background: silver;
+        border-left: 8px solid var(--accent2);
     }
 `;
 
