@@ -60,19 +60,30 @@ type PropsType = {
     onClick?: (event: React.SyntheticEvent) => void;
 }
 
+const lastMessage: IMessage = {
+    sender: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
+    target: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
+    content: {
+        text: "Ce message est trop long pour faire des tests :eyes:",
+        media: ""
+    },
+    read: false,
+    date: new Date(2021, 0, 8, 15, 28, 46)
+}
+
 const ChatMenuItem = ({ onClick, profile }: PropsType) => {
     return (
-        <Item>
+        <Item read={profile?.authId !== lastMessage?.sender && !lastMessage?.read}>
             <TitleContainer>
                 <ImageProfileContainer>
                     <ProfilePicture source={profile.imageURL} />
                 </ImageProfileContainer>
                 <div>
-                    <h2>{profile.name}</h2>
+                    <h2>{profile?.name || <WaitingForData length={8} />}</h2>
                     <p>hh:mm</p>
                 </div>
             </TitleContainer>
-            <p>Ce message est trop long pour faire des tests :eyes:</p>
+            <p>{lastMessage?.content?.text || <WaitingForData length={16} />}</p>
         </Item>
     );
 }
