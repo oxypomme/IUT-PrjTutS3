@@ -10,9 +10,8 @@ const Item = styled.li`
     cursor: pointer;
 
     p {
-        margin: 5px 10px;
+        margin: 4px 6px;
         font-style: italic;
-        
         overflow:hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -20,6 +19,8 @@ const Item = styled.li`
 
     h2 {
         margin: 0;
+        font-size: 1rem;
+        line-height: 1rem;
         white-space: nowrap;
         text-overflow: ellipsis;
     }
@@ -38,6 +39,14 @@ const ImageProfileContainer = styled.div`
 
 const TitleContainer = styled.div`
     display: flex;
+
+    &>div:last-of-type {
+        display: block;
+
+        &>p {
+            margin: 0;
+        }
+    }
 `;
 
 
@@ -53,9 +62,12 @@ const ChatMenuItem = ({ onClick, profile }: PropsType) => {
                 <ImageProfileContainer>
                     <ProfilePicture source={profile.imageURL} />
                 </ImageProfileContainer>
-                <h2>{profile.name}</h2>
+                <div>
+                    <h2>{profile.name}</h2>
+                    <p>hh:mm</p>
+                </div>
             </TitleContainer>
-            <p>hh:mm - Dernier message trop long ptdr</p>
+            <p>Ce message est trop long pour faire des tests :eyes:</p>
         </Item>
     );
 }
