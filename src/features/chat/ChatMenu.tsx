@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
 
 import ChatMenuItem from './ChatMenuItem';
-import { useSelector } from 'react-redux';
+
 import { getCurrProfile } from '../accounts/profileSlice';
 
 const List = styled.ul`

@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
+
 import { ProfilePicture } from '../accounts/profile/ProfileComponent';
+import { WaitingForData } from '../../components/styledComponents';
+
 import IProfile from '../../include/IProfile';
 import IMessage from '../../include/IMessage';
-import { WaitingForData } from '../../components/styledComponents';
 
 const Item = styled.li<{ read?: boolean }>`
     width: 100%;
