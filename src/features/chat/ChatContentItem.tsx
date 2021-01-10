@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
+
+import { WaitingForData } from '../../components/styledComponents';
 import { ProfilePicture } from '../accounts/profile/ProfileComponent';
+
 import IProfile from '../../include/IProfile';
 import IMessage from '../../include/IMessage';
-import { WaitingForData } from '../../components/styledComponents';
 
 const Item = styled.li<{ isOwner?: boolean }>`
     background-color: ${props => (props.isOwner ? "var(--accent1)" : "var(--accent2)")};

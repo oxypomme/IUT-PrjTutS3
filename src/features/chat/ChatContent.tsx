@@ -1,15 +1,18 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { ProfilePicture } from '../accounts/profile/ProfileComponent';
-import IProfile from '../../include/IProfile';
-import IMessage from '../../include/IMessage';
-import { Button, HiddenLabel, TextBox, WaitingForData } from '../../components/styledComponents';
+import { useSelector } from 'react-redux';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComments } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
-import { getCurrProfile } from '../accounts/profileSlice';
+
+import { Button, HiddenLabel, TextBox, WaitingForData } from '../../components/styledComponents';
+import { ProfilePicture } from '../accounts/profile/ProfileComponent';
 import ChatContentItem from './ChatContentItem';
 
+import { getCurrProfile } from '../accounts/profileSlice';
+
+import IProfile from '../../include/IProfile';
+import IMessage from '../../include/IMessage';
 
 const ImageProfileContainer = styled.div`
     width: 45%;
