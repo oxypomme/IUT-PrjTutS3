@@ -18,6 +18,20 @@ const Item = styled.li<{ isOwner?: boolean }>`
     &>p {
         margin: 0;
     }
+
+    &:after {
+	    content: '';
+        position: relative;
+        top: 45px;
+        left: ${props => (props.isOwner ? "calc(100% - 25px)" : "10px")};
+        width: 0;
+        height: 0;
+        border: 15px solid transparent;
+        border-top-color: ${props => (props.isOwner ? "var(--accent1)" : "var(--accent2)")};
+        /* border-bottom: 0; */
+        border-right: ${props => (props.isOwner ? "0" : "auto")};
+        border-left: ${props => (props.isOwner ? "auto" : "0")};
+    }
 `;
 
 
