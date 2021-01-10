@@ -50,6 +50,14 @@ const InputContainer = styled.div`
     background: var(--background2);
 `;
 
+const ChatTextBox = styled(TextBox)`
+    width: 100%;
+`;
+const ChatButton = styled(Button)`
+    height: 100%;
+    margin: 0 5px;
+`;
+
 
 
 type PropsType = {
@@ -238,7 +246,7 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
 
             </ContentContainer>
             <InputContainer>
-                <TextBox>
+                <ChatTextBox>
                     <FontAwesomeIcon icon={faComments} />
                     <input
                         type='text'
@@ -248,13 +256,13 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
                     <HiddenLabel htmlFor='message'>
                         Message
                     </HiddenLabel>
-                </TextBox>
-                <Button
+                </ChatTextBox>
+                <ChatButton
                     primary
                 // onClick={handleOnSubmit}
                 >
                     Envoyer
-                </Button>
+                </ChatButton>
             </InputContainer>
         </MainContainer>
     );

@@ -33,7 +33,8 @@ export const TextBox = styled.div<{ borderColor?: string, width?: number }>`
     background-color: transparent;
   }
 
-  & > textarea {
+  & > textarea,
+  & > input {
     width: 100%;
   }
 `;
