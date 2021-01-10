@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import Markdown from 'markdown-to-jsx';
+import emoji from 'emoji-dictionary';
 
 import { WaitingForData } from '../../components/styledComponents';
 import { ProfilePicture } from '../accounts/profile/ProfileComponent';
@@ -35,7 +37,49 @@ const Item = styled.li<{ isOwner?: boolean }>`
     }
 `;
 
+const Bold = styled.span`
+    font-weight: bold;
+`;
+const Italic = styled.span`
+    font-style: italic;
+`;
+const Quote = styled.p`
+    margin: 0;
+    padding: 0 20px;
+    border-left: 5px solid gray;
+`;
+const Default = styled.span`
+`;
+const Code = styled.code`
+    background-color: rgba(50,50,50,0.5);
+    padding: 2px;
+    border-radius: 5px;
+`;
+const ImgOverride = ({ alt, src }: any) => (
+    <span>![{alt}]({src})</span>
+);
+const LinkOverride = ({ children, href, title }: any) => (
+    <span>[{children}]({href}{title ? ' "' + title + '"' : ''})</span>
+)
 
+const markdownOptions = {
+    forceBlock: true,
+    disableParsingRawHTML: true,
+    overrides: {
+        strong: Bold,
+        em: Italic,
+        h1: Default,
+        h2: Default,
+        h3: Default,
+        h4: Default,
+        h5: Default,
+        h6: Default,
+        blockquote: Quote,
+        code: Code,
+        img: ImgOverride,
+        a: LinkOverride,
+    }
+}
 
 type PropsType = {
     message: IMessage;
@@ -46,7 +90,7 @@ type PropsType = {
 const ChatContentItem = ({ onClick, profile, message }: PropsType) => {
     return (
         <Item isOwner={profile?.authId === message?.sender}>
-            <p>{message?.content.text}</p>
+            <Markdown options={markdownOptions}>{message?.content.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji))}</Markdown >
         </Item>
     );
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import emoji from 'emoji-dictionary';
 
 import { ProfilePicture } from '../accounts/profile/ProfileComponent';
 import { WaitingForData } from '../../components/styledComponents';
@@ -71,7 +72,7 @@ const lastMessage: IMessage = {
     sender: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
     target: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
     content: {
-        text: "Ce message est trop long pour faire des tests :eyes:",
+        text: "Ce message est trop :eyes: long pour faire des tests",
         media: ""
     },
     read: true,
@@ -90,7 +91,7 @@ const ChatMenuItem = ({ onClick, profile }: PropsType) => {
                     <p>{lastMessage?.date.toLocaleString() || < WaitingForData length={5} />}</p>
                 </div>
             </TitleContainer>
-            <p>{lastMessage?.content?.text || <WaitingForData length={16} />}</p>
+            <p>{lastMessage?.content?.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji)) || <WaitingForData length={16} />}</p>
         </Item>
     );
 }
