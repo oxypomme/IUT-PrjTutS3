@@ -101,17 +101,19 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
 
     const handleOnTextSubmit = (event: React.BaseSyntheticEvent) => {
         event.preventDefault();
-        dispatch(newMessage({
-            sender: currProfile.authId,
-            target: profile.authId,
-            content: {
-                text: textMessage,
-                media: ""
-            },
-            read: true,
-            date: new Date().toLocaleString('en-GB')
-        }));
-        setTextMessage("");
+        if (textMessage) {
+            dispatch(newMessage({
+                sender: currProfile.authId,
+                target: profile.authId,
+                content: {
+                    text: textMessage,
+                    media: ""
+                },
+                read: true,
+                date: new Date().toLocaleString('en-GB')
+            }));
+            setTextMessage("");
+        }
     }
 
     return (
