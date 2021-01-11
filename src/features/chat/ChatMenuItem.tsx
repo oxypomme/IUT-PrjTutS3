@@ -76,7 +76,6 @@ const ChatMenuItem = ({ onClick, profile, isActive }: PropsType) => {
 
     const [lastMessage, setLastMessage] = React.useState<IMessage>();
 
-
     const handleOnClick = (event) => {
         onClick(event);
     }
@@ -103,7 +102,7 @@ const ChatMenuItem = ({ onClick, profile, isActive }: PropsType) => {
                     {lastMessage?.date.toLocaleString() || < WaitingForData length={5} />}
                 </div>
             </TitleContainer>
-            {<Markdown options={markdownOptions}>{lastMessage?.content?.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji))}</Markdown> || <WaitingForData length={16} />}
+            {lastMessage?.content?.text ? <Markdown options={markdownOptions}>{lastMessage?.content?.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji))}</Markdown> : <WaitingForData length={16} />}
         </Item>
     );
 }
