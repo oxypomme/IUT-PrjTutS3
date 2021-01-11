@@ -77,8 +77,8 @@ export const tagSlice = createSlice({
         fetchTagSuccess: (state, { payload: newTag }) => {
             let tags = [...state.tags];
 
-            if (!tags.includes(newTag)) {
-                tags = [...tags, newTag]
+            if (tags.findIndex(val => val.value == newTag.value) == -1) {
+                tags = [...tags, newTag];
             }
 
             return {
@@ -97,7 +97,7 @@ export const tagSlice = createSlice({
             let tags = [...state.tags];
 
             newTags.forEach(newTag => {
-                if (!tags.includes(newTag)) {
+                if (tags.findIndex(val => val.value == newTag.value) == -1) {
                     tags = [...tags, newTag];
                 }
             });

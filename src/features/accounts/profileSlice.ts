@@ -126,7 +126,7 @@ export const profileSlice = createSlice({
         fetchProfilesSuccess: (state, { payload: newProfile }) => {
             let profiles = [...state.profiles];
 
-            if (!profiles.includes(newProfile)) {
+            if (profiles.findIndex(val => val.authId == newProfile.authId) == -1) {
                 profiles = [...profiles, newProfile]
             }
 
@@ -142,12 +142,12 @@ export const profileSlice = createSlice({
             isWorking: false,
             error: message
         }),
-        fetchArrayProfilesSuccess: (state, { payload: newProfile }) => {
+        fetchArrayProfilesSuccess: (state, { payload: newProfiles }) => {
             let profiles = [...state.profiles];
 
-            newProfile.forEach(profile => {
-                if (!profiles.includes(profile)) {
-                    profiles = [...profiles, profile]
+            newProfiles.forEach(newProfile => {
+                if (profiles.findIndex(val => val.authId == newProfile.authId) == -1) {
+                    profiles = [...profiles, newProfile]
                 }
             });
 
