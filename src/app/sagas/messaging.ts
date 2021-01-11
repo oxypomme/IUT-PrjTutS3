@@ -35,28 +35,30 @@ function* createMessage(action) {
 
 function* syncMessages() {
     try {
-        yield take(fetchCurrProfilesSuccess);
-        const authId = yield select(getAuthId);
+        while (true) {
+            yield take(fetchCurrProfilesSuccess);
+            const authId = yield select(getAuthId);
 
-        // Out messages
-        yield fork(
-            rsf.database.sync,
-            firebase.database().ref('messages').orderByChild('/sender').equalTo(authId),
-            {
-                successActionCreator: syncOutMessagesSuccess,
-            },
-            'value'
-        );
+            // Out messages
+            yield fork(
+                rsf.database.sync,
+                firebase.database().ref('messages').orderByChild('/sender').equalTo(authId),
+                {
+                    successActionCreator: syncOutMessagesSuccess,
+                },
+                'value'
+            );
 
-        // In messages
-        yield fork(
-            rsf.database.sync,
-            firebase.database().ref('messages').orderByChild('/target').equalTo(authId),
-            {
-                successActionCreator: syncInMessagesSuccess,
-            },
-            'value'
-        );
+            // In messages
+            yield fork(
+                rsf.database.sync,
+                firebase.database().ref('messages').orderByChild('/target').equalTo(authId),
+                {
+                    successActionCreator: syncInMessagesSuccess,
+                },
+                'value'
+            );
+        }
     } catch (error) {
         yield error;
     }

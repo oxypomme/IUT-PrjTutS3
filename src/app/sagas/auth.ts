@@ -31,6 +31,8 @@ import {
     resetCurrProfile,
     resetProfiles
 } from '../../features/accounts/profileSlice';
+import { resetMatches } from '../../features/accounts/matches/matchesSlice';
+import { resetMessages } from '../../features/chat/chatSlice';
 
 function* createEmailAuth(action) {
     try {
@@ -72,6 +74,8 @@ function* logOut(action) {
         yield put(logoutAccountSuccess());
         yield put(resetCurrProfile());
         yield put(resetProfiles());
+        yield put(resetMatches());
+        yield put(resetMessages());
     } catch (error) {
         yield put(logoutAccountFailed(error.message));
         throw error;

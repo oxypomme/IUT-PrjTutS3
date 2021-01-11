@@ -129,6 +129,11 @@ export const matchSlice = createSlice({
             isWorking: false,
             error: message
         }),
+        resetMatches: (state) => ({
+            ...state,
+            matches: null,
+            incomingMatches: null,
+        })
     }
 });
 
@@ -141,7 +146,8 @@ export const {
     deleteMatchFailed,
     syncMatchesFailed,
     syncOutMatchesSuccess,
-    syncInMatchesSuccess
+    syncInMatchesSuccess,
+    resetMatches
 } = matchSlice.actions;
 
 export const getState = state => state.matches;

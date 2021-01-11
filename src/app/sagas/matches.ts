@@ -87,59 +87,61 @@ function* removeMatch(action) {
 
 function* syncMatches() {
     try {
-        yield take(fetchCurrProfilesSuccess);
-        const authId = yield select(getAuthId);
+        while (true) {
+            yield take(fetchCurrProfilesSuccess);
+            const authId = yield select(getAuthId);
 
-        // Out matches
-        yield fork(
-            rsf.database.sync,
-            firebase.database().ref('/matches').orderByChild('/sender').equalTo(authId),
-            {
-                successActionCreator: syncOutMatchesSuccess,
-                transform: ({ value: rawMatch }) => {
-                    const matchs = {};
-                    if (rawMatch) {
+            // Out matches
+            yield fork(
+                rsf.database.sync,
+                firebase.database().ref('/matches').orderByChild('/sender').equalTo(authId),
+                {
+                    successActionCreator: syncOutMatchesSuccess,
+                    transform: ({ value: rawMatch }) => {
+                        const matchs = {};
+                        if (rawMatch) {
 
-                        Object.keys(rawMatch).forEach((key) => {
-                            const match = rawMatch[key];
+                            Object.keys(rawMatch).forEach((key) => {
+                                const match = rawMatch[key];
 
-                            matchs[match.target] = {
-                                key,
-                                isBlocked: match.isBlocked
-                            }
-                        });
+                                matchs[match.target] = {
+                                    key,
+                                    isBlocked: match.isBlocked
+                                }
+                            });
+                        }
+
+                        return matchs;
                     }
+                },
+                'value'
+            );
 
-                    return matchs;
-                }
-            },
-            'value'
-        );
+            // In matches
+            yield fork(
+                rsf.database.sync,
+                firebase.database().ref('/matches').orderByChild('/target').equalTo(authId),
+                {
+                    successActionCreator: syncInMatchesSuccess,
+                    transform: ({ value: rawMatch }) => {
+                        const matchs = {};
+                        if (rawMatch) {
+                            Object.keys(rawMatch).forEach((key) => {
+                                const match = rawMatch[key];
 
-        // In matches
-        yield fork(
-            rsf.database.sync,
-            firebase.database().ref('/matches').orderByChild('/target').equalTo(authId),
-            {
-                successActionCreator: syncInMatchesSuccess,
-                transform: ({ value: rawMatch }) => {
-                    const matchs = {};
-                    if (rawMatch) {
-                        Object.keys(rawMatch).forEach((key) => {
-                            const match = rawMatch[key];
+                                matchs[match.sender] = {
+                                    key,
+                                    isBlocked: match.isBlocked
+                                }
+                            });
+                        }
 
-                            matchs[match.sender] = {
-                                key,
-                                isBlocked: match.isBlocked
-                            }
-                        });
+                        return matchs;
                     }
-
-                    return matchs;
-                }
-            },
-            'value'
-        );
+                },
+                'value'
+            );
+        }
     } catch (error) {
         yield put(syncMatchesFailed(error.message));
     }

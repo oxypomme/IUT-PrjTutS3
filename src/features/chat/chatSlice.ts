@@ -61,6 +61,11 @@ export const chatSlice = createSlice({
             isWorking: false,
             error
         }),
+        resetMessages: (state) => ({
+            ...state,
+            inMessages: {},
+            outMessages: {},
+        })
     }
 });
 
@@ -69,7 +74,8 @@ export const {
     syncOutMessagesSuccess,
     syncMessagesFailed,
     createMessageSuccess,
-    createMessageFailed
+    createMessageFailed,
+    resetMessages
 } = chatSlice.actions;
 
 export const getState = state => state.chat;
