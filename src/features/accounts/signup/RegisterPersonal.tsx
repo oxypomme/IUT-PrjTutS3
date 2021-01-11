@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCalendarAlt, faBuilding, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 
-import { addAge, addCity, addName, getNewAuth } from "../accountSlice";
+import { addAge, addCity, addName, getNewAuth, getPersonalInfos } from "../accountSlice";
 
 import IError from "../../../include/IError";
 
@@ -25,10 +25,12 @@ const RegisterPersonal = (): JSX.Element => {
         }
     }, [auth])
 
-    const [name, setName] = React.useState("");
-    const [age, setAge] = React.useState<number>(18);
-    const [town, setTown] = React.useState("");
+    const actualInfos = useSelector(getPersonalInfos);
+    const [name, setName] = React.useState(actualInfos.name);
+    const [age, setAge] = React.useState<number>(actualInfos.age !== -1 ? actualInfos.age : 18);
+    const [town, setTown] = React.useState(actualInfos.town);
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
+
 
 
     const handleOnChange = (event) => setName(event.target.value);
@@ -64,6 +66,7 @@ const RegisterPersonal = (): JSX.Element => {
             history.push('/SignUp/2');
         }
     }
+
 
     return (
         <form>

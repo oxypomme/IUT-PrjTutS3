@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle, faGenderless, faHelicopter, faHorse, faMarsDouble, faTransgender, faVenusDouble, faVenusMars } from "@fortawesome/free-solid-svg-icons";
 
 import { fetchTags, getAllTags } from "../tagSlice";
-import { addGender, addPrefs, addTags, getInfos } from "../accountSlice";
+import { addGender, addPrefs, addTags, getInfos, getPrefsInfos } from "../accountSlice";
 
 import EOrientation from "../../../include/EOrientation";
 import EGender from "../../../include/EGender";
@@ -57,9 +57,10 @@ export const RegisterPreferences = (): JSX.Element => {
 
     const tags: Array<IComboBoxItem> = useSelector(getAllTags);
 
-    const [selectedTags, setSelectedTags] = React.useState<Array<IComboBoxItem>>([]);
-    const [selectedGender, setSelectedGender] = React.useState<Array<IComboBoxItem>>([]);
-    const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IComboBoxItem>>([]);
+    const actualInfos = useSelector(getPrefsInfos);
+    const [selectedTags, setSelectedTags] = React.useState<Array<IComboBoxItem>>([]); // TODO
+    const [selectedGender, setSelectedGender] = React.useState<Array<IComboBoxItem>>([{ value: actualInfos.sex, label: "" }]);
+    const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IComboBoxItem>>([{ value: actualInfos.orientation, label: "" }]);
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const genders = [
@@ -120,6 +121,7 @@ export const RegisterPreferences = (): JSX.Element => {
                 isSearchable={true}
                 isClearable={true}
                 onChange={mygender => setSelectedGender([mygender as IComboBoxItem])}
+                defaultValue={{ value: actualInfos.sex, label: genders.filter(g => g.value === actualInfos.sex)[0].label }}
                 options={genders}
                 placeholder="Sélectionnez votre genre"
                 styles={{
@@ -136,6 +138,7 @@ export const RegisterPreferences = (): JSX.Element => {
                 isSearchable={true}
                 isClearable={true}
                 onChange={myorientation => setSelectedOrientation([myorientation as IComboBoxItem])}
+                defaultValue={{ value: actualInfos.orientation, label: orientations.filter(g => g.value === actualInfos.orientation)[0].label }}
                 options={orientations}
                 placeholder="Sélectionnez votre orientation"
                 styles={{
