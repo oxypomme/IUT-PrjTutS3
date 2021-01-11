@@ -74,20 +74,23 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
     const [textMessage, setTextMessage] = React.useState<string>("");
 
     React.useEffect(() => {
-        if (Object.keys(rawInMessages).length > 0 && Object.keys(rawOutMessages).length > 0) {
-            let msgs: IMessage[] = [];
+        let msgs: IMessage[] = [];
+        if (rawInMessages && Object.keys(rawInMessages).length > 0) {
             for (const key in rawInMessages) {
                 if (rawInMessages[key]?.sender == profile.authId) {
                     msgs = [...msgs, rawInMessages[key]];
                 }
             }
+        }
+
+        if (rawOutMessages && Object.keys(rawOutMessages).length > 0) {
             for (const key in rawOutMessages) {
                 if (rawOutMessages[key]?.target == profile.authId) {
                     msgs = [...msgs, rawOutMessages[key]];
                 }
             }
-            setMessages(msgs.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()));
         }
+        setMessages(msgs.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()));
     }, [rawInMessages, rawOutMessages, profile]);
 
     const messageRef = React.useRef(null);
