@@ -19,6 +19,7 @@ const Item = styled.li<{ isOwner?: boolean }>`
     float: ${props => (props.isOwner ? "right" : "left")};
     padding: 10px;
     text-align: justify;
+    color: #ffffff;
 
     &>p {
         margin: 0;
