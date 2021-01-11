@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import emoji from 'emoji-dictionary';
+import Markdown from 'markdown-to-jsx';
 
 import { ProfilePicture } from '../accounts/profile/ProfileComponent';
 import { WaitingForData } from '../../components/styledComponents';
@@ -9,6 +10,8 @@ import IProfile from '../../include/IProfile';
 import IMessage from '../../include/IMessage';
 import { useSelector } from 'react-redux';
 import { getInChat } from './chatSlice';
+
+import markdownOptions from './MarkdownOverride';
 
 const Item = styled.li<{ isActive?: boolean, read?: boolean }>`
     width: 100%;
@@ -97,10 +100,10 @@ const ChatMenuItem = ({ onClick, profile, isActive }: PropsType) => {
                 </ImageProfileContainer>
                 <div>
                     <h2>{profile?.name || <WaitingForData length={8} />}</h2>
-                    <p>{lastMessage?.date.toLocaleString() || < WaitingForData length={5} />}</p>
+                    {lastMessage?.date.toLocaleString() || < WaitingForData length={5} />}
                 </div>
             </TitleContainer>
-            <p>{lastMessage?.content?.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji)) || <WaitingForData length={16} />}</p>
+            {<Markdown options={markdownOptions}>{lastMessage?.content?.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji))}</Markdown> || <WaitingForData length={16} />}
         </Item>
     );
 }
