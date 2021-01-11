@@ -88,7 +88,7 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
             }
             setMessages(msgs.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()));
         }
-    }, [rawInMessages, rawOutMessages]);
+    }, [rawInMessages, rawOutMessages, profile]);
 
     const messageRef = React.useRef(null);
     React.useEffect(() => {
