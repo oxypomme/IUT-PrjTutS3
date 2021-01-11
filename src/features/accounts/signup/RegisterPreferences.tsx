@@ -59,8 +59,8 @@ export const RegisterPreferences = (): JSX.Element => {
 
     const actualInfos = useSelector(getPrefsInfos);
     const [selectedTags, setSelectedTags] = React.useState<Array<IComboBoxItem>>([]); // TODO
-    const [selectedGender, setSelectedGender] = React.useState<Array<IComboBoxItem>>([{ value: actualInfos.sex, label: "" }]);
-    const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IComboBoxItem>>([{ value: actualInfos.orientation, label: "" }]);
+    const [selectedGender, setSelectedGender] = React.useState<Array<IComboBoxItem>>(actualInfos.sex !== -1 ? [{ value: actualInfos.sex, label: "" }] : []);
+    const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IComboBoxItem>>(actualInfos.orientation !== -1 ? [{ value: actualInfos.orientation, label: "" }] : []);
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const genders = [
@@ -121,7 +121,7 @@ export const RegisterPreferences = (): JSX.Element => {
                 isSearchable={true}
                 isClearable={true}
                 onChange={mygender => setSelectedGender([mygender as IComboBoxItem])}
-                defaultValue={{ value: actualInfos.sex, label: genders.filter(g => g.value === actualInfos.sex)[0].label }}
+                defaultValue={actualInfos.sex !== -1 ? { value: actualInfos.sex, label: genders.filter(g => g.value === actualInfos.sex)[0].label } : null} // TODO check if exist
                 options={genders}
                 placeholder="Sélectionnez votre genre"
                 styles={{
@@ -138,7 +138,7 @@ export const RegisterPreferences = (): JSX.Element => {
                 isSearchable={true}
                 isClearable={true}
                 onChange={myorientation => setSelectedOrientation([myorientation as IComboBoxItem])}
-                defaultValue={{ value: actualInfos.orientation, label: orientations.filter(g => g.value === actualInfos.orientation)[0].label }}
+                defaultValue={actualInfos.orientation !== -1 ? { value: actualInfos.orientation, label: orientations.filter(g => g.value === actualInfos.orientation)[0].label } : null}
                 options={orientations}
                 placeholder="Sélectionnez votre orientation"
                 styles={{
