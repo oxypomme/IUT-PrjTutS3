@@ -148,6 +148,13 @@ export const getState = state => state.matches;
 
 export const getOutgoingMatches = createSelector(getState, (state) => state.matches);
 export const getIngoingMatches = createSelector(getState, (state) => state.incomingMatches);
+export const getAllMatches = createSelector(
+    getOutgoingMatches,
+    getIngoingMatches,
+    (outMatches, inMatches) => ({
+        ...outMatches,
+        ...inMatches
+    }));
 
 export const getMatchError = createSelector(getState, (state) => state.error);
 

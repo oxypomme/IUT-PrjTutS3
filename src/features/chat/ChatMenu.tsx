@@ -6,6 +6,7 @@ import ChatMenuItem from './ChatMenuItem';
 
 import { getAllProfiles } from '../accounts/profileSlice';
 import { getChats } from './chatSlice';
+import { getAllMatches } from '../accounts/matches/matchesSlice';
 
 import IProfile from '../../include/IProfile';
 
@@ -24,21 +25,21 @@ type PropsType = {
 }
 
 const ChatMenu = ({ onClick }: PropsType) => {
-    const chats = useSelector(getChats);
+    const matches = useSelector(getAllMatches);
     const profiles = useSelector(getAllProfiles);
 
     const [chattableProfiles, setChattableProfiles] = React.useState<IProfile[]>([]);
 
     React.useEffect(() => {
         let profs: IProfile[] = [];
-        for (const key in chats) {
-            const pIndex = profiles.findIndex((value) => value.authId == chats[key].sender || value.authId == chats[key].target);
+        for (const key in matches) {
+            const pIndex = profiles.findIndex((value) => value.authId == key);
             if (pIndex != -1 && !profs.includes(profiles[pIndex])) {
                 profs = [...profs, profiles[pIndex]]
             }
         }
         setChattableProfiles(profs);
-    }, [chats, profiles]);
+    }, [matches, profiles]);
 
     return (
         <List>

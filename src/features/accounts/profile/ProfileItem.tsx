@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHorse, faCalendarAlt, faBuilding, faVenusMars, faVenusDouble, faNeuter, faHelicopter, faMarsDouble, faTransgender, faGenderless } from '@fortawesome/free-solid-svg-icons';
@@ -110,6 +111,7 @@ interface ProfileItemProps {
 
 const ProfileItem = ({ id, isPending, inviting, isBlocked, match }: ProfileItemProps): JSX.Element => {
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const profiles: IProfile[] = useSelector(getAllProfiles);
     const profile: IProfile = profiles?.find(p => p.authId === id);
@@ -155,7 +157,7 @@ const ProfileItem = ({ id, isPending, inviting, isBlocked, match }: ProfileItemP
 
     const handleChat = (event: React.SyntheticEvent) => {
         event.preventDefault();
-        console.log("//TODO");
+        history.push('/chat');
     }
 
     const handleUnmatch = (event: React.SyntheticEvent) => {
