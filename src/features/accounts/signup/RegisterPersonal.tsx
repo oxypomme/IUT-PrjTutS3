@@ -69,7 +69,7 @@ const RegisterPersonal = (): JSX.Element => {
 
 
     return (
-        <form>
+        <div>
             {globalErrors.length > 0 &&
                 <ErrorLabel>
                     {globalErrors.map((error, index) => (
@@ -126,7 +126,7 @@ const RegisterPersonal = (): JSX.Element => {
                 <Button onClick={handleBack}>Retour</Button>
                 <Button primary onClick={handleOnSubmit}>Suivant</Button>
             </ButtonFlex>
-        </form >
+        </div >
     );
 };
 

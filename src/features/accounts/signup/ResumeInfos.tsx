@@ -57,7 +57,7 @@ const ResumeInfos = () => {
     };
 
     return (
-        <form>
+        <div>
             <ProfileComponent profile={profile} />
             <ButtonFlex>
                 <Button onClick={handleBack}>Retour</Button>
@@ -70,7 +70,7 @@ const ResumeInfos = () => {
                     ></CheckBox>
                 </div>
             </ButtonFlex>
-        </form>
+        </div>
     );
 }
 
