@@ -34,7 +34,7 @@ const Chat = ({ className }: any) => {
     return (
         <ChatApp className={className}>
             <ChatMenuContainer>
-                <ChatMenu onClick={handleOnProfileClick} />
+                <ChatMenu onClick={handleOnProfileClick} activeProfile={profile} />
             </ChatMenuContainer>
             <ChatContentContainer>
                 {profile ? <ChatContent profile={profile} /> : <></>}

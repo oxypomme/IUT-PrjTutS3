@@ -21,10 +21,11 @@ const List = styled.ul`
 `;
 
 type PropsType = {
+    activeProfile: IProfile;
     onClick: (profile: IProfile) => void;
 }
 
-const ChatMenu = ({ onClick }: PropsType) => {
+const ChatMenu = ({ activeProfile, onClick }: PropsType) => {
     const matches = useSelector(getAllMatches);
     const profiles = useSelector(getAllProfiles);
 
@@ -45,7 +46,7 @@ const ChatMenu = ({ onClick }: PropsType) => {
         <List>
             { chattableProfiles
                 ? chattableProfiles.map((profile, index) =>
-                    <ChatMenuItem key={index} profile={profile} onClick={() => onClick(profile)} />)
+                    <ChatMenuItem key={index} profile={profile} onClick={() => onClick(profile)} isActive={activeProfile == profile} />)
                 : <></>}
         </List>
     );

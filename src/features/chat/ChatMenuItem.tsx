@@ -62,6 +62,7 @@ const TitleContainer = styled.div`
 
 type PropsType = {
     profile: IProfile;
+    isActive: boolean;
     onClick?: (event: React.SyntheticEvent) => void;
 }
 
@@ -76,11 +77,8 @@ const lastMessage: IMessage = {
     date: "11/01/2021, 11:45:51"
 }
 
-const ChatMenuItem = ({ onClick, profile }: PropsType) => {
-    const [isActive, setIsActive] = React.useState(false);
-
+const ChatMenuItem = ({ onClick, profile, isActive }: PropsType) => {
     const handleOnClick = (event) => {
-        setIsActive(!isActive); // TODO: multiple profiles
         onClick(event);
     }
 
