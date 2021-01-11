@@ -1,11 +1,11 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Button, Spacer, TextBox, HiddenLabel, ErrorLabel } from '../../../components/styledComponents';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-import { addMail, addPasswd } from "../accountSlice";
+import { addMail, addPasswd, getNewAuth } from "../accountSlice";
 import { useHistory } from "react-router-dom";
 
 import IError from "../../../include/IError";
@@ -14,9 +14,11 @@ const SignUp = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const [email, setEmail] = React.useState<string>("");
-    const [passwd, setPasswd] = React.useState<string>("");
-    const [secondPasswd, setSecondPasswd] = React.useState<string>("");
+
+    const actualInfos = useSelector(getNewAuth);
+    const [email, setEmail] = React.useState<string>(actualInfos.email);
+    const [passwd, setPasswd] = React.useState<string>(actualInfos.passwd);
+    const [secondPasswd, setSecondPasswd] = React.useState<string>(actualInfos.passwd);
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const handleSetEmailOnChange = (event) => setEmail(event.target.value);
