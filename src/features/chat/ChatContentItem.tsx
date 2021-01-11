@@ -92,7 +92,7 @@ type PropsType = {
 const ChatContentItem = ({ onClick, profile, message }: PropsType) => {
     return (
         <Item isOwner={profile?.authId === message?.sender}>
-            <Markdown options={markdownOptions}>{message?.content.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji))}</Markdown >
+            {message?.content.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji)).split("\n").map((str, key) => <Markdown key={key} options={markdownOptions}>{str}</Markdown>)}
         </Item>
     );
 }
