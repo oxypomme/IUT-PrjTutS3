@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComments } from '@fortawesome/free-solid-svg-icons';
@@ -10,6 +10,7 @@ import { ProfilePicture } from '../accounts/profile/ProfileComponent';
 import ChatContentItem from './ChatContentItem';
 
 import { getCurrProfile } from '../accounts/profileSlice';
+import { getInChat, getOutChat, newMessage } from './chatSlice';
 
 import IProfile from '../../include/IProfile';
 import IMessage from '../../include/IMessage';
@@ -62,175 +63,56 @@ type PropsType = {
     onClick?: (event: React.SyntheticEvent) => void;
 }
 
-const messages: IMessage[] = [
-    {
-        sender: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        target: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        content: {
-            text: "Ce message est trop long pour faire des tests :eyes:",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 46)
-    },
-    {
-        sender: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        target: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        content: {
-            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin et quam sodales lacus lobortis egestas id sed ligula. Praesent sed augue vel tellus molestie malesuada. Vestibulum id neque sit amet risus varius venenatis. Aliquam aliquam, felis id fringilla dignissim, quam sapien ornare lorem, nec tempor nibh velit tincidunt ante. Nunc rutrum, nisl vel ullamcorper scelerisque, neque massa porttitor arcu, sit amet consectetur sapien nisi sit amet nisl. Nullam posuere vehicula risus eu ultrices. Nam erat felis, mattis eu porttitor ut, mattis id nulla. Proin tincidunt, justo in hendrerit porttitor, urna odio imperdiet tellus, ac sagittis arcu augue in massa. Proin varius diam eget congue congue.",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 47)
-    },
-    {
-        sender: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        target: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        content: {
-            text: "Ce message est trop long pour faire des tests :eyes:",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 46)
-    },
-    {
-        sender: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        target: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        content: {
-            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin et quam sodales lacus lobortis egestas id sed ligula. Praesent sed augue vel tellus molestie malesuada. Vestibulum id neque sit amet risus varius venenatis. Aliquam aliquam, felis id fringilla dignissim, quam sapien ornare lorem, nec tempor nibh velit tincidunt ante. Nunc rutrum, nisl vel ullamcorper scelerisque, neque massa porttitor arcu, sit amet consectetur sapien nisi sit amet nisl. Nullam posuere vehicula risus eu ultrices. Nam erat felis, mattis eu porttitor ut, mattis id nulla. Proin tincidunt, justo in hendrerit porttitor, urna odio imperdiet tellus, ac sagittis arcu augue in massa. Proin varius diam eget congue congue.",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 47)
-    }, {
-        sender: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        target: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        content: {
-            text: "Ce message est trop long pour faire des tests :eyes:",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 46)
-    },
-    {
-        sender: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        target: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        content: {
-            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin et quam sodales lacus lobortis egestas id sed ligula. Praesent sed augue vel tellus molestie malesuada. Vestibulum id neque sit amet risus varius venenatis. Aliquam aliquam, felis id fringilla dignissim, quam sapien ornare lorem, nec tempor nibh velit tincidunt ante. Nunc rutrum, nisl vel ullamcorper scelerisque, neque massa porttitor arcu, sit amet consectetur sapien nisi sit amet nisl. Nullam posuere vehicula risus eu ultrices. Nam erat felis, mattis eu porttitor ut, mattis id nulla. Proin tincidunt, justo in hendrerit porttitor, urna odio imperdiet tellus, ac sagittis arcu augue in massa. Proin varius diam eget congue congue.",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 47)
-    },
-    {
-        sender: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        target: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        content: {
-            text: "Ce message est trop long pour faire des tests :eyes:",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 46)
-    },
-    {
-        sender: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        target: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        content: {
-            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin et quam sodales lacus lobortis egestas id sed ligula. Praesent sed augue vel tellus molestie malesuada. Vestibulum id neque sit amet risus varius venenatis. Aliquam aliquam, felis id fringilla dignissim, quam sapien ornare lorem, nec tempor nibh velit tincidunt ante. Nunc rutrum, nisl vel ullamcorper scelerisque, neque massa porttitor arcu, sit amet consectetur sapien nisi sit amet nisl. Nullam posuere vehicula risus eu ultrices. Nam erat felis, mattis eu porttitor ut, mattis id nulla. Proin tincidunt, justo in hendrerit porttitor, urna odio imperdiet tellus, ac sagittis arcu augue in massa. Proin varius diam eget congue congue.",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 47)
-    }, {
-        sender: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        target: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        content: {
-            text: "Ce message est trop long pour faire des tests :eyes:",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 46)
-    },
-    {
-        sender: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        target: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        content: {
-            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin et quam sodales lacus lobortis egestas id sed ligula. Praesent sed augue vel tellus molestie malesuada. Vestibulum id neque sit amet risus varius venenatis. Aliquam aliquam, felis id fringilla dignissim, quam sapien ornare lorem, nec tempor nibh velit tincidunt ante. Nunc rutrum, nisl vel ullamcorper scelerisque, neque massa porttitor arcu, sit amet consectetur sapien nisi sit amet nisl. Nullam posuere vehicula risus eu ultrices. Nam erat felis, mattis eu porttitor ut, mattis id nulla. Proin tincidunt, justo in hendrerit porttitor, urna odio imperdiet tellus, ac sagittis arcu augue in massa. Proin varius diam eget congue congue.",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 47)
-    },
-    {
-        sender: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        target: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        content: {
-            text: "Ce message est trop long pour faire des tests :eyes:",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 46)
-    },
-    {
-        sender: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        target: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        content: {
-            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin et quam sodales lacus lobortis egestas id sed ligula. Praesent sed augue vel tellus molestie malesuada. Vestibulum id neque sit amet risus varius venenatis. Aliquam aliquam, felis id fringilla dignissim, quam sapien ornare lorem, nec tempor nibh velit tincidunt ante. Nunc rutrum, nisl vel ullamcorper scelerisque, neque massa porttitor arcu, sit amet consectetur sapien nisi sit amet nisl. Nullam posuere vehicula risus eu ultrices. Nam erat felis, mattis eu porttitor ut, mattis id nulla. Proin tincidunt, justo in hendrerit porttitor, urna odio imperdiet tellus, ac sagittis arcu augue in massa. Proin varius diam eget congue congue.",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 47)
-    }, {
-        sender: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        target: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        content: {
-            text: "1. Ce message est trop long pour faire des tests :eyes:",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 46)
-    },
-    {
-        sender: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        target: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        content: {
-            text: "> Lorem ipsum dolor sit amet, `consectetur adipiscing elit`. Proin et [quam](https://google.com) sodales [lacus](https://google.com \"google\") lobortis egestas id sed ligula. Praesent sed augue vel tellus molestie malesuada. Vestibulum id neque sit amet risus varius venenatis. Aliquam aliquam, felis id fringilla dignissim, quam sapien ornare lorem, nec tempor nibh velit tincidunt ante. Nunc rutrum, nisl vel ullamcorper scelerisque, neque massa porttitor arcu, sit amet consectetur sapien nisi sit amet nisl. Nullam posuere vehicula risus eu ultrices. Nam erat felis, mattis eu porttitor ut, mattis id nulla. Proin tincidunt, justo in hendrerit porttitor, urna odio imperdiet tellus, ac sagittis arcu augue in massa. Proin varius diam eget congue congue.",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 47)
-    },
-    {
-        sender: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        target: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        content: {
-            text: "Ce **message** est trop long *pour* faire des tests :eyes:. ![Tux, the Linux mascot](/assets/images/tux.png)",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 46)
-    },
-    {
-        sender: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-        target: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-        content: {
-            text: "#Lorem *ipsum* dolor sit amet, consectetur adipiscing elit. Proin et quam sodales lacus lobortis egestas id sed ligula. Praesent sed augue vel tellus molestie malesuada. Vestibulum id neque sit amet risus varius venenatis. Aliquam aliquam, felis id fringilla dignissim, quam sapien ornare lorem, nec tempor nibh velit tincidunt ante. Nunc rutrum, nisl vel ullamcorper scelerisque, neque massa porttitor arcu, sit amet consectetur sapien nisi sit amet nisl. Nullam posuere vehicula risus eu ultrices. Nam erat felis, mattis eu porttitor ut, mattis id nulla. Proin tincidunt, justo in hendrerit porttitor, urna odio imperdiet tellus, ac sagittis arcu augue in massa. Proin varius diam eget congue congue.",
-            media: ""
-        },
-        read: true,
-        date: new Date(2021, 0, 8, 15, 28, 47)
-    }
-]
-
 const ChatContent = ({ onClick, profile }: PropsType) => {
+    const dispatch = useDispatch();
+
     const currProfile = useSelector(getCurrProfile);
+    const rawInMessages = useSelector(getInChat);
+    const rawOutMessages = useSelector(getOutChat);
+
+    const [messages, setMessages] = React.useState<IMessage[]>([]);
+    const [textMessage, setTextMessage] = React.useState<string>("");
+
+    React.useEffect(() => {
+        if (Object.keys(rawInMessages).length > 0 && Object.keys(rawOutMessages).length > 0) {
+            let msgs: IMessage[] = [];
+            for (const key in rawInMessages) {
+                if (rawInMessages[key]?.sender == profile.authId) {
+                    msgs = [...msgs, rawInMessages[key]];
+                }
+            }
+            for (const key in rawOutMessages) {
+                if (rawOutMessages[key]?.target == profile.authId) {
+                    msgs = [...msgs, rawOutMessages[key]];
+                }
+            }
+            setMessages(msgs.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()));
+        }
+    }, [rawInMessages, rawOutMessages]);
 
     const messageRef = React.useRef(null);
     React.useEffect(() => {
         if (messageRef.current) {
             messageRef.current.scrollTop = messageRef.current.scrollHeight;
         }
-    })
+    }, [messages])
+
+    const handleOnTextChange = (event) => setTextMessage(event.target.value);
+
+    const handleOnTextSubmit = (event: React.BaseSyntheticEvent) => {
+        event.preventDefault();
+        dispatch(newMessage({
+            sender: currProfile.authId,
+            target: profile.authId,
+            content: {
+                text: textMessage,
+                media: ""
+            },
+            read: true,
+            date: new Date().toLocaleString('en-GB')
+        }));
+        setTextMessage("");
+    }
 
     return (
         <MainContainer>
@@ -253,6 +135,8 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
                         type='text'
                         name='message'
                         placeholder='Message'
+                        value={textMessage}
+                        onChange={handleOnTextChange}
                     />
                     <HiddenLabel htmlFor='message'>
                         Message
@@ -260,7 +144,7 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
                 </ChatTextBox>
                 <ChatButton
                     primary
-                // onClick={handleOnSubmit}
+                    onClick={handleOnTextSubmit}
                 >
                     Envoyer
                 </ChatButton>

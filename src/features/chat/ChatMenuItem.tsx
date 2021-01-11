@@ -76,12 +76,12 @@ const lastMessage: IMessage = {
         media: ""
     },
     read: true,
-    date: new Date(2021, 0, 8, 15, 28, 46)
+    date: "11/01/2021, 11:45:51"
 }
 
 const ChatMenuItem = ({ onClick, profile }: PropsType) => {
     return (
-        <Item read={profile?.authId !== lastMessage?.sender && !lastMessage?.read}>
+        <Item read={profile?.authId !== lastMessage?.sender && !lastMessage?.read} onClick={onClick}>
             <TitleContainer>
                 <ImageProfileContainer>
                     <ProfilePicture source={profile.imageURL} />

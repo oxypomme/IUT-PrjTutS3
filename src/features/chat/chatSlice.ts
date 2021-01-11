@@ -74,6 +74,17 @@ export const {
 
 export const getState = state => state.chat;
 
+export const getInChat = createSelector(getState, state => state.inMessages);
+export const getOutChat = createSelector(getState, state => state.outMessages);
+export const getChats = createSelector(
+    getInChat,
+    getOutChat,
+    (inChats, outChats) => ({
+        ...inChats,
+        ...outChats
+    })
+);
+
 export const getChatError = createSelector(getState, state => state.error);
 
 export default chatSlice.reducer;

@@ -6,7 +6,7 @@ interface IMessage {
         media?: string
     },
     read: boolean,
-    date: string | Date // type to define with firebase
+    date: string
 }
 
 export default IMessage;
