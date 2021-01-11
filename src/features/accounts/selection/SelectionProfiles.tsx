@@ -31,7 +31,6 @@ const SelectionProfiles = (): JSX.Element => {
 
                 if (instanceOfIProfile(currProfile)) {
                     const profs = await filterProfiles(currProfile);
-                    console.log("[DEBUG] Matchables :", profs);
                     const keys = profs.map(profile => profile.key);
                     setKeys(keys);
                     if (keys?.length > 0) {

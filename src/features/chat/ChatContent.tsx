@@ -33,6 +33,10 @@ const TitleContainer = styled.div`
     border-left: 8px solid var(--accent2);
     padding: 4px;
     background: var(--background2);
+
+    & > p {
+        font-weight: bold;
+    }
 `;
 
 const ContentContainer = styled.ul`
@@ -125,7 +129,7 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
 
     return (
         <MainContainer>
-            <TitleContainer> {/* HEADER */}
+            <TitleContainer>
                 <ImageProfileContainer>
                     <ProfilePicture source={profile.imageURL} />
                 </ImageProfileContainer>

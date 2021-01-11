@@ -33,7 +33,7 @@ function* uploadFileSaga(action) {
 
         yield put(getDlUrl(request.url));
         const { payload } = yield take([getDlUrlSuccess, getDlUrlFailed]);
-        console.log(payload);
+
         const urlError = yield select(getStorageError);
         if (urlError != "") {
             throw new Error(urlError);

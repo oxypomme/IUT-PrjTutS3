@@ -38,8 +38,6 @@ export function Camera(): JSX.Element {
     const snap = React.useCallback(() => {
         const imageUrl = webcamRef.current.getScreenshot();
         setImages([...images, imageUrl]);
-        // console.log(images);
-        // dispatch(uploadStringFile("profiles/2", imageUrl));
     }, [images, setImages]);
 
     const uploadLocalFile = React.useCallback((event) => {
@@ -47,7 +45,6 @@ export function Camera(): JSX.Element {
         if (file == undefined || !file.name.match(/.(jpg|jpeg|png|jfif|pjpeg|.pjp)$/i))
             return;
         setPendingUploadUrl("profiles/1");
-        // dispatch(uploadFile("profiles/1", file));
 
         const reader = new FileReader();
         reader.readAsDataURL(file);
