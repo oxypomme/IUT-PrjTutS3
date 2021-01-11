@@ -98,14 +98,17 @@ function* syncMatches() {
                 successActionCreator: syncOutMatchesSuccess,
                 transform: ({ value: rawMatch }) => {
                     const matchs = {};
-                    Object.keys(rawMatch)?.forEach((key) => {
-                        const match = rawMatch[key];
+                    if (rawMatch) {
 
-                        matchs[match.target] = {
-                            key,
-                            isBlocked: match.isBlocked
-                        }
-                    });
+                        Object.keys(rawMatch).forEach((key) => {
+                            const match = rawMatch[key];
+
+                            matchs[match.target] = {
+                                key,
+                                isBlocked: match.isBlocked
+                            }
+                        });
+                    }
 
                     return matchs;
                 }
@@ -121,14 +124,16 @@ function* syncMatches() {
                 successActionCreator: syncInMatchesSuccess,
                 transform: ({ value: rawMatch }) => {
                     const matchs = {};
-                    Object.keys(rawMatch)?.forEach((key) => {
-                        const match = rawMatch[key];
+                    if (rawMatch) {
+                        Object.keys(rawMatch).forEach((key) => {
+                            const match = rawMatch[key];
 
-                        matchs[match.sender] = {
-                            key,
-                            isBlocked: match.isBlocked
-                        }
-                    });
+                            matchs[match.sender] = {
+                                key,
+                                isBlocked: match.isBlocked
+                            }
+                        });
+                    }
 
                     return matchs;
                 }
