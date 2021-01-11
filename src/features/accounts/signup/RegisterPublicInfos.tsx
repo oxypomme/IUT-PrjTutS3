@@ -9,7 +9,7 @@ import { getUploadedFiles } from "../../firestorage/storageSlice";
 
 import { Button, ButtonFlex, ErrorLabel, HiddenLabel, TextBox } from "../../../components/styledComponents";
 import { ProfilePicture } from "../profile/ProfileComponent";
-import { addDesc, addPhoto, getInfos } from "../accountSlice";
+import { addDesc, addPhoto, getInfos, getPublicInfos } from "../accountSlice";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle, faUser } from "@fortawesome/free-solid-svg-icons";
@@ -33,9 +33,10 @@ export function RegisterPublicInfos(): JSX.Element {
     const webcamRef = React.useRef<Webcam>();
     const [devices, setDevices] = React.useState<Array<ICam>>([]);
     const [cam, setCam] = React.useState<string>("");
-    const [picture, setPicture] = React.useState<string>("");
 
-    const [description, setDescription] = React.useState<string>("");
+    const actualInfos = useSelector(getPublicInfos);
+    const [picture, setPicture] = React.useState<string>(actualInfos.imageURL);
+    const [description, setDescription] = React.useState<string>(actualInfos.desc);
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
 
