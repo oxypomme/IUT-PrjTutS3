@@ -75,11 +75,11 @@ export const matchSlice = createSlice({
         }),
     },
     reducers: {
-        syncInMatchesSuccess: (state, { payload: matches }) => ({
+        syncInMatchesSuccess: (state, { payload: incomingMatches }) => ({
             ...state,
             isWorking: false,
             error: "",
-            incomingMatches: matches
+            incomingMatches
         }),
         syncOutMatchesSuccess: (state, { payload: matches }) => ({
             ...state,
@@ -89,7 +89,7 @@ export const matchSlice = createSlice({
         }),
         syncMatchesFailed: (state, { payload: error }) => {
             let errorToShow = error;
-            if (typeof error != "string") {
+            if (typeof error !== "string") {
                 errorToShow = error.message;
             }
 

@@ -116,7 +116,6 @@ function* createProfileSaga(action) {
 
         const profile = { ...newProfile };
         const files = yield select(getUploadedFiles);
-        console.log(files);
 
         let mylink;
         if ((mylink = files.find(u => u.url === "profiles/" + authid)) !== undefined) {

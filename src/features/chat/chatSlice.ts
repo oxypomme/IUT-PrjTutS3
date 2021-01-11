@@ -34,17 +34,17 @@ export const chatSlice = createSlice({
         })
     },
     reducers: {
-        syncInMessagesSuccess: (state, { payload: messages }) => ({
+        syncInMessagesSuccess: (state, { payload: inMessages }) => ({
             ...state,
             isWorking: false,
             error: "",
-            inMessages: messages
+            inMessages
         }),
-        syncOutMessagesSuccess: (state, { payload: messages }) => ({
+        syncOutMessagesSuccess: (state, { payload: outMessages }) => ({
             ...state,
             isWorking: false,
             error: "",
-            outMessages: messages
+            outMessages
         }),
         syncMessagesFailed: (state, { payload: error }) => ({
             ...state,
