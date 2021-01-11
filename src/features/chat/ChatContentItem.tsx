@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import Markdown from 'markdown-to-jsx';
 import emoji from 'emoji-dictionary';
+import { useSelector } from 'react-redux';
 
 import markdownOptions from './MarkdownOverride';
 
@@ -10,6 +11,8 @@ import { ProfilePicture } from '../accounts/profile/ProfileComponent';
 
 import IProfile from '../../include/IProfile';
 import IMessage from '../../include/IMessage';
+
+import { getCurrProfile } from '../accounts/profileSlice';
 
 const Item = styled.li<{ isOwner?: boolean }>`
     background-color: ${props => (props.isOwner ? "var(--accent1)" : "var(--accent2)")};
@@ -43,13 +46,13 @@ const Item = styled.li<{ isOwner?: boolean }>`
 
 type PropsType = {
     message: IMessage;
-    profile: IProfile;
     onClick?: (event: React.SyntheticEvent) => void;
 }
 
-const ChatContentItem = ({ onClick, profile, message }: PropsType) => {
+const ChatContentItem = ({ onClick, message }: PropsType) => {
+    const currProfile = useSelector(getCurrProfile);
     return (
-        <Item isOwner={profile?.authId === message?.sender}>
+        <Item isOwner={currProfile?.authId === message?.sender}>
             {message?.content.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji)).split("\n").map((str, key) => <Markdown key={key} options={markdownOptions}>{str}</Markdown>)}
         </Item>
     );

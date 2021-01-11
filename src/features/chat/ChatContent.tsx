@@ -1,19 +1,17 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComments } from '@fortawesome/free-solid-svg-icons';
-
-import { Button, HiddenLabel, TextBox, WaitingForData } from '../../components/styledComponents';
+import { WaitingForData } from '../../components/styledComponents';
 import { ProfilePicture } from '../accounts/profile/ProfileComponent';
 import ChatContentItem from './ChatContentItem';
 
 import { getCurrProfile } from '../accounts/profileSlice';
-import { getInChat, getOutChat, newMessage } from './chatSlice';
+import { getInChat, getOutChat } from './chatSlice';
 
 import IProfile from '../../include/IProfile';
 import IMessage from '../../include/IMessage';
+import ChatContentInput from './ChatContentInput';
 
 const ImageProfileContainer = styled.div`
     width: 45%;
@@ -48,38 +46,16 @@ const ContentContainer = styled.ul`
     overflow-y: auto;
 `;
 
-const InputContainer = styled.form`
-    display: flex;
-    padding: 4px;
-    background: var(--background2);
-`;
-
-const ChatTextBox = styled(TextBox)`
-    width: 100%;
-`;
-const ChatTextArea = styled.textarea`
-    resize: none;
-`;
-
-const ChatButton = styled(Button)`
-    height: 100%;
-    margin: 0 5px;
-`;
-
 type PropsType = {
     profile: IProfile;
     onClick?: (event: React.SyntheticEvent) => void;
 }
 
 const ChatContent = ({ onClick, profile }: PropsType) => {
-    const dispatch = useDispatch();
-
-    const currProfile = useSelector(getCurrProfile);
     const rawInMessages = useSelector(getInChat);
     const rawOutMessages = useSelector(getOutChat);
 
     const [messages, setMessages] = React.useState<IMessage[]>([]);
-    const [textMessage, setTextMessage] = React.useState<string>("");
 
     React.useEffect(() => {
         let msgs: IMessage[] = [];
@@ -108,25 +84,6 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
         }
     }, [messages])
 
-    const handleOnTextChange = (event) => setTextMessage(event.target.value);
-
-    const handleOnTextSubmit = (event: React.BaseSyntheticEvent) => {
-        event.preventDefault();
-        if (textMessage) {
-            dispatch(newMessage({
-                sender: currProfile.authId,
-                target: profile.authId,
-                content: {
-                    text: textMessage,
-                    media: ""
-                },
-                read: false,
-                date: new Date().toLocaleString('en-GB')
-            }));
-            setTextMessage("");
-        }
-    }
-
     return (
         <MainContainer>
             <TitleContainer>
@@ -137,29 +94,10 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
             </TitleContainer>
             <ContentContainer ref={messageRef}>
                 {messages.map((message, index) => (
-                    <ChatContentItem key={index} profile={currProfile} message={message} />
+                    <ChatContentItem key={index} message={message} />
                 ))}
             </ContentContainer>
-            <InputContainer>
-                <ChatTextBox>
-                    <FontAwesomeIcon icon={faComments} />
-                    <ChatTextArea
-                        name='message'
-                        placeholder='Message'
-                        value={textMessage}
-                        onChange={handleOnTextChange}
-                    />
-                    <HiddenLabel htmlFor='message'>
-                        Message
-                    </HiddenLabel>
-                </ChatTextBox>
-                <ChatButton
-                    primary
-                    onClick={handleOnTextSubmit}
-                >
-                    Envoyer
-                </ChatButton>
-            </InputContainer>
+            <ChatContentInput profile={profile} />
         </MainContainer>
     );
 }
