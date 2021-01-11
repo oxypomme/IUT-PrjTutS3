@@ -112,7 +112,7 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
                     text: textMessage,
                     media: ""
                 },
-                read: true,
+                read: false,
                 date: new Date().toLocaleString('en-GB')
             }));
             setTextMessage("");

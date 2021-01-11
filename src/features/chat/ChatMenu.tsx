@@ -6,7 +6,7 @@ import ChatMenuItem from './ChatMenuItem';
 
 import { getAllProfiles } from '../accounts/profileSlice';
 import { getChats } from './chatSlice';
-import { getAllMatches } from '../accounts/matches/matchesSlice';
+import { getIngoingMatches, getOutgoingMatches } from '../accounts/matches/matchesSlice';
 
 import IProfile from '../../include/IProfile';
 
@@ -26,21 +26,24 @@ type PropsType = {
 }
 
 const ChatMenu = ({ activeProfile, onClick }: PropsType) => {
-    const matches = useSelector(getAllMatches);
+    const inMatches = useSelector(getIngoingMatches);
+    const outMatches = useSelector(getOutgoingMatches);
     const profiles = useSelector(getAllProfiles);
 
     const [chattableProfiles, setChattableProfiles] = React.useState<IProfile[]>([]);
 
     React.useEffect(() => {
         let profs: IProfile[] = [];
-        for (const key in matches) {
-            const pIndex = profiles.findIndex((value) => value.authId == key);
-            if (pIndex != -1 && !profs.includes(profiles[pIndex])) {
-                profs = [...profs, profiles[pIndex]]
+        for (const key in outMatches) {
+            if (inMatches && Object.keys(inMatches).findIndex((value) => value == key) != -1 && !(outMatches[key].isBlocked || inMatches[key].isBlocked)) {
+                const pIndex = profiles.findIndex((value) => value.authId == key);
+                if (pIndex != -1 && !profs.includes(profiles[pIndex])) {
+                    profs = [...profs, profiles[pIndex]]
+                }
             }
         }
         setChattableProfiles(profs);
-    }, [matches, profiles]);
+    }, [inMatches, profiles]);
 
     return (
         <List>
