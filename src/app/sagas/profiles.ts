@@ -6,6 +6,7 @@ import { rsf } from '../firebase'
 import '@firebase/database'
 
 import {
+    clearNewAccount,
     createAccount,
     createAccountFailed,
     createAccountSuccess,
@@ -131,6 +132,8 @@ function* createProfileSaga(action) {
         );
 
         yield put(createProfileSuccess());
+        yield put(clearNewAccount());
+        yield put(fetchCurrProfile());
     } catch (error) {
         yield put(createProfileFailed(error.message));
         throw error;

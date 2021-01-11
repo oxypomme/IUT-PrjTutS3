@@ -32,13 +32,14 @@ function* uploadFileSaga(action) {
         yield task
 
         yield put(getDlUrl(request.url));
-        const dlUrl = yield take([getDlUrlSuccess, getDlUrlFailed]);
+        const { payload } = yield take([getDlUrlSuccess, getDlUrlFailed]);
+        console.log(payload);
         const urlError = yield select(getStorageError);
         if (urlError != "") {
             throw new Error(urlError);
         }
 
-        yield put(uploadFileSuccess({ url: request.url, dlUrl }));
+        yield put(uploadFileSuccess({ url: request.url, dlUrl: payload }));
     } catch (error) {
         yield put(uploadFileFailed(error.message));
         //throw error;
