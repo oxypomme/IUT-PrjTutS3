@@ -44,13 +44,14 @@ const Bold = styled.span`
 const Italic = styled.span`
     font-style: italic;
 `;
-const Quote = styled.p`
+const Quote = styled.blockquote`
     margin: 0;
     padding: 0 20px;
     border-left: 5px solid gray;
 `;
-const Default = styled.span`
-`;
+const Default = ({ children }: any) => (
+    <p>{children}</p>
+);
 const Code = styled.code`
     background-color: rgba(50,50,50,0.5);
     padding: 2px;
