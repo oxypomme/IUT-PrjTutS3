@@ -8,13 +8,13 @@ import { WaitingForData } from '../../components/styledComponents';
 import IProfile from '../../include/IProfile';
 import IMessage from '../../include/IMessage';
 
-const Item = styled.li<{ read?: boolean }>`
+const Item = styled.li<{ isActive?: boolean, read?: boolean }>`
     width: 100%;
     padding: 5px;
     margin: 0;
     padding-right: 0;
     cursor: pointer;
-    border-left: ${props => "8px solid " + (props.read ? "var(--accent1)" : "#00000000")};
+    border-left: ${props => "8px solid " + (props.read ? "var(--accent1)" : props.isActive ? "var(--accent2)" : "#00000000")};
     box-sizing: border-box;
 
     p {
@@ -38,9 +38,6 @@ const Item = styled.li<{ read?: boolean }>`
         background: silver;
     }
 
-    &:active {
-        border-left: 8px solid var(--accent2);
-    }
 `;
 
 const ImageProfileContainer = styled.div`
@@ -80,8 +77,15 @@ const lastMessage: IMessage = {
 }
 
 const ChatMenuItem = ({ onClick, profile }: PropsType) => {
+    const [isActive, setIsActive] = React.useState(false);
+
+    const handleOnClick = (event) => {
+        setIsActive(!isActive); // TODO: multiple profiles
+        onClick(event);
+    }
+
     return (
-        <Item read={profile?.authId !== lastMessage?.sender && !lastMessage?.read} onClick={onClick}>
+        <Item read={profile?.authId !== lastMessage?.sender && !lastMessage?.read} onClick={handleOnClick} isActive={isActive}>
             <TitleContainer>
                 <ImageProfileContainer>
                     <ProfilePicture source={profile.imageURL} />

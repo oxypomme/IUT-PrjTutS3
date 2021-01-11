@@ -116,7 +116,7 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
 
     return (
         <MainContainer>
-            <TitleContainer>
+            <TitleContainer> {/* HEADER */}
                 <ImageProfileContainer>
                     <ProfilePicture source={profile.imageURL} />
                 </ImageProfileContainer>
@@ -126,7 +126,6 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
                 {messages.map((message, index) => (
                     <ChatContentItem key={index} profile={currProfile} message={message} />
                 ))}
-
             </ContentContainer>
             <InputContainer>
                 <ChatTextBox>
