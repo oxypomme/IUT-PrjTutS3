@@ -35,11 +35,8 @@ const TitleContainer = styled.div`
 `;
 
 const ContentContainer = styled.ul`
-    /* display: flex; */
-    /* flex-wrap: wrap-reverse; */
-    /* border: 1px dashed red; */
     flex-grow:1;
-
+    /*scroll-behavior: smooth;*/
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -48,7 +45,6 @@ const ContentContainer = styled.ul`
 
 const InputContainer = styled.div`
     display: flex;
-    /* border: 1px dashed magenta; */
     padding: 4px;
     background: var(--background2);
 `;
@@ -226,11 +222,15 @@ const messages: IMessage[] = [
     }
 ]
 
-console.log(messages);
-
-
 const ChatContent = ({ onClick, profile }: PropsType) => {
     const currProfile = useSelector(getCurrProfile);
+
+    const messageRef = React.useRef(null);
+    React.useEffect(() => {
+        if (messageRef.current) {
+            messageRef.current.scrollTop = messageRef.current.scrollHeight;
+        }
+    })
 
     return (
         <MainContainer>
@@ -240,7 +240,7 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
                 </ImageProfileContainer>
                 <p>{profile?.name || <WaitingForData length={8} />}</p>
             </TitleContainer>
-            <ContentContainer>
+            <ContentContainer ref={messageRef}>
                 {messages.map((message, index) => (
                     <ChatContentItem key={index} profile={currProfile} message={message} />
                 ))}
