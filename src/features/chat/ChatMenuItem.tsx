@@ -7,6 +7,8 @@ import { WaitingForData } from '../../components/styledComponents';
 
 import IProfile from '../../include/IProfile';
 import IMessage from '../../include/IMessage';
+import { useSelector } from 'react-redux';
+import { getInChat } from './chatSlice';
 
 const Item = styled.li<{ isActive?: boolean, read?: boolean }>`
     width: 100%;
@@ -66,21 +68,28 @@ type PropsType = {
     onClick?: (event: React.SyntheticEvent) => void;
 }
 
-const lastMessage: IMessage = {
-    sender: "KDZ5DWWFccRZuUoRgm3lcrrqumB2", // billy
-    target: "vzy56Iw31dNVZhqeHDqygWUSTYV2",
-    content: {
-        text: "Ce message est trop :eyes: long pour faire des tests",
-        media: ""
-    },
-    read: true,
-    date: "11/01/2021, 11:45:51"
-}
-
 const ChatMenuItem = ({ onClick, profile, isActive }: PropsType) => {
+    const rawInMessages = useSelector(getInChat);
+
+    const [lastMessage, setLastMessage] = React.useState<IMessage>();
+
+
     const handleOnClick = (event) => {
         onClick(event);
     }
+
+    React.useEffect(() => {
+        if (rawInMessages && Object.keys(rawInMessages).length > 0) {
+            for (const key in rawInMessages) {
+                console.log(rawInMessages[key]?.sender);
+
+                if (rawInMessages[key]?.sender == profile.authId &&
+                    (!lastMessage || (new Date(lastMessage.date).getTime() < new Date(rawInMessages[key].date).getTime()))) {
+                    setLastMessage(rawInMessages[key]);
+                }
+            }
+        }
+    }, [rawInMessages, profile]);
 
     return (
         <Item read={profile?.authId !== lastMessage?.sender && !lastMessage?.read} onClick={handleOnClick} isActive={isActive}>
