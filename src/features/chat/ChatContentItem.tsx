@@ -12,6 +12,7 @@ import IMessage from '../../include/IMessage';
 const Item = styled.li<{ isOwner?: boolean }>`
     background-color: ${props => (props.isOwner ? "var(--accent1)" : "var(--accent2)")};
     border-radius: 10px;
+    min-width: 51%;
     max-width: 80%;
     height: auto;
     margin: 10px;
