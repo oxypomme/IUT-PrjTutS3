@@ -53,6 +53,10 @@ const InputContainer = styled.form`
 const ChatTextBox = styled(TextBox)`
     width: 100%;
 `;
+const ChatTextArea = styled.textarea`
+    resize: none;
+`;
+
 const ChatButton = styled(Button)`
     height: 100%;
     margin: 0 5px;
@@ -135,8 +139,7 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
             <InputContainer>
                 <ChatTextBox>
                     <FontAwesomeIcon icon={faComments} />
-                    <input
-                        type='text'
+                    <ChatTextArea
                         name='message'
                         placeholder='Message'
                         value={textMessage}
