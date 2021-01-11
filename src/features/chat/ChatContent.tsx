@@ -44,7 +44,7 @@ const ContentContainer = styled.ul`
     overflow-y: auto;
 `;
 
-const InputContainer = styled.div`
+const InputContainer = styled.form`
     display: flex;
     padding: 4px;
     background: var(--background2);
