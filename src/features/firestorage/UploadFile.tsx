@@ -147,8 +147,6 @@ const UploadFile = ({ defaultURL, onCancel, onOk, onSnapExtension }: PropsType) 
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = (e) => {
-            console.log(e.target.result);
-
             setPicture(e.target.result as string);
             if (onSnapExtension) {
                 onSnapExtension(e.target.result as string);
