@@ -20,10 +20,7 @@ function* createMessage(action) {
 
         const { request } = action.payload;
         const { data, ...params } = request.params;
-        const { content } = data;
-        let media = {
-            dlUrl: ""
-        };
+        let media;
 
         if (data.content.media) {
             const uid = uuidv4();
@@ -36,7 +33,15 @@ function* createMessage(action) {
                 throw new Error(storageError);
             }
 
-            media = payload;
+            media = payload.dlUrl;
+        }
+        const content = {};
+        if (media) {
+            content["media"] = media;
+            content["type"] = data.content.type;
+        }
+        if (data.content.text) {
+            content["text"] = data.content.text;
         }
 
         yield call(
@@ -46,10 +51,7 @@ function* createMessage(action) {
                 sender: authId,
                 ...{
                     ...data,
-                    content: {
-                        ...content,
-                        media: media.dlUrl
-                    }
+                    content
                 },
                 ...params
             }
