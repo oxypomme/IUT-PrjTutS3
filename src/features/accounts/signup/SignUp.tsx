@@ -9,6 +9,7 @@ import { addMail, addPasswd, getNewAuth } from "../accountSlice";
 import { useHistory } from "react-router-dom";
 
 import IError from "../../../include/IError";
+import ErrorComponent from "../../../components/ErrorComponent";
 
 const SignUp = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -48,16 +49,6 @@ const SignUp = (): JSX.Element => {
 
     return (
         <form>
-            {globalErrors.length > 0 &&
-                <ErrorLabel>
-                    {globalErrors.map((error, index) => (
-                        <div key={index}>
-                            <FontAwesomeIcon icon={faExclamationTriangle} />
-                            {error.label}
-                        </div>
-                    ))}
-                </ErrorLabel>
-            }
             <TextBox borderColor={globalErrors.some(e => e.component === "email") ? 'red' : 'default'}>
                 <FontAwesomeIcon icon={faUser} />
                 <input
@@ -71,7 +62,7 @@ const SignUp = (): JSX.Element => {
                     Email
                 </HiddenLabel>
             </TextBox>
-
+            <ErrorComponent array={globalErrors} name={"email"}></ErrorComponent>
             <Spacer />
 
             <TextBox borderColor={globalErrors.some(e => e.component === "passwd") ? 'red' : 'default'}>
@@ -87,6 +78,8 @@ const SignUp = (): JSX.Element => {
                     Password
                 </HiddenLabel>
             </TextBox>
+            <ErrorComponent array={globalErrors} name={"passwd"}></ErrorComponent>
+
             <TextBox borderColor={globalErrors.some(e => e.component === "secondPasswd") ? 'red' : 'default'}>
                 <FontAwesomeIcon icon={faLock} />
                 <input
@@ -100,6 +93,7 @@ const SignUp = (): JSX.Element => {
                     Password
                 </HiddenLabel>
             </TextBox>
+            <ErrorComponent array={globalErrors} name={"secondPasswd"}></ErrorComponent>
 
             <Button onClick={handleOnSubmit}>Inscription</Button>
         </form >
