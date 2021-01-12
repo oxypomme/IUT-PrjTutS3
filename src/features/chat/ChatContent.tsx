@@ -94,7 +94,7 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
             </TitleContainer>
             <ContentContainer ref={messageRef}>
                 {messages.map((message, index) => (
-                    <ChatContentItem key={index} message={message} />
+                    <ChatContentItem key={index} message={message} isOwner={profile?.authId !== message?.sender} />
                 ))}
             </ContentContainer>
             <ChatContentInput profile={profile} />

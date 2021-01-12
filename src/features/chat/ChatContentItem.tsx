@@ -61,14 +61,14 @@ const SpeechBubble = styled.div<{ isOwner?: boolean }>`
 
 type PropsType = {
     message: IMessage;
+    isOwner: boolean;
     onClick?: (event: React.SyntheticEvent) => void;
 }
 
-const ChatContentItem = ({ onClick, message }: PropsType) => {
-    const currProfile = useSelector(getCurrProfile);
+const ChatContentItem = ({ onClick, message, isOwner }: PropsType) => {
     return (
-        <Item isOwner={currProfile?.authId === message?.sender}>
-            <SpeechBubble isOwner={currProfile?.authId === message?.sender}>
+        <Item isOwner={isOwner}>
+            <SpeechBubble isOwner={isOwner}>
                 {message?.content.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji)).split("\n").map((str, key) => <Markdown key={key} options={markdownOptions}>{str}</Markdown>)}
             </SpeechBubble>
             <p>{new Date(message?.date).toLocaleString() || <WaitingForData length={8} />}</p>
