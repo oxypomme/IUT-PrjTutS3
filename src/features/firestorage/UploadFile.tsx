@@ -15,6 +15,7 @@ const Container = styled.div`
     flex-direction: column;
     width: fit-content;
     padding: 5px;
+    overflow: hidden;
 
     background: var(--background2);
     border-radius: 10px;
@@ -33,7 +34,7 @@ const ImageContainer = styled.div`
         padding: 10px;
     }
 
-    & > :first-child {
+    & > :first-of-type {
         border-right: 1px solid silver;
     }
 
@@ -130,6 +131,11 @@ const UploadFile = ({ defaultURL, onCancel, onOk, onSnapExtension }: PropsType) 
         setCamAvailable(true);
     }
 
+    const onNOk = (event: React.SyntheticEvent) => {
+        setPicture("");
+        onCancel(event);
+    }
+
     const uploadLocalFile = React.useCallback((event) => {
         const file = event.target.files[0];
         if (file == undefined || !file.name.match(/.(jpg|jpeg|png|jfif|pjpeg|.pjp)$/i))
@@ -186,7 +192,7 @@ const UploadFile = ({ defaultURL, onCancel, onOk, onSnapExtension }: PropsType) 
                 </UploadContainer>
             </ImageContainer>
             <StyledButtonFlex>
-                {onCancel ? <Button onClick={onCancel}>Annuler</Button> : <></>}
+                {onCancel ? <Button onClick={onNOk}>Annuler</Button> : <></>}
                 {onOk ? <Button primary onClick={event => onOk(event, picture)}>Envoyer</Button> : <></>}
             </StyledButtonFlex>
         </Container>

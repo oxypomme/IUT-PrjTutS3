@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComments } from '@fortawesome/free-solid-svg-icons';
+import { faCameraRetro, faComments, faMicrophone } from '@fortawesome/free-solid-svg-icons';
 
 import { Button, HiddenLabel, TextBox } from '../../components/styledComponents';
 
@@ -11,11 +11,22 @@ import IProfile from '../../include/IProfile';
 
 import { getCurrProfile } from '../accounts/profileSlice';
 import { newMessage } from './chatSlice';
+import UploadFile from '../firestorage/UploadFile';
 
 const InputContainer = styled.form`
     display: flex;
     padding: 4px;
     background: var(--background2);
+
+    & > svg {
+        margin: auto;
+    }
+
+    & > *,
+    & > svg {
+        margin-right: 5px;
+        margin-left: 5px;
+    }
 `;
 
 const ChatTextBox = styled(TextBox)`
@@ -34,12 +45,30 @@ type PropsType = {
     profile: IProfile;
 }
 
+const ImageContainer = styled.div`
+    background-color: #3333337D;
+    position: absolute;
+    top:0;
+    left:0;
+    width: calc(100vw - 5px);
+    height: 100vh;
+    z-index: 10000;
+
+    & > div {
+        margin: auto;
+    }
+`;
+
 const ChatContentInput = ({ profile }: PropsType) => {
     const dispatch = useDispatch();
 
     const currProfile = useSelector(getCurrProfile);
 
+    const [showUploadImage, setShowUploadImage] = React.useState(false);
+
     const [textMessage, setTextMessage] = React.useState<string>("");
+    const [mediaString, setMediaString] = React.useState<string>("");
+    const [mediaType, setMediaType] = React.useState<string>("");
 
     const handleOnTextChange = (event) => setTextMessage(event.target.value);
 
@@ -51,17 +80,46 @@ const ChatContentInput = ({ profile }: PropsType) => {
                 target: profile.authId,
                 content: {
                     text: textMessage,
-                    media: ""
+                    media: mediaString,
+                    type: mediaType
                 },
                 read: false,
                 date: new Date().toLocaleString('en-GB')
             }));
             setTextMessage("");
+            setMediaString("");
+            setMediaType("");
         }
+    }
+
+    const handleMicroClick = (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        // TODO
+    }
+
+    const handleImageClick = (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        setShowUploadImage(true);
+    }
+
+    const handleImageSend = (event: React.SyntheticEvent, picture: string) => {
+        event.preventDefault();
+        setMediaString(picture);
+        setMediaType("images")
+        setShowUploadImage(false);
+    }
+
+    const handleImageCancel = (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        setMediaType("")
+        setShowUploadImage(false);
     }
 
     return (
         <InputContainer>
+            <ImageContainer style={{ display: showUploadImage ? "flex" : "none" }}>
+                <UploadFile onOk={handleImageSend} onCancel={handleImageCancel} />
+            </ImageContainer>
             <ChatTextBox>
                 <FontAwesomeIcon icon={faComments} />
                 <ChatTextArea
@@ -74,6 +132,8 @@ const ChatContentInput = ({ profile }: PropsType) => {
                     Message
                     </HiddenLabel>
             </ChatTextBox>
+            <FontAwesomeIcon icon={faMicrophone} size="2x" color={mediaType === "audios" ? "var(--accent2)" : "gray"} tabIndex={100} onClick={handleMicroClick} />
+            <FontAwesomeIcon icon={faCameraRetro} size="2x" color={mediaType === "images" ? "var(--accent2)" : "gray"} tabIndex={101} onClick={handleImageClick} />
             <ChatButton
                 primary
                 onClick={handleOnTextSubmit}

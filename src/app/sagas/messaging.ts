@@ -4,9 +4,12 @@ import { rsf } from "../firebase";
 import firebase from '@firebase/app';
 import "@firebase/database";
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { getAuthId } from "../../features/accounts/accountSlice";
 import { fetchCurrProfilesSuccess } from "../../features/accounts/profileSlice";
 import { createMessageFailed, createMessageSuccess, newMessage, syncInMessagesSuccess, syncOutMessagesSuccess } from "../../features/chat/chatSlice";
+import { getStorageError, uploadFileFailed, uploadFileSuccess, uploadStringFile } from "../../features/firestorage/storageSlice";
 
 function* createMessage(action) {
     try {
@@ -17,12 +20,37 @@ function* createMessage(action) {
 
         const { request } = action.payload;
         const { data, ...params } = request.params;
+        const { content } = data;
+        let media = {
+            dlUrl: ""
+        };
+
+        if (data.content.media) {
+            const uid = uuidv4();
+            yield put(uploadStringFile("messages/" + data.content.type + '/' + uid, data.content.media));
+
+            const { payload } = yield take([uploadFileSuccess, uploadFileFailed])
+
+            const storageError = yield select(getStorageError);
+            if (storageError !== "") {
+                throw new Error(storageError);
+            }
+
+            media = payload;
+        }
+
         yield call(
             rsf.database[request.type],
             request.url,
             {
                 sender: authId,
-                ...data,
+                ...{
+                    ...data,
+                    content: {
+                        ...content,
+                        media: media.dlUrl
+                    }
+                },
                 ...params
             }
         );
