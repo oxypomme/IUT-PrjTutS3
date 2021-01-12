@@ -78,12 +78,10 @@ export const ButtonFlex = styled.div`
 
 export const ErrorLabel = styled.div`
   color: red;
-  border: 2px solid red;
-  border-radius: 5px;
   padding: 4px;
   margin-bottom: 4px;
 
-  & > div > svg {
+  & > svg {
     margin-right: 8px;
   }
 `;
