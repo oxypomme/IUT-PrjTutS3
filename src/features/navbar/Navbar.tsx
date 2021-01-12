@@ -88,6 +88,12 @@ const NavItem = styled.li`
 
     & svg {
         margin-right: 5px;
+        background-color: #333;
+    }
+
+    & > a:hover svg,
+    & > a.active svg {
+        background-color: #111;
     }
 `;
 const CompactableIcon = styled(FontAwesomeIcon) <{ isopened?: string }>`
