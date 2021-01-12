@@ -30,7 +30,7 @@ const Item = styled.li<{ isOwner?: boolean }>`
         text-align: ${props => (props.isOwner ? "right" : "left")};
         position: absolute;
         bottom: -15px;
-        ${props => (props.isOwner ? "right" : "left")}: 40px;
+        ${props => (props.isOwner ? "right" : "left")}: 45px;
     }
 `;
 
