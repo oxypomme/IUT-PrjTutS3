@@ -34,7 +34,6 @@ export const getScore = (profTags: number[], myTags: number[]): number => {
  * @param myProfileId The id to exclude
  */
 const filterProfiles = async ({ sex: mySex, orientation: myOrientation, tags: myTags, authId: myProfileId }: IProfile): Promise<{ key: string, score: number }[]> => {
-    //TODO: Move to SAGA ?
     const profiles = (await Pref.once('value')).val();
 
     const Mref = db.ref('/matches/').orderByChild('sender').equalTo(myProfileId);
@@ -45,23 +44,23 @@ const filterProfiles = async ({ sex: mySex, orientation: myOrientation, tags: my
     const profilesScore = [];
     Object.keys(profiles).forEach((key) => {
         const profile = profiles[key];
-        if (myProfileId != key) {
+        if (myProfileId !== key) {
             const score = calcScore(profile);
             if (score > 10 && (!matches || !Object.keys(matches).find(matchId => matches[matchId]?.target === key))) {
-                if (mySex == EGender.NonBinary) {
-                    if (profile.sex == EGender.NonBinary) {
+                if (mySex === EGender.NonBinary) {
+                    if (profile.sex === EGender.NonBinary) {
                         profilesScore.push({ key, score });
                     }
                 }
-                else if (profile.sex != EGender.NonBinary) { // Men or Women
-                    if (myOrientation == EOrientation.Bisexual) {
-                        if (profile.orientation == EOrientation.Homosexual) {
-                            if (mySex == profile.sex) {
+                else if (profile.sex !== EGender.NonBinary) { // Men or Women
+                    if (myOrientation === EOrientation.Bisexual) {
+                        if (profile.orientation === EOrientation.Homosexual) {
+                            if (mySex === profile.sex) {
                                 profilesScore.push({ key, score });
                             }
                         }
                         else if (profile.orientation == EOrientation.Heterosexual) {
-                            if (mySex != profile.sex) {
+                            if (mySex !== profile.sex) {
                                 profilesScore.push({ key, score });
                             }
                         }
@@ -69,14 +68,14 @@ const filterProfiles = async ({ sex: mySex, orientation: myOrientation, tags: my
                             return ({ key, score });
                         }
                     } else if (myOrientation == EOrientation.Heterosexual) {
-                        if (mySex != profile.sex) {
-                            if (profile.orientation != EOrientation.Homosexual) {
+                        if (mySex !== profile.sex) {
+                            if (profile.orientation !== EOrientation.Homosexual) {
                                 profilesScore.push({ key, score });
                             }
                         }
                     } else { // if (myOrientation == EOrientation.Homosexual)
-                        if (mySex == profile.sex) {
-                            if (profile.orientation != EOrientation.Heterosexual) {
+                        if (mySex === profile.sex) {
+                            if (profile.orientation !== EOrientation.Heterosexual) {
                                 profilesScore.push({ key, score });
                             }
                         }

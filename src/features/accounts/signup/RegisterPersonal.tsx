@@ -37,7 +37,6 @@ const RegisterPersonal = (): JSX.Element => {
 
     const handleSetAgeOnChange = (event) => setAge(parseInt(event.target.value));
 
-    //TODO: use a proper thing, not a simple textbox
     const handleSetTownOnChange = (event) => setTown(event.target.value);
 
     const handleBack = (event) => {
