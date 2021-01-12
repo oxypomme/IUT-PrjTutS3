@@ -57,6 +57,12 @@ export const Button = styled.button<{ primary?: boolean, danger?: boolean }>`
     color: ${props => props.primary ? 'var(--accent1)' : props.danger ? '#FF3232' : 'var(--accent2)'};
     background: var(--background2);
   }
+  &:disabled {
+    border: 1px solid gray;
+    color: gray;
+    background: var(--background2);
+    cursor: not-allowed;
+  }
 `;
 
 export const ButtonFlex = styled.div`

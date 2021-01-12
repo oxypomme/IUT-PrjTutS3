@@ -25,7 +25,7 @@ const SelectionProfiles = (): JSX.Element => {
     const matches = useSelector(getOutgoingMatches);
 
     React.useEffect(() => {
-        (async function getProfiles() {
+        (async () => {
             try {
                 setLoading(true);
 
