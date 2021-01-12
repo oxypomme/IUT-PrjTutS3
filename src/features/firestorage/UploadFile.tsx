@@ -38,8 +38,7 @@ const ImageContainer = styled.div`
         border-right: 1px solid silver;
     }
 
-    & video,
-    & img {
+    & video{
         margin-top: 4px;
     }
 
@@ -63,10 +62,6 @@ const CameraContainer = styled.div`
 
 const UploadContainer = styled.div`
     width: 640px;
-
-    & > img {
-        height: 360px;
-    }
 `;
 
 const StyledFileInput = styled.div`
@@ -99,6 +94,14 @@ const StyledButtonFlex = styled(ButtonFlex)`
     }
 `;
 
+const DropZone = styled.div<{ isDragging?: boolean }>`
+    margin: 4px 0;
+    box-sizing: border-box;
+    ${props => props.isDragging ? "border: dashed grey 4px;" : ''}
+    width: 100%;
+    height: 360px;
+`;
+
 type PropsType = {
     defaultURL?: string;
     onCancel?: (event: React.SyntheticEvent) => void;
@@ -115,6 +118,7 @@ const UploadFile = ({ defaultURL, onCancel, onOk, onSnapExtension }: PropsType) 
     const [camAvailable, setCamAvailable] = React.useState(false);
 
     const webcamRef = React.useRef<Webcam>(null);
+    const dropRef = React.useRef(null);
 
     React.useEffect(() => {
         (async () => {
@@ -136,20 +140,26 @@ const UploadFile = ({ defaultURL, onCancel, onOk, onSnapExtension }: PropsType) 
         onCancel(event);
     }
 
-    const uploadLocalFile = React.useCallback((event) => {
-        const file = event.target.files[0];
+    const uploadLocalFile = React.useCallback((file) => {
         if (file == undefined || !file.name.match(/.(jpg|jpeg|png|jfif|pjpeg|.pjp)$/i))
             return;
 
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = (e) => {
+            console.log(e.target.result);
+
             setPicture(e.target.result as string);
             if (onSnapExtension) {
                 onSnapExtension(e.target.result as string);
             }
         }
     }, [picture]);
+
+    const handleUpload = (event) => {
+        event.preventDefault();
+        uploadLocalFile(event.target.files[0]);
+    }
 
     const handleSnap = (event) => {
         event.preventDefault();
@@ -159,6 +169,41 @@ const UploadFile = ({ defaultURL, onCancel, onOk, onSnapExtension }: PropsType) 
             if (onSnapExtension) {
                 onSnapExtension(imageUrl);
             }
+        }
+    }
+    const [dragging, setDragging] = React.useState(false);
+    const [dragcount, setDragcount] = React.useState(0);
+
+    const handleDrag = (event) => {
+        event.preventDefault();
+        event.stopPropagation()
+    }
+    const handleDragIn = (event) => {
+        event.preventDefault();
+        event.stopPropagation()
+        setDragcount(dragcount + 1);
+        if (event.dataTransfer.items && event.dataTransfer.items.length > 0) {
+            setDragging(true);
+        }
+    }
+    const handleDragOut = (event) => {
+        event.preventDefault();
+        event.stopPropagation()
+        const count = dragcount - 1;
+        setDragcount(count);
+        if (count > 0) {
+            return;
+        }
+        setDragging(false);
+    }
+    const handleDrop = (event) => {
+        event.preventDefault();
+        event.stopPropagation()
+        setDragging(false);
+        if (event.dataTransfer.items && event.dataTransfer.items.length > 0) {
+            uploadLocalFile(event.dataTransfer.files[0]);
+            event.dataTransfer.clearData();
+            setDragcount(0);
         }
     }
 
@@ -182,12 +227,14 @@ const UploadFile = ({ defaultURL, onCancel, onOk, onSnapExtension }: PropsType) 
                 </CameraContainer>
                 <UploadContainer>
                     <Title>Photo actuelle :</Title>
-                    {picture ?
-                        <ProfilePicture source={picture} />
-                        : <SVGContainer><FontAwesomeIcon icon={faUpload} size="5x" color="var(--background1)" /></SVGContainer>
-                    }
+                    <DropZone ref={dropRef} isDragging={dragging} onDragEnter={handleDragIn} onDragLeave={handleDragOut} onDragOver={handleDrag} onDrop={handleDrop}>
+                        {picture ?
+                            <ProfilePicture source={picture} />
+                            : <SVGContainer><FontAwesomeIcon icon={faUpload} size="5x" color="var(--background1)" /></SVGContainer>
+                        }
+                    </DropZone>
                     <StyledFileInput>
-                        <FileInput onChange={uploadLocalFile} />
+                        <FileInput onChange={handleUpload} />
                     </StyledFileInput>
                 </UploadContainer>
             </ImageContainer>
