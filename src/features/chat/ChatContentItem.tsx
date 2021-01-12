@@ -59,6 +59,13 @@ const SpeechBubble = styled.div<{ isOwner?: boolean }>`
     }
 `;
 
+const ChatImage = styled.img`
+    max-width: 200px;
+    max-height: 200px;
+    margin: 10px 10px -10px 10px;
+    border-radius: 5px;
+`;
+
 type PropsType = {
     message: IMessage;
     isOwner: boolean;
@@ -70,6 +77,10 @@ const ChatContentItem = ({ onClick, message, isOwner }: PropsType) => {
         <Item isOwner={isOwner}>
             <SpeechBubble isOwner={isOwner}>
                 {message?.content.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji)).split("\n").map((str, key) => <Markdown key={key} options={markdownOptions}>{str}</Markdown>)}
+                {message?.content.type === "images" && message?.content.media &&
+                    <ChatImage src={message?.content.media} alt="Image" />
+                }
+                <p></p> {/* BUG fix style*/}
             </SpeechBubble>
             <p>{new Date(message?.date).toLocaleString("en-GB") || <WaitingForData length={8} />}</p>
         </Item>
