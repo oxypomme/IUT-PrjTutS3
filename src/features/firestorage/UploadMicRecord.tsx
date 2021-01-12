@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { ReactMic, ReactMicStopEvent } from 'react-mic';
 
 import { AudioElement, Button, ButtonFlex } from '../../components/styledComponents';
-import { ReactMic, ReactMicStopEvent } from 'react-mic';
 
 const Container = styled.div`
     display: flex;
@@ -30,9 +30,6 @@ const ImageContainer = styled.div`
     }
 `;
 
-
-
-
 const StyledButtonFlex = styled(ButtonFlex)`
     & > * {
         width: 220px;
@@ -47,6 +44,14 @@ const MicCircle = styled(ReactMic) <{ backgroundColor?: string, strokeColor?: st
   padding: 0;
   margin: 8px;
   background-color: ${props => props.backgroundColor};
+`;
+
+const RecButton = styled(Button) <{ isRecording?: boolean }>`
+    width: 100%;
+
+    ${props => props.isRecording ? "border: 1px solid var(--accent1);" : ''}
+    ${props => props.isRecording ? "color: 'var(--accent1)';" : ''}
+    ${props => props.isRecording ? "background: var(--background2);}" : ''}
 `;
 
 type PropsType = {
@@ -64,9 +69,19 @@ const UploadMicRecord = ({ onCancel, onOk }: PropsType) => {
         onCancel(event);
     }
 
+    const handleOk = (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        onOk(event, micRecord.blob);
+    }
+
     const onStop = React.useCallback((recordedBlob: ReactMicStopEvent) => {
         setMicRecord(recordedBlob);
     }, [recording, setRecording]);
+
+    const handleRecord = (event) => {
+        event.preventDefault();
+        setRecording(!recording);
+    }
 
     return (
         <Container>
@@ -83,14 +98,14 @@ const UploadMicRecord = ({ onCancel, onOk }: PropsType) => {
                     strokeColor='var(--accent2)'
                     backgroundColor='#bbbbbb'
                 />
-                <button onClick={() => setRecording(!recording)} type='button'>{recording ? 'Arrêter l\'enregistrement' : 'Commencer à enregistrer'}</button>
+                <RecButton onClick={handleRecord} isRecording={recording}>{recording ? 'Arrêter l\'enregistrement' : 'Commencer à enregistrer'}</RecButton>
                 {micRecord &&
                     <AudioElement controls src={micRecord?.blobURL} />
                 }
             </ImageContainer>
             <StyledButtonFlex>
                 {onCancel ? <Button onClick={onNOk}>Annuler</Button> : <></>}
-                {onOk ? <Button primary onClick={event => onOk(event, micRecord.blob)}>Envoyer</Button> : <></>}
+                {onOk ? <Button primary onClick={handleOk}>Envoyer</Button> : <></>}
             </StyledButtonFlex>
         </Container>
     );

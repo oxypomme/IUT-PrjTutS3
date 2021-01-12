@@ -140,6 +140,11 @@ const UploadFile = ({ defaultURL, onCancel, onOk, onSnapExtension }: PropsType) 
         onCancel(event);
     }
 
+    const handleOk = (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        onOk(event, picture);
+    }
+
     const uploadLocalFile = React.useCallback((file) => {
         if (file == undefined || !file.name.match(/.(jpg|jpeg|png|jfif|pjpeg|.pjp)$/i))
             return;
@@ -238,7 +243,7 @@ const UploadFile = ({ defaultURL, onCancel, onOk, onSnapExtension }: PropsType) 
             </ImageContainer>
             <StyledButtonFlex>
                 {onCancel ? <Button onClick={onNOk}>Annuler</Button> : <></>}
-                {onOk ? <Button primary onClick={event => onOk(event, picture)}>Ajout d{"'"}image</Button> : <></>}
+                {onOk ? <Button primary onClick={handleOk}>Ajout d{"'"}image</Button> : <></>}
             </StyledButtonFlex>
         </Container>
     );
