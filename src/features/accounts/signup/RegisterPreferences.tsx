@@ -58,7 +58,7 @@ export const RegisterPreferences = (): JSX.Element => {
     const tags: Array<IComboBoxItem> = useSelector(getAllTags);
 
     const actualInfos = useSelector(getPrefsInfos);
-    const [selectedTags, setSelectedTags] = React.useState<Array<IComboBoxItem>>([]); // TODO
+    const [selectedTags, setSelectedTags] = React.useState<Array<IComboBoxItem>>(actualInfos.tags);
     const [selectedGender, setSelectedGender] = React.useState<Array<IComboBoxItem>>(actualInfos.sex !== -1 ? [{ value: actualInfos.sex, label: "" }] : []);
     const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IComboBoxItem>>(actualInfos.orientation !== -1 ? [{ value: actualInfos.orientation, label: "" }] : []);
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
@@ -158,6 +158,7 @@ export const RegisterPreferences = (): JSX.Element => {
                 isSearchable={true}
                 isClearable={true}
                 onChange={(mytags) => setSelectedTags(mytags as IComboBoxItem[])}
+                defaultValue={actualInfos.tags.length > 0 ? tags.filter(t => actualInfos.tags.some(ut => t.value === ut)) : []}
                 options={tags}
                 placeholder="Sélectionnez vos tags"
                 closeMenuOnSelect={false}
