@@ -14,21 +14,36 @@ import IMessage from '../../include/IMessage';
 
 import { getCurrProfile } from '../accounts/profileSlice';
 
+
 const Item = styled.li<{ isOwner?: boolean }>`
-    background-color: ${props => (props.isOwner ? "var(--accent1)" : "var(--accent2)")};
     border-radius: 10px;
     min-width: 51%;
     max-width: 80%;
     height: auto;
-    margin: 10px;
+    margin: 2px 10px;
     float: ${props => (props.isOwner ? "right" : "left")};
+
+    & p {
+        margin: 0;
+    }
+    &>p {
+        font-size: .8rem;
+        float: ${props => (props.isOwner ? "right" : "left")};
+        position: relative;
+        left: ${props => (props.isOwner ? "auto" : "38px")};
+        right: ${props => (props.isOwner ? "38px" : "auto")};
+        top: -4px;
+    }
+`;
+
+const SpeechBubble = styled.div<{ isOwner?: boolean }>`
+    background-color: ${props => (props.isOwner ? "var(--accent1)" : "var(--accent2)")};
+    border-radius: 10px;
+    height: auto;
+    margin: 2px;
     padding: 10px;
     text-align: justify;
     color: #ffffff;
-
-    &>p {
-        margin: 0;
-    }
 
     &:after {
 	    content: '';
@@ -53,7 +68,10 @@ const ChatContentItem = ({ onClick, message }: PropsType) => {
     const currProfile = useSelector(getCurrProfile);
     return (
         <Item isOwner={currProfile?.authId === message?.sender}>
-            {message?.content.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji)).split("\n").map((str, key) => <Markdown key={key} options={markdownOptions}>{str}</Markdown>)}
+            <SpeechBubble isOwner={currProfile?.authId === message?.sender}>
+                {message?.content.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji)).split("\n").map((str, key) => <Markdown key={key} options={markdownOptions}>{str}</Markdown>)}
+            </SpeechBubble>
+            <p>{new Date(message?.date).toLocaleString() || <WaitingForData length={8} />}</p>
         </Item>
     );
 }
