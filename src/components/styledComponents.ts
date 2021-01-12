@@ -101,3 +101,7 @@ export const WaitingForData = styled.div<{ length?: number }>`
         content: "_";
     }
 `;
+
+export const AudioElement = styled.video`
+    height: 60px;
+`;

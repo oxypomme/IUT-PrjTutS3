@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { Button, ButtonFlex } from '../../components/styledComponents';
+import { AudioElement, Button, ButtonFlex } from '../../components/styledComponents';
 import { ReactMic, ReactMicStopEvent } from 'react-mic';
 
 const Container = styled.div`
@@ -49,17 +49,12 @@ const MicCircle = styled(ReactMic) <{ backgroundColor?: string, strokeColor?: st
   background-color: ${props => props.backgroundColor};
 `;
 
-const AudioElement = styled.video`
-    height: 60px;
-`;
-
 type PropsType = {
     onCancel?: (event: React.SyntheticEvent) => void;
     onOk?: (event: React.SyntheticEvent, micRecord: Blob) => void;
-    onSnapExtension?: (picture: string) => void;
 }
 
-const UploadMicRecord = ({ onCancel, onOk, onSnapExtension }: PropsType) => {
+const UploadMicRecord = ({ onCancel, onOk }: PropsType) => {
 
     const [recording, setRecording] = React.useState<boolean>();
     const [micRecord, setMicRecord] = React.useState<ReactMicStopEvent>(undefined);
@@ -71,7 +66,6 @@ const UploadMicRecord = ({ onCancel, onOk, onSnapExtension }: PropsType) => {
 
     const onStop = React.useCallback((recordedBlob: ReactMicStopEvent) => {
         setMicRecord(recordedBlob);
-        // dispatch(uploadFile("/messages/audios/1", recordedBlob.blob));
     }, [recording, setRecording]);
 
     return (

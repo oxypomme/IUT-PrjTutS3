@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import markdownOptions from './MarkdownOverride';
 
-import { WaitingForData } from '../../components/styledComponents';
+import { AudioElement, WaitingForData } from '../../components/styledComponents';
 import { ProfilePicture } from '../accounts/profile/ProfileComponent';
 
 import IProfile from '../../include/IProfile';
@@ -79,6 +79,9 @@ const ChatContentItem = ({ onClick, message, isOwner }: PropsType) => {
                 {message?.content.text?.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji)).split("\n").map((str, key) => <Markdown key={key} options={markdownOptions}>{str}</Markdown>)}
                 {message?.content.type === "images" && message?.content.media &&
                     <ChatImage src={message?.content.media} alt="Image" />
+                }
+                {message?.content.type === "audios" && message?.content.media &&
+                    <AudioElement controls src={message?.content.media} />
                 }
                 <p></p> {/* BUG fix style*/}
             </SpeechBubble>
