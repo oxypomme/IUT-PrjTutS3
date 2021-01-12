@@ -4,11 +4,12 @@ import IMessage from "../../include/IMessage";
 
 export const newMessage = createAction(
     "CREATE_MESSAGE_REQUESTED",
-    (message: IMessage, params = {}) => ({
+    (message: IMessage, typeUpload = "uploadStringFile", params = {}) => ({
         payload: {
             request: {
                 type: "create",
                 url: "/messages",
+                typeUpload,
                 params: {
                     data: message,
                     ...params

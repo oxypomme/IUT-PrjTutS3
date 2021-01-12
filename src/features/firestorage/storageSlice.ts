@@ -124,6 +124,11 @@ export const {
     getDlUrlFailed
 } = storageSlice.actions;
 
+export const uploadTypes = {
+    uploadFile: uploadFile,
+    uploadStringFile: uploadStringFile
+};
+
 export const getState = state => state.storage;
 
 export const getUploadedFiles = createSelector(getState, state => state.uploads);
