@@ -43,10 +43,6 @@ const ChatButton = styled(Button)`
     margin: 0 5px;
 `;
 
-type PropsType = {
-    profile: IProfile;
-}
-
 const ImageContainer = styled.div<{ isShowing?: boolean }>`
     background-color: #3333337D;
     position: absolute;
@@ -56,12 +52,20 @@ const ImageContainer = styled.div<{ isShowing?: boolean }>`
     height: 100vh;
     z-index: 10000;
 
-    display: ${props => props.isShowing ? 'flex' : 'none'};
+    display: flex;
+    
+    transition: visibility 0s ${props => props.isShowing ? '' : 'linear 0.25s'}, opacity 0.25s;
+    visibility: ${props => props.isShowing ? 'visible' : 'hidden'};
+    opacity: ${props => props.isShowing ? '1' : '0'};
 
     & > div {
         margin: auto;
     }
 `;
+
+type PropsType = {
+    profile: IProfile;
+}
 
 const ChatContentInput = ({ profile }: PropsType) => {
     const dispatch = useDispatch();
