@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getAuthId } from "../../features/accounts/accountSlice";
 import { fetchCurrProfilesSuccess } from "../../features/accounts/profileSlice";
 import { createMessageFailed, createMessageSuccess, newMessage, syncInMessagesSuccess, syncOutMessagesSuccess } from "../../features/chat/chatSlice";
-import { getStorageError, uploadFileFailed, uploadFileSuccess, uploadStringFile } from "../../features/firestorage/storageSlice";
+import { getStorageError, uploadFileFailed, uploadFileSuccess, uploadTypes } from "../../features/firestorage/storageSlice";
 
 function* createMessage(action) {
     try {
@@ -24,7 +24,8 @@ function* createMessage(action) {
 
         if (data.content.media) {
             const uid = uuidv4();
-            yield put(uploadStringFile("messages/" + data.content.type + '/' + uid, data.content.media));
+            console.log(uploadTypes);
+            yield put(uploadTypes[request.typeUpload]("messages/" + data.content.type + '/' + uid, data.content.media));
 
             const { payload } = yield take([uploadFileSuccess, uploadFileFailed])
 
