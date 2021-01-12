@@ -12,6 +12,8 @@ import { useSelector } from 'react-redux';
 import { getInChat } from './chatSlice';
 
 import markdownOptions from './MarkdownOverride';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileAudio, faFileImage } from '@fortawesome/free-solid-svg-icons';
 
 const Item = styled.li<{ isActive?: boolean, read?: boolean }>`
     width: 100%;
@@ -28,6 +30,10 @@ const Item = styled.li<{ isActive?: boolean, read?: boolean }>`
         overflow:hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+    }
+
+    svg {
+        margin: 0 4px;
     }
 
     h2 {
@@ -99,10 +105,25 @@ const ChatMenuItem = ({ onClick, profile, isActive }: PropsType) => {
                 </ImageProfileContainer>
                 <div>
                     <h2>{profile?.name || <WaitingForData length={8} />}</h2>
-                    {new Date(lastMessage?.date).toLocaleString("en-GB") || < WaitingForData length={5} />}
+                    {lastMessage?.date ? new Date(lastMessage?.date).toLocaleString("en-GB") : < WaitingForData length={5} />}
                 </div>
             </TitleContainer>
-            {lastMessage?.content?.text ? <Markdown options={markdownOptions}>{lastMessage?.content?.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji))}</Markdown> : <WaitingForData length={16} />}
+            {lastMessage?.content?.text ?
+                <Markdown options={markdownOptions}>
+                    {lastMessage?.content?.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji))}
+                </Markdown>
+                :
+                lastMessage?.content?.type ?
+                    lastMessage?.content?.type === "images" ?
+                        <><FontAwesomeIcon icon={faFileImage} />Image</>
+                        :
+                        lastMessage?.content?.type === "audios" ?
+                            <><FontAwesomeIcon icon={faFileAudio} />Audio</>
+                            :
+                            <p>Fichier</p>
+                    :
+                    <WaitingForData length={16} />
+            }
         </Item>
     );
 }
