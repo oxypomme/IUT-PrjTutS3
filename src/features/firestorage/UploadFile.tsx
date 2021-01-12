@@ -35,7 +35,7 @@ const ImageContainer = styled.div`
     }
 
     & > :first-of-type {
-        border-right: 1px solid silver;
+        border-right: 1px solid var(--background1);
     }
 
     & video{
@@ -97,7 +97,7 @@ const StyledButtonFlex = styled(ButtonFlex)`
 const DropZone = styled.div<{ isDragging?: boolean }>`
     margin: 4px 0;
     box-sizing: border-box;
-    ${props => props.isDragging ? "border: dashed grey 4px;" : ''}
+    ${props => props.isDragging ? "border: dashed var(--background1) 4px;" : ''}
     width: 100%;
     height: 360px;
 `;
