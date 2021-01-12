@@ -104,8 +104,8 @@ const UploadMicRecord = ({ onCancel, onOk }: PropsType) => {
                 }
             </ImageContainer>
             <StyledButtonFlex>
-                {onCancel ? <Button onClick={onNOk}>Annuler</Button> : <></>}
-                {onOk ? <Button primary onClick={handleOk}>Envoyer</Button> : <></>}
+                {onCancel && <Button onClick={onNOk}>Annuler</Button>}
+                {onOk && micRecord && <Button primary onClick={handleOk}>Envoyer</Button>}
             </StyledButtonFlex>
         </Container>
     );
