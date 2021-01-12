@@ -16,6 +16,8 @@ const Input = styled.input`
 const ButtonAsLabel = Button.withComponent('label');
 const Label = styled(ButtonAsLabel)`
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     margin: 0;
     font-size: 13.333px;

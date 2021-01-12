@@ -14,6 +14,7 @@ import { addDesc, addPhoto, getInfos, getPublicInfos } from "../accountSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle, faUser } from "@fortawesome/free-solid-svg-icons";
 import IError from "../../../include/IError";
+import UploadFile from "../../firestorage/UploadFile";
 
 export interface ICam { value: string, label: string; }
 
@@ -30,46 +31,10 @@ export function RegisterPublicInfos(): JSX.Element {
         }
     }, [profile])
 
-    const webcamRef = React.useRef<Webcam>();
-    const [devices, setDevices] = React.useState<Array<ICam>>([]);
-    const [cam, setCam] = React.useState<string>("");
-
     const actualInfos = useSelector(getPublicInfos);
     const [picture, setPicture] = React.useState<string>(actualInfos.imageURL);
     const [description, setDescription] = React.useState<string>(actualInfos.desc);
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
-
-
-    React.useEffect(() => {
-        const getDevices = async () => {
-            let mdevices = await navigator.mediaDevices.enumerateDevices();
-            mdevices = mdevices.filter(({ kind }) => kind === "videoinput");
-            const icams = mdevices.map(v => { return { value: v.deviceId, label: v.label }; }) as ICam[];
-
-            setDevices(icams);
-            setCam(icams[0].label);
-        }
-        getDevices();
-    }, [setDevices]);
-
-    const handleSnap = (event) => {
-        event.preventDefault();
-        const imageUrl = webcamRef.current.getScreenshot();
-        setPicture(imageUrl);
-    }
-
-    const uploadLocalFile = React.useCallback((event) => {
-        const file = event.target.files[0];
-        if (file === undefined || !file.name.match(/.(jpg|jpeg|png|jfif|pjpeg|.pjp)$/i))
-            return;
-
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (e) => {
-            setPicture(e.target.result as string);
-        }
-    }, [picture, setPicture]);
-
 
     const handleSetDescriptionOnChange = (event) => setDescription(event.target.value);
 
@@ -91,6 +56,10 @@ export function RegisterPublicInfos(): JSX.Element {
         }
     };
 
+    const handleFile = (picture: string) => {
+        setPicture(picture);
+    }
+
     const handleBack = (event) => {
         event.preventDefault();
         history.goBack()
@@ -109,26 +78,7 @@ export function RegisterPublicInfos(): JSX.Element {
                 </ErrorLabel>
             }
 
-            <Select
-                onChange={device => setCam(device.value)}
-                options={devices}
-                placeholder="Sélectionnez une autre caméra"
-            />
-
-            <Webcam
-                audio={false}
-                ref={webcamRef}
-                videoConstraints={{ deviceId: cam }} //? apparently default is UserMedia
-                screenshotFormat="image/jpeg"
-                style={{ display: "block", border: "2px solid black", width: 720 }}
-            />
-            <Button onClick={handleSnap}>Prendre une photo</Button>
-            <input type="file" onChange={uploadLocalFile} accept="image/png, image/jpeg" style={{ display: 'block' }} />
-            {picture &&
-                <div style={{ width: 320, height: 480 }}>
-                    <ProfilePicture source={picture} />
-                </div>
-            }
+            <UploadFile defaultURL={actualInfos.imageURL} onSnapExtension={handleFile} />
             <TextBox
                 borderColor={globalErrors.some(e => e.component === "description") ? 'red' : 'default'}
                 width={400}

@@ -73,9 +73,11 @@ const StyledFileInput = styled.div`
     margin: 0 auto;
 `;
 
-const Spacer = styled.div`
-    margin-top: 1px;
-    height: 37px;
+const Title = styled.h3`
+    margin: 0;
+    padding: 6px 0;
+    height: 26px;
+    text-align: left;
 `;
 
 const SVGContainer = styled.div`
@@ -100,12 +102,13 @@ type PropsType = {
     defaultURL?: string;
     onCancel?: (event: React.SyntheticEvent) => void;
     onOk?: (event: React.SyntheticEvent, picture: string) => void;
+    onSnapExtension?: (picture: string) => void;
 }
 
 interface ICam { value: string, label: string; }
 
-const UploadFile = ({ defaultURL, onCancel, onOk }: PropsType) => {
-    const [picture, setPicture] = React.useState<string>(defaultURL && "");
+const UploadFile = ({ defaultURL, onCancel, onOk, onSnapExtension }: PropsType) => {
+    const [picture, setPicture] = React.useState<string>(defaultURL ? defaultURL : "");
     const [devices, setDevices] = React.useState<Array<ICam>>([]);
     const [cam, setCam] = React.useState<string>(null);
     const [camAvailable, setCamAvailable] = React.useState(false);
@@ -136,6 +139,9 @@ const UploadFile = ({ defaultURL, onCancel, onOk }: PropsType) => {
         reader.readAsDataURL(file);
         reader.onload = (e) => {
             setPicture(e.target.result as string);
+            if (onSnapExtension) {
+                onSnapExtension(e.target.result as string);
+            }
         }
     }, [picture]);
 
@@ -144,6 +150,9 @@ const UploadFile = ({ defaultURL, onCancel, onOk }: PropsType) => {
         if (cam) {
             const imageUrl = webcamRef.current.getScreenshot();
             setPicture(imageUrl);
+            if (onSnapExtension) {
+                onSnapExtension(imageUrl);
+            }
         }
     }
 
@@ -166,7 +175,7 @@ const UploadFile = ({ defaultURL, onCancel, onOk }: PropsType) => {
                     <Button onClick={handleSnap} disabled={!camAvailable}>Prendre une photo</Button>
                 </CameraContainer>
                 <UploadContainer>
-                    <Spacer />
+                    <Title>Photo actuelle :</Title>
                     {picture ?
                         <ProfilePicture source={picture} />
                         : <SVGContainer><FontAwesomeIcon icon={faUpload} size="5x" color="var(--background1)" /></SVGContainer>
@@ -177,8 +186,8 @@ const UploadFile = ({ defaultURL, onCancel, onOk }: PropsType) => {
                 </UploadContainer>
             </ImageContainer>
             <StyledButtonFlex>
-                <Button onClick={onCancel}>Annuler</Button>
-                <Button primary onClick={event => onOk(event, picture)}>Envoyer</Button>
+                {onCancel ? <Button onClick={onCancel}>Annuler</Button> : <></>}
+                {onOk ? <Button primary onClick={event => onOk(event, picture)}>Envoyer</Button> : <></>}
             </StyledButtonFlex>
         </Container>
     );
