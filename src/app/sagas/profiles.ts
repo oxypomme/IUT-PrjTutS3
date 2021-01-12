@@ -84,7 +84,7 @@ function* getCurrProfile(action) {
         yield put(fetchArrayTag(profile.tags));
         yield take([fetchTagSuccess, fetchTagsFailed]);
         const tagError = yield select(getTagError);
-        if (tagError != "") {
+        if (tagError !== "") {
             throw new Error(tagError);
         }
     } catch (error) {
@@ -98,7 +98,7 @@ function* createProfileSaga(action) {
         yield take([createAccountSuccess, createAccountFailed]);
 
         const authError = yield select(getAccountError);
-        if (authError != "") {
+        if (authError !== "") {
             throw new Error(authError);
         }
 
@@ -110,7 +110,7 @@ function* createProfileSaga(action) {
         yield take([uploadFileSuccess, uploadFileFailed])
 
         const storageError = yield select(getStorageError);
-        if (storageError != "") {
+        if (storageError !== "") {
             throw new Error(storageError);
         }
 

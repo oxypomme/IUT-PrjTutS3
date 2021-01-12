@@ -70,7 +70,7 @@ export const RegisterPreferences = (): JSX.Element => {
     ] as IComboBoxItem[]
 
     const orientations = [
-        { value: EOrientation.Homosexual, label: <span><FontStyledIcon icon={selectedGender[0]?.value == 1 ? faVenusDouble : faMarsDouble} />Homosexuel</span> },
+        { value: EOrientation.Homosexual, label: <span><FontStyledIcon icon={selectedGender[0]?.value === 1 ? faVenusDouble : faMarsDouble} />Homosexuel</span> },
         { value: EOrientation.Heterosexual, label: <span><FontStyledIcon icon={faVenusMars} />Hétérosexuel</span> },
         { value: EOrientation.Bisexual, label: <span><FontStyledIcon icon={faTransgender} />Bisexuel</span> }
     ] as IComboBoxItem[]

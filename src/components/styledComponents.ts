@@ -21,7 +21,7 @@ export const TextBox = styled.div<{ borderColor?: string, width?: number }>`
   padding: 10px;
   margin: 1px auto 0 auto;
   width: ${props => (props.width ? props.width : '200') + 'px'};
-  border: 1px solid ${props => props.borderColor && props.borderColor != 'default' ? props.borderColor : 'lightgray'};
+  border: 1px solid ${props => props.borderColor && props.borderColor !== 'default' ? props.borderColor : 'lightgray'};
   border-radius: 5px;
   background: var(--background2);
 

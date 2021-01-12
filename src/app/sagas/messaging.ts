@@ -11,7 +11,7 @@ import { createMessageFailed, createMessageSuccess, newMessage, syncInMessagesSu
 function* createMessage(action) {
     try {
         const authId = yield select(getAuthId);
-        if (authId == "") {
+        if (authId === "") {
             throw new Error("User not connected");
         }
 

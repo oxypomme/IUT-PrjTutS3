@@ -60,7 +60,7 @@ export function RegisterPublicInfos(): JSX.Element {
 
     const uploadLocalFile = React.useCallback((event) => {
         const file = event.target.files[0];
-        if (file == undefined || !file.name.match(/.(jpg|jpeg|png|jfif|pjpeg|.pjp)$/i))
+        if (file === undefined || !file.name.match(/.(jpg|jpeg|png|jfif|pjpeg|.pjp)$/i))
             return;
 
         const reader = new FileReader();

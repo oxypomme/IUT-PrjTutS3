@@ -35,9 +35,9 @@ const ChatMenu = ({ activeProfile, onClick }: PropsType) => {
     React.useEffect(() => {
         let profs: IProfile[] = [];
         for (const key in outMatches) {
-            if (inMatches && Object.keys(inMatches).findIndex((value) => value == key) != -1 && !(outMatches[key].isBlocked || inMatches[key].isBlocked)) {
-                const pIndex = profiles.findIndex((value) => value.authId == key);
-                if (pIndex != -1 && !profs.includes(profiles[pIndex])) {
+            if (inMatches && Object.keys(inMatches).findIndex((value) => value === key) !== -1 && !(outMatches[key].isBlocked || inMatches[key].isBlocked)) {
+                const pIndex = profiles.findIndex((value) => value.authId === key);
+                if (pIndex !== -1 && !profs.includes(profiles[pIndex])) {
                     profs = [...profs, profiles[pIndex]]
                 }
             }
@@ -49,7 +49,7 @@ const ChatMenu = ({ activeProfile, onClick }: PropsType) => {
         <List>
             { chattableProfiles
                 ? chattableProfiles.map((profile, index) =>
-                    <ChatMenuItem key={index} profile={profile} onClick={() => onClick(profile)} isActive={activeProfile == profile} />)
+                    <ChatMenuItem key={index} profile={profile} onClick={() => onClick(profile)} isActive={activeProfile === profile} />)
                 : <></>}
         </List>
     );

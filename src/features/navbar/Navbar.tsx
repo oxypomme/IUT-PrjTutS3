@@ -91,14 +91,14 @@ const NavItem = styled.li`
     }
 `;
 const CompactableIcon = styled(FontAwesomeIcon) <{ isopened?: string }>`
-    transform: translateX(${props => props.isopened == "true" ? "0" : "173px"});
+    transform: translateX(${props => props.isopened === "true" ? "0" : "173px"});
     transition: transform 0.5s;
     right: 5px;
 `;
 
 const CompactableSeparator = styled(Separator) <{ isopened?: string }>`
-    transform: translateX(${props => props.isopened == "true" ? "0" : "85px"});
-    width: ${props => props.isopened == "true" ? "65%" : "24px"};
+    transform: translateX(${props => props.isopened === "true" ? "0" : "85px"});
+    width: ${props => props.isopened === "true" ? "65%" : "24px"};
     transition: transform 0.5s, width 0.5s;
 `;
 

@@ -61,7 +61,7 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
         let msgs: IMessage[] = [];
         if (rawInMessages && Object.keys(rawInMessages).length > 0) {
             for (const key in rawInMessages) {
-                if (rawInMessages[key]?.sender == profile.authId) {
+                if (rawInMessages[key]?.sender === profile.authId) {
                     msgs = [...msgs, rawInMessages[key]];
                 }
             }
@@ -69,7 +69,7 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
 
         if (rawOutMessages && Object.keys(rawOutMessages).length > 0) {
             for (const key in rawOutMessages) {
-                if (rawOutMessages[key]?.target == profile.authId) {
+                if (rawOutMessages[key]?.target === profile.authId) {
                     msgs = [...msgs, rawOutMessages[key]];
                 }
             }

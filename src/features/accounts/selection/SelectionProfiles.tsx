@@ -49,7 +49,7 @@ const SelectionProfiles = (): JSX.Element => {
         <ProfilesContainer>
             {!loading ? matchableKeys?.map((authId, index) => (
                 <ProfileCard id={authId} key={index} />
-            )) : (loading == null ? 'ERROR, see console for more info' : <WaitingForData length={16} />)}
+            )) : (loading === null ? 'ERROR, see console for more info' : <WaitingForData length={16} />)}
         </ProfilesContainer>
     );
 }

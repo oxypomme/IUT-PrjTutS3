@@ -83,7 +83,7 @@ const ChatMenuItem = ({ onClick, profile, isActive }: PropsType) => {
     React.useEffect(() => {
         if (rawInMessages && Object.keys(rawInMessages).length > 0) {
             for (const key in rawInMessages) {
-                if (rawInMessages[key]?.sender == profile.authId &&
+                if (rawInMessages[key]?.sender === profile.authId &&
                     (!lastMessage || (new Date(lastMessage.date).getTime() < new Date(rawInMessages[key].date).getTime()))) {
                     setLastMessage(rawInMessages[key]);
                 }

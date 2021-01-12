@@ -35,11 +35,11 @@ const MyMatches = (): JSX.Element => {
     const outMatches: IMatch = useSelector(getOutgoingMatches);
     const inMatches: IMatch = useSelector(getIngoingMatches);
 
-    const compScore = (authId: string) => getScore((profiles.find(p => p.authId == authId))?.tags, currProfile.tags)
+    const compScore = (authId: string) => getScore((profiles.find(p => p.authId === authId))?.tags, currProfile.tags)
 
     const Profiles = (props: { isPending?: boolean }): JSX.Element => {
         let { isPending } = props;
-        if (isPending == undefined) {
+        if (isPending === undefined) {
             isPending = false;
         }
 
@@ -48,7 +48,7 @@ const MyMatches = (): JSX.Element => {
                 {
                     outMatches && inMatches ?
                         Object.keys(outMatches).sort((a, b) => compScore(b) - compScore(a))
-                            .filter((target) => (!(outMatches[target] && inMatches[target]) == isPending) && !outMatches[target]?.isBlocked)
+                            .filter((target) => (!(outMatches[target] && inMatches[target]) === isPending) && !outMatches[target]?.isBlocked)
                             .map((target, index) =>
                                 <ProfileItem key={index} id={target} match={outMatches[target]?.key} isPending={isPending} />
                             )

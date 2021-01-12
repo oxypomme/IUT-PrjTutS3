@@ -28,7 +28,7 @@ import {
 function* createMatch(action) {
     try {
         const authId = yield select(getAuthId);
-        if (authId == "") {
+        if (authId === "") {
             throw new Error("User not connected");
         }
 
@@ -52,7 +52,7 @@ function* createMatch(action) {
 function* updaMatch(action) {
     try {
         const authId = yield select(getAuthId);
-        if (authId == "") {
+        if (authId === "") {
             throw new Error("User not connected");
         }
 

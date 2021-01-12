@@ -126,7 +126,7 @@ export const profileSlice = createSlice({
         fetchProfilesSuccess: (state, { payload: newProfile }) => {
             let profiles = [...state.profiles];
 
-            if (profiles.findIndex(val => val.authId == newProfile.authId) == -1) {
+            if (profiles.findIndex(val => val.authId === newProfile.authId) === -1) {
                 profiles = [...profiles, newProfile]
             }
 
@@ -146,7 +146,7 @@ export const profileSlice = createSlice({
             let profiles = [...state.profiles];
 
             newProfiles.forEach(newProfile => {
-                if (profiles.findIndex(val => val.authId == newProfile.authId) == -1) {
+                if (profiles.findIndex(val => val.authId === newProfile.authId) === -1) {
                     profiles = [...profiles, newProfile]
                 }
             });
