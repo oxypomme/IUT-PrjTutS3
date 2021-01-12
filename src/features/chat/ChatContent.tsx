@@ -44,6 +44,8 @@ const ContentContainer = styled.ul`
     padding: 0;
     margin: 0;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 `;
 
 type PropsType = {
