@@ -121,7 +121,7 @@ export const RegisterPreferences = (): JSX.Element => {
                 isSearchable={true}
                 isClearable={true}
                 onChange={mygender => setSelectedGender([mygender as IComboBoxItem])}
-                defaultValue={actualInfos.sex !== -1 ? { value: actualInfos.sex, label: genders.filter(g => g.value === actualInfos.sex)[0].label } : null} // TODO check if exist
+                defaultValue={actualInfos.sex !== -1 ? { value: actualInfos.sex, label: genders.filter(g => g.value === actualInfos.sex)[0].label } : null}
                 options={genders}
                 placeholder="Sélectionnez votre genre"
                 styles={{
