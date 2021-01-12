@@ -8,6 +8,7 @@ import { faCameraRetro, faComments, faMicrophone } from '@fortawesome/free-solid
 
 import { Button, HiddenLabel, TextBox } from '../../components/styledComponents';
 import UploadFile from '../firestorage/UploadFile';
+import UploadMicRecord from '../firestorage/UploadMicRecord';
 
 import IProfile from '../../include/IProfile';
 
@@ -69,9 +70,11 @@ const ChatContentInput = ({ profile }: PropsType) => {
     const currProfile = useSelector(getCurrProfile);
 
     const [showUploadImage, setShowUploadImage] = React.useState(false);
+    const [showUploadMicRecord, setShowUploadMicRecord] = React.useState(false);
 
     const [textMessage, setTextMessage] = React.useState<string>("");
     const [mediaString, setMediaString] = React.useState<string>("");
+    const [mediaBlob, setMediaBlob] = React.useState<Blob>(undefined);
     const [mediaType, setMediaType] = React.useState<string>("");
 
     const handleOnTextChange = (event) => setTextMessage(event.target.value);
@@ -79,19 +82,34 @@ const ChatContentInput = ({ profile }: PropsType) => {
     const handleOnTextSubmit = (event: React.BaseSyntheticEvent) => {
         event.preventDefault();
         if (textMessage || mediaType) {
-            dispatch(newMessage({
-                sender: currProfile.authId,
-                target: profile.authId,
-                content: {
-                    text: textMessage,
-                    media: mediaString,
-                    type: mediaType
-                },
-                read: false,
-                date: new Date().toLocaleString('en-GB')
-            }));
+            if (mediaType === "audios") {
+                dispatch(newMessage({
+                    sender: currProfile.authId,
+                    target: profile.authId,
+                    content: {
+                        text: textMessage,
+                        media: mediaBlob,
+                        type: mediaType
+                    },
+                    read: false,
+                    date: new Date().toLocaleString('en-GB')
+                }, "uploadFile"));
+                setMediaBlob(undefined);
+            } else {
+                dispatch(newMessage({
+                    sender: currProfile.authId,
+                    target: profile.authId,
+                    content: {
+                        text: textMessage,
+                        media: mediaString,
+                        type: mediaType
+                    },
+                    read: false,
+                    date: new Date().toLocaleString('en-GB')
+                }));
+                setMediaString("");
+            }
             setTextMessage("");
-            setMediaString("");
             setMediaType("");
         }
         else {
@@ -101,7 +119,7 @@ const ChatContentInput = ({ profile }: PropsType) => {
 
     const handleMicroClick = (event: React.SyntheticEvent) => {
         event.preventDefault();
-        // TODO
+        setShowUploadMicRecord(true);
     }
 
     const handleImageClick = (event: React.SyntheticEvent) => {
@@ -122,6 +140,20 @@ const ChatContentInput = ({ profile }: PropsType) => {
         setShowUploadImage(false);
     }
 
+    const handleMicRecordSend = (event: React.SyntheticEvent, micRecord: Blob) => {
+        event.preventDefault();
+        setMediaBlob(micRecord);
+        setMediaType("audios")
+        setShowUploadMicRecord(false);
+    }
+
+    const handleMicRecordCancel = (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        setMediaType("")
+        setShowUploadMicRecord(false);
+    }
+
+
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && !event.shiftKey) {
             handleOnTextSubmit(event);
@@ -132,6 +164,9 @@ const ChatContentInput = ({ profile }: PropsType) => {
         <InputContainer>
             <ImageContainer isShowing={showUploadImage}>
                 <UploadFile onOk={handleImageSend} onCancel={handleImageCancel} />
+            </ImageContainer>
+            <ImageContainer isShowing={showUploadMicRecord}>
+                <UploadMicRecord onOk={handleMicRecordSend} onCancel={handleMicRecordCancel} />
             </ImageContainer>
             <ChatTextBox>
                 <FontAwesomeIcon icon={faComments} />

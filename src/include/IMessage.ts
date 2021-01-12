@@ -3,7 +3,7 @@ interface IMessage {
     target: string,
     content: {
         text?: string,
-        media?: string,
+        media?: string | Blob,
         type?: string
     },
     read: boolean,

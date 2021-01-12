@@ -104,4 +104,5 @@ export const WaitingForData = styled.div<{ length?: number }>`
 
 export const AudioElement = styled.video`
     height: 60px;
+    min-width: 220px;
 `;
