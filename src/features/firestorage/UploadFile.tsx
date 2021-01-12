@@ -8,7 +8,7 @@ import { faCamera, faUpload } from '@fortawesome/free-solid-svg-icons';
 
 import { Button, ButtonFlex } from '../../components/styledComponents';
 import FileInput from './FileInput';
-import { ProfilePicture } from '../accounts/profile/ProfileComponent';
+import { ProfilePicture as Picture } from '../accounts/profile/ProfileComponent';
 
 const Container = styled.div`
     display: flex;
@@ -232,7 +232,7 @@ const UploadFile = ({ defaultURL, onCancel, onOk, onSnapExtension }: PropsType) 
                     <Title>Photo actuelle :</Title>
                     <DropZone ref={dropRef} isDragging={dragging} onDragEnter={handleDragIn} onDragLeave={handleDragOut} onDragOver={handleDrag} onDrop={handleDrop}>
                         {picture ?
-                            <ProfilePicture source={picture} />
+                            <Picture source={picture} />
                             : <SVGContainer><FontAwesomeIcon icon={faUpload} size="5x" color="var(--background1)" /></SVGContainer>
                         }
                     </DropZone>

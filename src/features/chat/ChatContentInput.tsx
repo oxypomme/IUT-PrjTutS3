@@ -6,7 +6,7 @@ import { useAlert } from 'react-alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCameraRetro, faComments, faMicrophone } from '@fortawesome/free-solid-svg-icons';
 
-import { Button, HiddenLabel, TextBox } from '../../components/styledComponents';
+import { Button, HiddenLabel, TextBox, FrontContainer } from '../../components/styledComponents';
 import UploadFile from '../firestorage/UploadFile';
 import UploadMicRecord from '../firestorage/UploadMicRecord';
 
@@ -41,26 +41,6 @@ const ChatTextArea = styled.textarea`
 const ChatButton = styled(Button)`
     height: 100%;
     margin: 0 5px;
-`;
-
-const ImageContainer = styled.div<{ isShowing?: boolean }>`
-    background-color: #3333337D;
-    position: absolute;
-    top:0;
-    left:0;
-    width: calc(100vw - 5px);
-    height: 100vh;
-    z-index: 10000;
-
-    display: flex;
-    
-    transition: visibility 0s ${props => props.isShowing ? '' : 'linear 0.25s'}, opacity 0.25s;
-    visibility: ${props => props.isShowing ? 'visible' : 'hidden'};
-    opacity: ${props => props.isShowing ? '1' : '0'};
-
-    & > div {
-        margin: auto;
-    }
 `;
 
 type PropsType = {
@@ -166,12 +146,12 @@ const ChatContentInput = ({ profile }: PropsType) => {
 
     return (
         <InputContainer>
-            <ImageContainer isShowing={showUploadImage}>
+            <FrontContainer isShowing={showUploadImage}>
                 <UploadFile onOk={handleImageSend} onCancel={handleImageCancel} />
-            </ImageContainer>
-            <ImageContainer isShowing={showUploadMicRecord}>
+            </FrontContainer>
+            <FrontContainer isShowing={showUploadMicRecord}>
                 <UploadMicRecord onOk={handleMicRecordSend} onCancel={handleMicRecordCancel} />
-            </ImageContainer>
+            </FrontContainer>
             <ChatTextBox>
                 <FontAwesomeIcon icon={faComments} />
                 <ChatTextArea
