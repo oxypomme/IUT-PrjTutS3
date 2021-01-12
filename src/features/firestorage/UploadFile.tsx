@@ -240,7 +240,7 @@ const UploadFile = ({ defaultURL, onCancel, onOk, onSnapExtension }: PropsType) 
             </ImageContainer>
             <StyledButtonFlex>
                 {onCancel ? <Button onClick={onNOk}>Annuler</Button> : <></>}
-                {onOk ? <Button primary onClick={event => onOk(event, picture)}>Envoyer</Button> : <></>}
+                {onOk ? <Button primary onClick={event => onOk(event, picture)}>Ajout d{"'"}image</Button> : <></>}
             </StyledButtonFlex>
         </Container>
     );

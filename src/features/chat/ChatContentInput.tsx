@@ -1,17 +1,18 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
+import { useAlert } from 'react-alert';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCameraRetro, faComments, faMicrophone } from '@fortawesome/free-solid-svg-icons';
 
 import { Button, HiddenLabel, TextBox } from '../../components/styledComponents';
+import UploadFile from '../firestorage/UploadFile';
 
 import IProfile from '../../include/IProfile';
 
 import { getCurrProfile } from '../accounts/profileSlice';
 import { newMessage } from './chatSlice';
-import UploadFile from '../firestorage/UploadFile';
 
 const InputContainer = styled.form`
     display: flex;
@@ -63,6 +64,7 @@ const ImageContainer = styled.div<{ isShowing?: boolean }>`
 
 const ChatContentInput = ({ profile }: PropsType) => {
     const dispatch = useDispatch();
+    const alert = useAlert();
 
     const currProfile = useSelector(getCurrProfile);
 
@@ -76,7 +78,7 @@ const ChatContentInput = ({ profile }: PropsType) => {
 
     const handleOnTextSubmit = (event: React.BaseSyntheticEvent) => {
         event.preventDefault();
-        if (textMessage) {
+        if (textMessage || mediaType) {
             dispatch(newMessage({
                 sender: currProfile.authId,
                 target: profile.authId,
@@ -91,6 +93,9 @@ const ChatContentInput = ({ profile }: PropsType) => {
             setTextMessage("");
             setMediaString("");
             setMediaType("");
+        }
+        else {
+            alert.error("Vous ne pouvez pas envoyer un message vide.");
         }
     }
 
