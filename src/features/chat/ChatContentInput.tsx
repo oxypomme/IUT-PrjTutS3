@@ -45,7 +45,7 @@ type PropsType = {
     profile: IProfile;
 }
 
-const ImageContainer = styled.div`
+const ImageContainer = styled.div<{ isShowing?: boolean }>`
     background-color: #3333337D;
     position: absolute;
     top:0;
@@ -53,6 +53,8 @@ const ImageContainer = styled.div`
     width: calc(100vw - 5px);
     height: 100vh;
     z-index: 10000;
+
+    display: ${props => props.isShowing ? 'flex' : 'none'};
 
     & > div {
         margin: auto;
@@ -115,9 +117,15 @@ const ChatContentInput = ({ profile }: PropsType) => {
         setShowUploadImage(false);
     }
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            handleOnTextSubmit(event);
+        }
+    }
+
     return (
         <InputContainer>
-            <ImageContainer style={{ display: showUploadImage ? "flex" : "none" }}>
+            <ImageContainer isShowing={showUploadImage}>
                 <UploadFile onOk={handleImageSend} onCancel={handleImageCancel} />
             </ImageContainer>
             <ChatTextBox>
@@ -127,6 +135,8 @@ const ChatContentInput = ({ profile }: PropsType) => {
                     placeholder='Message'
                     value={textMessage}
                     onChange={handleOnTextChange}
+                    tabIndex={0}
+                    onKeyPress={handleKeyDown}
                 />
                 <HiddenLabel htmlFor='message'>
                     Message
