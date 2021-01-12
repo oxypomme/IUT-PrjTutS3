@@ -16,6 +16,7 @@ import EOrientation from "../../../include/EOrientation";
 import EGender from "../../../include/EGender";
 import IError from "../../../include/IError";
 import ITag from "../../../include/IComboBoxItem";
+import ErrorComponent from "../../../components/ErrorComponent";
 
 import IComboBoxItem from '../../../include/IComboBoxItem';
 import { Button, ButtonFlex, ErrorLabel } from '../../../components/styledComponents';
@@ -107,16 +108,6 @@ export const RegisterPreferences = (): JSX.Element => {
 
     return (
         <div>
-            {globalErrors.length > 0 &&
-                <ErrorLabel>
-                    {globalErrors.map((error, index) => (
-                        <div key={index}>
-                            <FontAwesomeIcon icon={faExclamationTriangle} />
-                            {error.label}
-                        </div>
-                    ))}
-                </ErrorLabel>
-            }
             <Select
                 isSearchable={true}
                 isClearable={true}
@@ -134,6 +125,8 @@ export const RegisterPreferences = (): JSX.Element => {
                     }),
                 }}
             />
+            <ErrorComponent array={globalErrors} name={"gender"}></ErrorComponent>
+
             <Select
                 isSearchable={true}
                 isClearable={true}
@@ -151,6 +144,8 @@ export const RegisterPreferences = (): JSX.Element => {
                     }),
                 }}
             />
+            <ErrorComponent array={globalErrors} name={"orientation"}></ErrorComponent>
+
             <Creatable
                 components={{ Menu }}
                 borderColor="red"
@@ -171,6 +166,8 @@ export const RegisterPreferences = (): JSX.Element => {
                     }),
                 }}
             />
+            <ErrorComponent array={globalErrors} name={"tags"}></ErrorComponent>
+
             <ButtonFlex>
                 <Button onClick={handleBack}>Retour</Button>
                 <Button primary onClick={handleOnSubmit}>Suivant</Button>

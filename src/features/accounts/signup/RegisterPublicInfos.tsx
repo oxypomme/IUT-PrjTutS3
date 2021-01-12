@@ -17,6 +17,7 @@ import IError from "../../../include/IError";
 import UploadFile from "../../firestorage/UploadFile";
 
 export interface ICam { value: string, label: string; }
+import ErrorComponent from "../../../components/ErrorComponent";
 
 export function RegisterPublicInfos(): JSX.Element {
     const dispatch = useDispatch();
@@ -67,18 +68,9 @@ export function RegisterPublicInfos(): JSX.Element {
 
     return (
         <div>
-            {globalErrors.length > 0 &&
-                <ErrorLabel>
-                    {globalErrors.map((error, index) => (
-                        <div key={index}>
-                            <FontAwesomeIcon icon={faExclamationTriangle} />
-                            {error.label}
-                        </div>
-                    ))}
-                </ErrorLabel>
-            }
-
             <UploadFile defaultURL={actualInfos.imageURL} onSnapExtension={handleFile} />
+            <ErrorComponent array={globalErrors} name={"picture"}></ErrorComponent>
+
             <TextBox
                 borderColor={globalErrors.some(e => e.component === "description") ? 'red' : 'default'}
                 width={400}
@@ -95,6 +87,8 @@ export function RegisterPublicInfos(): JSX.Element {
                     Description
                 </HiddenLabel>
             </TextBox>
+            <ErrorComponent array={globalErrors} name={"description"}></ErrorComponent>
+
             <ButtonFlex>
                 <Button onClick={handleBack}>Retour</Button>
                 <Button primary onClick={handleOnSubmit}>Suivant</Button>

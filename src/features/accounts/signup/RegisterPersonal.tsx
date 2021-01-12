@@ -9,6 +9,7 @@ import { faUser, faCalendarAlt, faBuilding, faExclamationTriangle } from "@forta
 import { addAge, addCity, addName, getNewAuth, getPersonalInfos } from "../accountSlice";
 
 import IError from "../../../include/IError";
+import ErrorComponent from "../../../components/ErrorComponent";
 
 import { Button, TextBox, HiddenLabel, ErrorLabel, ButtonFlex } from '../../../components/styledComponents';
 
@@ -69,16 +70,6 @@ const RegisterPersonal = (): JSX.Element => {
 
     return (
         <div>
-            {globalErrors.length > 0 &&
-                <ErrorLabel>
-                    {globalErrors.map((error, index) => (
-                        <div key={index}>
-                            <FontAwesomeIcon icon={faExclamationTriangle} />
-                            {error.label}
-                        </div>
-                    ))}
-                </ErrorLabel>
-            }
             <TextBox borderColor={globalErrors.some(e => e.component === "name") ? 'red' : 'default'}>
                 <FontAwesomeIcon icon={faUser} />
                 <input
@@ -92,6 +83,7 @@ const RegisterPersonal = (): JSX.Element => {
                     Name
                 </HiddenLabel>
             </TextBox>
+            <ErrorComponent array={globalErrors} name={"name"}></ErrorComponent>
 
             <TextBox borderColor={globalErrors.some(e => e.component === "age") ? 'red' : 'default'}>
                 <FontAwesomeIcon icon={faCalendarAlt} />
@@ -107,6 +99,8 @@ const RegisterPersonal = (): JSX.Element => {
                     Age
                 </HiddenLabel>
             </TextBox>
+            <ErrorComponent array={globalErrors} name={"age"}></ErrorComponent>
+
             <TextBox borderColor={globalErrors.some(e => e.component === "town") ? 'red' : 'default'}>
                 <FontAwesomeIcon icon={faBuilding} />
                 <input
@@ -120,6 +114,7 @@ const RegisterPersonal = (): JSX.Element => {
                     Town
                 </HiddenLabel>
             </TextBox>
+            <ErrorComponent array={globalErrors} name={"town"}></ErrorComponent>
 
             <ButtonFlex>
                 <Button onClick={handleBack}>Retour</Button>

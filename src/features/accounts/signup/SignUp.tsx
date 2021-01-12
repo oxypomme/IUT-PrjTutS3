@@ -63,6 +63,7 @@ const SignUp = (): JSX.Element => {
                 </HiddenLabel>
             </TextBox>
             <ErrorComponent array={globalErrors} name={"email"}></ErrorComponent>
+
             <Spacer />
 
             <TextBox borderColor={globalErrors.some(e => e.component === "passwd") ? 'red' : 'default'}>
