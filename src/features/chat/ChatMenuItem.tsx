@@ -99,7 +99,7 @@ const ChatMenuItem = ({ onClick, profile, isActive }: PropsType) => {
                 </ImageProfileContainer>
                 <div>
                     <h2>{profile?.name || <WaitingForData length={8} />}</h2>
-                    {lastMessage?.date.toLocaleString() || < WaitingForData length={5} />}
+                    {new Date(lastMessage?.date).toLocaleString("en-GB") || < WaitingForData length={5} />}
                 </div>
             </TitleContainer>
             {lastMessage?.content?.text ? <Markdown options={markdownOptions}>{lastMessage?.content?.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji))}</Markdown> : <WaitingForData length={16} />}

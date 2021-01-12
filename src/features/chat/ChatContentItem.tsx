@@ -71,7 +71,7 @@ const ChatContentItem = ({ onClick, message, isOwner }: PropsType) => {
             <SpeechBubble isOwner={isOwner}>
                 {message?.content.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji)).split("\n").map((str, key) => <Markdown key={key} options={markdownOptions}>{str}</Markdown>)}
             </SpeechBubble>
-            <p>{new Date(message?.date).toLocaleString() || <WaitingForData length={8} />}</p>
+            <p>{new Date(message?.date).toLocaleString("en-GB") || <WaitingForData length={8} />}</p>
         </Item>
     );
 }
