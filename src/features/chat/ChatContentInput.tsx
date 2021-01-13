@@ -6,7 +6,7 @@ import { useAlert } from 'react-alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComments } from '@fortawesome/free-solid-svg-icons';
 
-import { Button, HiddenLabel, TextBox, } from '../../components/styledComponents';
+import { Button, ButtonFlex, HiddenLabel, TextBox, } from '../../components/styledComponents';
 import { ImagePicker, AudioPicker, GifPicker } from '../../components/Pickers';
 
 import IProfile from '../../include/IProfile';
@@ -129,12 +129,14 @@ const ChatContentInput = ({ profile }: PropsType) => {
                 <AudioPicker sendAction={handleOnActionPicker} />
                 <ImagePicker sendAction={handleOnActionPicker} />
                 <GifPicker sendAction={handleOnActionPicker} />
-                <ChatButton
-                    primary
-                    onClick={handleOnTextSubmit}
-                >
-                    Envoyer
+                <ButtonFlex>
+                    <ChatButton
+                        primary
+                        onClick={handleOnTextSubmit}
+                    >
+                        Envoyer
                 </ChatButton>
+                </ButtonFlex>
             </InputContainer>
         </div>
     );
