@@ -12,6 +12,7 @@ import { getInChat, getOutChat } from './chatSlice';
 import IProfile from '../../include/IProfile';
 import IMessage from '../../include/IMessage';
 import ChatContentInput from './ChatContentInput';
+import CoverImage from '../../components/CoverImage';
 
 const ImageProfileContainer = styled.div`
     width: 45%;
@@ -58,6 +59,12 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
     const rawOutMessages = useSelector(getOutChat);
 
     const [messages, setMessages] = React.useState<IMessage[]>([]);
+    const [bigImage, setBigImage] = React.useState<string>(undefined);
+
+    const onImageClick = (link: string) => {
+        console.log(link);
+        setBigImage(link);
+    }
 
     React.useEffect(() => {
         let msgs: IMessage[] = [];
@@ -88,6 +95,7 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
 
     return (
         <MainContainer>
+            <CoverImage src={bigImage} onClick={() => setBigImage(undefined)} />
             <TitleContainer>
                 <ImageProfileContainer>
                     <ProfilePicture source={profile.imageURL} />
@@ -96,7 +104,7 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
             </TitleContainer>
             <ContentContainer ref={messageRef}>
                 {messages.map((message, index) => (
-                    <ChatContentItem key={index} message={message} isOwner={profile?.authId !== message?.sender} />
+                    <ChatContentItem key={index} message={message} isOwner={profile?.authId !== message?.sender} onImageClick={onImageClick} />
                 ))}
             </ContentContainer>
             <ChatContentInput profile={profile} />

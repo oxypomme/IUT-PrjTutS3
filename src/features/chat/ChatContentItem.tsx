@@ -64,21 +64,22 @@ const ChatImage = styled.img`
     max-height: 200px;
     margin: 10px 10px -10px 10px;
     border-radius: 5px;
+    cursor: pointer;
 `;
 
 type PropsType = {
     message: IMessage;
     isOwner: boolean;
-    onClick?: (event: React.SyntheticEvent) => void;
+    onImageClick?: (link: string) => void;
 }
 
-const ChatContentItem = ({ onClick, message, isOwner }: PropsType) => {
+const ChatContentItem = ({ onImageClick, message, isOwner }: PropsType) => {
     return (
         <Item isOwner={isOwner}>
             <SpeechBubble isOwner={isOwner}>
                 {message?.content.text?.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji)).split("\n").map((str, key) => <Markdown key={key} options={markdownOptions}>{str}</Markdown>)}
                 {(message?.content.type === "images" || message?.content.type === "giphy") && typeof message?.content.media === "string" &&
-                    <ChatImage src={message?.content.media} alt="Image" />
+                    <ChatImage src={message?.content.media} alt="Image" onClick={() => onImageClick(message?.content.media as string)} />
                 }
                 {message?.content.type === "audios" && typeof message?.content.media === "string" &&
                     <AudioElement controls src={message?.content.media} />
