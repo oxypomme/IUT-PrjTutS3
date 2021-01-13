@@ -6,7 +6,7 @@ import Select from "react-select";
 import Creatable, { components, MenuProps } from "react-select";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faCalendarAlt, faBuilding, faGenderless, faHelicopter, faHorse, faMarsDouble, faTransgender, faVenusDouble, faVenusMars } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faCalendarAlt, faBuilding, faGenderless, faHelicopter, faHorse, faMarsDouble, faTransgender, faVenusDouble, faVenusMars, faMale, faFemale } from "@fortawesome/free-solid-svg-icons";
 
 import ErrorComponent from '../../../components/ErrorComponent';
 import { Button, TextBox, HiddenLabel, ButtonFlex } from '../../../components/styledComponents';
@@ -74,9 +74,9 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const genders = [
-        { value: EGender.Men, label: <span><FontStyledIcon icon={faHorse} />Poney</span> },
-        { value: EGender.Women, label: <span><FontStyledIcon icon={faHelicopter} />Hélicoptère</span> },
-        { value: EGender.NonBinary, label: <span><FontStyledIcon icon={faGenderless} />Pirate</span> }
+        { value: EGender.Men, label: <span><FontStyledIcon icon={faMale} />Homme</span> },
+        { value: EGender.Women, label: <span><FontStyledIcon icon={faFemale} />Femme</span> },
+        { value: EGender.NonBinary, label: <span><FontStyledIcon icon={faGenderless} />Non-binaire</span> }
     ] as IComboBoxItem[]
 
     const orientations = [

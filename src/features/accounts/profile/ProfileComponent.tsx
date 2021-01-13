@@ -5,7 +5,7 @@ import { useAlert } from 'react-alert';
 import { useHistory } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faHorse, faCalendarAlt, faBuilding, faVenusMars, faVenusDouble, faNeuter, faHelicopter, faMarsDouble, faTransgender, faGenderless } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faHorse, faCalendarAlt, faBuilding, faVenusMars, faVenusDouble, faNeuter, faHelicopter, faMarsDouble, faTransgender, faGenderless, faMale, faFemale } from '@fortawesome/free-solid-svg-icons';
 
 import { getAllTags } from '../tagSlice';
 
@@ -124,12 +124,12 @@ const ProfileComponent = ({ profile, isMatchable, isDeletable, handleEditProfile
             gender = "Non-binaire";
             break;
         case EGender.Men:
-            genderIcon = faHorse; // faMale
-            gender = "Poney"; //Homme
+            genderIcon = faMale;
+            gender = "Homme";
             break;
         case EGender.Women:
-            genderIcon = faHelicopter; // faFemale
-            gender = "Hélicoptère"; //Femme
+            genderIcon = faFemale;
+            gender = "Femme";
             break;
         default:
             break;
