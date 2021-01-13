@@ -183,9 +183,9 @@ const ChatContentInput = ({ profile }: PropsType) => {
                         Message
                 </HiddenLabel>
                 </ChatTextBox>
-                <FontAwesomeIcon icon={faMicrophone} size="2x" color={"var(--accent2)"} tabIndex={100} onClick={handleMicroClick} />
-                <FontAwesomeIcon icon={faCameraRetro} size="2x" color={"var(--accent2)"} tabIndex={101} onClick={handleImageClick} />
-                <FontAwesomeIcon icon={faFileImage} size="2x" color={"var(--accent2)"} tabIndex={102} onClick={handleGiphyClick} />
+                <FontAwesomeIcon icon={faMicrophone} size="2x" color={"#777777"} tabIndex={100} onClick={handleMicroClick} />
+                <FontAwesomeIcon icon={faCameraRetro} size="2x" color={"#777777"} tabIndex={101} onClick={handleImageClick} />
+                <FontAwesomeIcon icon={faFileImage} size="2x" color={"#777777"} tabIndex={102} onClick={handleGiphyClick} />
                 <ChatButton
                     primary
                     onClick={handleOnTextSubmit}
