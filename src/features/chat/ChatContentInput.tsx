@@ -18,14 +18,9 @@ import SelectGiphy from './SelectGiphy';
 
 const InputContainer = styled.form`
     display: flex;
-
-`;
-
-const MessageContainer = styled.div`
-    display: flex;
     padding: 4px;
     background: var(--background2);
-    width: 100%;
+
     & > svg {
         margin: auto;
     }
@@ -41,6 +36,7 @@ const MessageContainer = styled.div`
 const ChatTextBox = styled(TextBox)`
     width: 100%;
 `;
+
 const ChatTextArea = styled.textarea`
     resize: none;
 `;
@@ -120,6 +116,7 @@ const ChatContentInput = ({ profile }: PropsType) => {
         event.preventDefault();
         setShowUploadImage(false);
         sendMessage(textMessage, picture, "images");
+        setTextMessage("");
     }
 
     const handleImageCancel = (event: React.SyntheticEvent) => {
@@ -131,6 +128,7 @@ const ChatContentInput = ({ profile }: PropsType) => {
         event.preventDefault();
         setShowUploadMicRecord(false);
         sendMessage(textMessage, micRecord, "audios");
+        setTextMessage("");
     }
 
     const handleMicRecordCancel = (event: React.SyntheticEvent) => {
@@ -149,8 +147,6 @@ const ChatContentInput = ({ profile }: PropsType) => {
         setShowUploadGiphy(false);
     }
 
-
-
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && !event.shiftKey) {
             handleOnTextSubmit(event);
@@ -168,31 +164,47 @@ const ChatContentInput = ({ profile }: PropsType) => {
             <FrontContainer isShowing={showUploadGiphy} onClick={handleGiphyCancel}>
                 <SelectGiphy onOk={handleGiphySend} onCancel={handleGiphyCancel} />
             </FrontContainer>
-            <MessageContainer>
-                <ChatTextBox>
-                    <FontAwesomeIcon icon={faComments} />
-                    <ChatTextArea
-                        name='message'
-                        placeholder='Message'
-                        value={textMessage}
-                        onChange={handleOnTextChange}
-                        tabIndex={0}
-                        onKeyPress={handleKeyDown}
-                    />
-                    <HiddenLabel htmlFor='message'>
-                        Message
-                </HiddenLabel>
-                </ChatTextBox>
-                <FontAwesomeIcon icon={faMicrophone} size="2x" color={"#777777"} tabIndex={100} onClick={handleMicroClick} />
-                <FontAwesomeIcon icon={faCameraRetro} size="2x" color={"#777777"} tabIndex={101} onClick={handleImageClick} />
-                <FontAwesomeIcon icon={faFileImage} size="2x" color={"#777777"} tabIndex={102} onClick={handleGiphyClick} />
-                <ChatButton
-                    primary
-                    onClick={handleOnTextSubmit}
-                >
-                    Envoyer
+            <ChatTextBox>
+                <FontAwesomeIcon icon={faComments} />
+                <ChatTextArea
+                    name='message'
+                    placeholder='Message'
+                    value={textMessage}
+                    onChange={handleOnTextChange}
+                    tabIndex={0}
+                    onKeyPress={handleKeyDown}
+                />
+                <HiddenLabel htmlFor='message'>
+                    Message
+                    </HiddenLabel>
+            </ChatTextBox>
+            <FontAwesomeIcon
+                icon={faMicrophone}
+                size="2x"
+                color={"silver"}
+                tabIndex={100}
+                onClick={handleMicroClick}
+            />
+            <FontAwesomeIcon
+                icon={faCameraRetro}
+                size="2x"
+                color={"silver"}
+                tabIndex={101}
+                onClick={handleImageClick}
+            />
+            <FontAwesomeIcon
+                icon={faFileImage}
+                size="2x"
+                color={"silver"}
+                tabIndex={102}
+                onClick={handleGiphyClick}
+            />
+            <ChatButton
+                primary
+                onClick={handleOnTextSubmit}
+            >
+                Envoyer
                 </ChatButton>
-            </MessageContainer>
         </InputContainer>
     );
 }

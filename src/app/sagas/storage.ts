@@ -1,11 +1,13 @@
 import { eventChannel } from 'redux-saga';
-import { call, put, takeLatest, take, all, select } from 'redux-saga/effects'
+import { call, put, takeLatest, take, all, select, fork, cancel, cancelled } from 'redux-saga/effects';
 import { withCallback } from 'redux-saga-callback';
 
-import { rsf } from '../firebase'
-import '@firebase/storage'
+import { rsf } from '../firebase';
+
+import '@firebase/storage';
 
 import {
+    cancelUpload,
     deleteAvatar,
     deleteAvatarFailed,
     deleteAvatarSuccess,
@@ -13,6 +15,7 @@ import {
     getDlUrlFailed,
     getDlUrlSuccess,
     getStorageError,
+    isUploading,
     uploadFile,
     uploadFileFailed,
     uploadFileSuccess,
@@ -43,8 +46,22 @@ function* uploadFileSaga(action) {
     } catch (error) {
         yield put(uploadFileFailed(error.message));
         //throw error;
+    } finally {
+        if (yield cancelled()) {
+            yield put(uploadFileFailed("action cancelled"));
+        }
     }
+}
 
+function* uploadFlow() {
+    while (true) {
+        const callAction = yield take([uploadFile.type, uploadStringFile.type]);
+        const task = yield fork(uploadFileSaga, callAction);
+        const action = yield take([uploadFileFailed, cancelUpload])
+        if (action.type == cancelUpload.type) {
+            yield cancel(task);
+        }
+    }
 }
 
 function* fetchDlUrl(action) {
@@ -81,7 +98,7 @@ function* deleteAvatarSaga(action) {
 
 export default function* storageSagas() {
     yield all([
-        takeLatest([uploadFile.type, uploadStringFile.type], uploadFileSaga),
+        fork(uploadFlow),
         takeLatest(deleteAvatar.type, deleteAvatarSaga),
         takeLatest(getDlUrl.type, fetchDlUrl),
     ]);
