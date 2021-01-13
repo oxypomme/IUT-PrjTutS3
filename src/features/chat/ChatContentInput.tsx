@@ -4,17 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useAlert } from 'react-alert';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCameraRetro, faComments, faFileImage, faMicrophone } from '@fortawesome/free-solid-svg-icons';
+import { faComments } from '@fortawesome/free-solid-svg-icons';
 
-import { Button, HiddenLabel, TextBox, FrontContainer } from '../../components/styledComponents';
-import UploadFile from '../firestorage/UploadFile';
-import UploadMicRecord from '../firestorage/UploadMicRecord';
+import { Button, HiddenLabel, TextBox, } from '../../components/styledComponents';
+import { ImagePicker, AudioPicker, GifPicker } from '../../components/Pickers';
 
 import IProfile from '../../include/IProfile';
 
 import { getCurrProfile } from '../accounts/profileSlice';
 import { newMessage } from './chatSlice';
-import SelectGiphy from './SelectGiphy';
 
 const InputContainer = styled.form`
     display: flex;
@@ -26,15 +24,18 @@ const InputContainer = styled.form`
     }
 
     & > *,
-    & > svg {
+    & > span > svg {
         margin-right: 5px;
         margin-left: 5px;
         cursor: pointer;
     }
 `;
 
-const ChatTextBox = styled(TextBox)`
+const ChatTextBox = styled(TextBox) <{ height?: number }>`
     width: 100%;
+    min-height: 1em;
+    max-height: 40px;
+    height: ${props => props.height}px;
 `;
 
 const ChatTextArea = styled.textarea`
@@ -42,7 +43,7 @@ const ChatTextArea = styled.textarea`
 `;
 
 const ChatButton = styled(Button)`
-    height: 65px;
+    height: 100%;
     margin: 0 5px;
 `;
 
@@ -56,13 +57,8 @@ const ChatContentInput = ({ profile }: PropsType) => {
 
     const currProfile = useSelector(getCurrProfile);
 
-    const [showUploadImage, setShowUploadImage] = React.useState(false);
-    const [showUploadMicRecord, setShowUploadMicRecord] = React.useState(false);
-    const [showUploadGiphy, setShowUploadGiphy] = React.useState(false);
-
+    const [textHeight, setTextHeight] = React.useState(0);
     const [textMessage, setTextMessage] = React.useState<string>("");
-
-    const handleOnTextChange = (event) => setTextMessage(event.target.value);
 
     const sendMessage = (text?: string, media?: string | Blob, type?: string) => {
         if (text || type) {
@@ -97,75 +93,26 @@ const ChatContentInput = ({ profile }: PropsType) => {
         setTextMessage("");
     }
 
-    const handleMicroClick = (event: React.SyntheticEvent) => {
-        event.preventDefault();
-        setShowUploadMicRecord(true);
-    }
-
-    const handleImageClick = (event: React.SyntheticEvent) => {
-        event.preventDefault();
-        setShowUploadImage(true);
-    }
-
-    const handleGiphyClick = (event: React.SyntheticEvent) => {
-        event.preventDefault();
-        setShowUploadGiphy(true);
-    }
-
-    const handleImageSend = (event: React.SyntheticEvent, picture: string) => {
-        event.preventDefault();
-        setShowUploadImage(false);
-        sendMessage(textMessage, picture, "images");
-        setTextMessage("");
-    }
-
-    const handleImageCancel = (event: React.SyntheticEvent) => {
-        event.preventDefault();
-        setShowUploadImage(false);
-    }
-
-    const handleMicRecordSend = (event: React.SyntheticEvent, micRecord: Blob) => {
-        event.preventDefault();
-        setShowUploadMicRecord(false);
-        sendMessage(textMessage, micRecord, "audios");
-        setTextMessage("");
-    }
-
-    const handleMicRecordCancel = (event: React.SyntheticEvent) => {
-        event.preventDefault();
-        setShowUploadMicRecord(false);
-    }
-
-    const handleGiphySend = (event: React.SyntheticEvent, gifLink: string) => {
-        event.preventDefault();
-        sendMessage(textMessage, gifLink, "giphy");
-        setShowUploadGiphy(false);
-    }
-
-    const handleGiphyCancel = (event: React.SyntheticEvent) => {
-        event.preventDefault();
-        setShowUploadGiphy(false);
-    }
-
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && !event.shiftKey) {
             handleOnTextSubmit(event);
         }
     }
 
+    const handleOnTextChange = (event) => {
+        setTextHeight(event.target.scrollHeight > event.target.clientHeight ? event.target.scrollHeight : textHeight);
+        setTextMessage(event.target.value);
+    }
+
+    const handleOnActionPicker = (media: string | Blob, type: string) => {
+        sendMessage(textMessage, media, type);
+        setTextMessage("");
+    }
+
     return (
         <div>
-            <FrontContainer isShowing={showUploadImage} onClick={handleImageCancel}>
-                <UploadFile onOk={handleImageSend} onCancel={handleImageCancel} />
-            </FrontContainer>
-            <FrontContainer isShowing={showUploadMicRecord} onClick={handleMicRecordCancel}>
-                <UploadMicRecord onOk={handleMicRecordSend} onCancel={handleMicRecordCancel} />
-            </FrontContainer>
-            <FrontContainer isShowing={showUploadGiphy} onClick={handleGiphyCancel}>
-                <SelectGiphy onOk={handleGiphySend} onCancel={handleGiphyCancel} />
-            </FrontContainer>
             <InputContainer>
-                <ChatTextBox>
+                <ChatTextBox height={textHeight}>
                     <FontAwesomeIcon icon={faComments} />
                     <ChatTextArea
                         name='message'
@@ -179,27 +126,9 @@ const ChatContentInput = ({ profile }: PropsType) => {
                         Message
                     </HiddenLabel>
                 </ChatTextBox>
-                <FontAwesomeIcon
-                    icon={faMicrophone}
-                    size="2x"
-                    color={"silver"}
-                    tabIndex={100}
-                    onClick={handleMicroClick}
-                />
-                <FontAwesomeIcon
-                    icon={faCameraRetro}
-                    size="2x"
-                    color={"silver"}
-                    tabIndex={101}
-                    onClick={handleImageClick}
-                />
-                <FontAwesomeIcon
-                    icon={faFileImage}
-                    size="2x"
-                    color={"silver"}
-                    tabIndex={102}
-                    onClick={handleGiphyClick}
-                />
+                <AudioPicker sendAction={handleOnActionPicker} />
+                <ImagePicker sendAction={handleOnActionPicker} />
+                <GifPicker sendAction={handleOnActionPicker} />
                 <ChatButton
                     primary
                     onClick={handleOnTextSubmit}

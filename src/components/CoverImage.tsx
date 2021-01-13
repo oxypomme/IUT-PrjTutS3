@@ -40,7 +40,7 @@ const handleImageClick = (event) => {
     event.stopPropagation();
 }
 
-const SelectGiphy = ({ onClick, src }: PropsType) => {
+const CoverImage = ({ onClick, src }: PropsType) => {
     if (src) {
         return (
             <Container onClick={onClick}>
@@ -53,4 +53,4 @@ const SelectGiphy = ({ onClick, src }: PropsType) => {
     }
 }
 
-export default SelectGiphy;
+export default CoverImage;
