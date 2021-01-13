@@ -11,7 +11,7 @@ import ChatContentItem from './ChatContentItem';
 
 import { getCurrProfile } from '../accounts/profileSlice';
 import { getInChat, getOutChat } from './chatSlice';
-import { cancelUpload, getStorageWorking } from '../firestorage/storageSlice';
+import { cancelUpload, getStorageProgress, getStorageWorking } from '../firestorage/storageSlice';
 
 import IProfile from '../../include/IProfile';
 import IMessage from '../../include/IMessage';
@@ -94,6 +94,7 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
     const rawInMessages = useSelector(getInChat);
     const rawOutMessages = useSelector(getOutChat);
     const storageWorkState = useSelector(getStorageWorking);
+    const uploadProgress = useSelector(getStorageProgress);
 
     const [messages, setMessages] = React.useState<IMessage[]>([]);
     const [bigImage, setBigImage] = React.useState<string>(undefined);
@@ -102,7 +103,6 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
         console.log(link);
         setBigImage(link);
     }
-    const [uploadProgress, setUploadProgress] = React.useState(0);
 
     React.useEffect(() => {
         let msgs: IMessage[] = [];

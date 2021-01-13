@@ -63,6 +63,7 @@ export const storageSlice = createSlice({
     initialState: {
         isWorking: false,
         error: "",
+        progress: 0
     },
     extraReducers: {
         [uploadFile.type]: (state) => ({
@@ -91,11 +92,13 @@ export const storageSlice = createSlice({
             ...state,
             isWorking: false,
             error: "",
+            progress: 0
         }),
         uploadFileFailed: (state, { payload: message }) => ({
             ...state,
             isWorking: false,
-            error: message
+            error: message,
+            progress: 0
         }),
         deleteAvatarSuccess: (state) => ({
             ...state,
@@ -117,6 +120,10 @@ export const storageSlice = createSlice({
             isWorking: false,
             error: message
         }),
+        updateProgress: (state, { payload: progress }) => ({
+            ...state,
+            progress
+        })
     }
 });
 
@@ -127,6 +134,7 @@ export const {
     deleteAvatarFailed,
     getDlUrlSuccess,
     getDlUrlFailed,
+    updateProgress
 } = storageSlice.actions;
 
 export const uploadTypes = {
@@ -138,5 +146,6 @@ export const getState = state => state.storage;
 
 export const getStorageError = createSelector(getState, state => state.error);
 export const getStorageWorking = createSelector(getState, state => state.isWorking);
+export const getStorageProgress = createSelector(getState, state => state.progress);
 
 export default storageSlice.reducer;

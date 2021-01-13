@@ -1,5 +1,5 @@
 import { eventChannel } from 'redux-saga';
-import { call, put, takeLatest, take, all, select, fork, cancel, cancelled } from 'redux-saga/effects';
+import { call, put, takeLatest, take, all, select, fork, cancel, cancelled, takeEvery } from 'redux-saga/effects';
 import { withCallback } from 'redux-saga-callback';
 
 import { rsf } from '../firebase';
@@ -15,11 +15,17 @@ import {
     getDlUrlFailed,
     getDlUrlSuccess,
     getStorageError,
+    updateProgress,
     uploadFile,
     uploadFileFailed,
     uploadFileSuccess,
     uploadStringFile
 } from '../../features/firestorage/storageSlice';
+
+function* calcUploadProgress({ _delegate }) {
+    const progress = _delegate.bytesTransferred / _delegate.totalBytes * 100;
+    yield put(updateProgress(Math.floor(progress)));
+}
 
 function* uploadFileSaga(action) {
     try {
@@ -28,7 +34,7 @@ function* uploadFileSaga(action) {
 
         const channel = eventChannel(emit => task.on('state_changed', emit));
 
-        yield take(channel);
+        yield takeEvery(channel, calcUploadProgress);
 
         // Wait for upload to complete
         yield task
