@@ -31,11 +31,9 @@ const InputContainer = styled.form`
     }
 `;
 
-const ChatTextBox = styled(TextBox) <{ height?: number }>`
+const ChatTextBox = styled(TextBox)`
     width: 100%;
-    min-height: 1em;
-    max-height: 40px;
-    height: ${props => props.height}px;
+    height: 1em;
 `;
 
 const ChatTextArea = styled.textarea`
@@ -57,7 +55,6 @@ const ChatContentInput = ({ profile }: PropsType) => {
 
     const currProfile = useSelector(getCurrProfile);
 
-    const [textHeight, setTextHeight] = React.useState(0);
     const [textMessage, setTextMessage] = React.useState<string>("");
 
     const sendMessage = (text?: string, media?: string | Blob, type?: string) => {
@@ -100,7 +97,6 @@ const ChatContentInput = ({ profile }: PropsType) => {
     }
 
     const handleOnTextChange = (event) => {
-        setTextHeight(event.target.scrollHeight > event.target.clientHeight ? event.target.scrollHeight : textHeight);
         setTextMessage(event.target.value);
     }
 
@@ -110,35 +106,33 @@ const ChatContentInput = ({ profile }: PropsType) => {
     }
 
     return (
-        <div>
-            <InputContainer>
-                <ChatTextBox height={textHeight}>
-                    <FontAwesomeIcon icon={faComments} />
-                    <ChatTextArea
-                        name='message'
-                        placeholder='Message'
-                        value={textMessage}
-                        onChange={handleOnTextChange}
-                        tabIndex={0}
-                        onKeyPress={handleKeyDown}
-                    />
-                    <HiddenLabel htmlFor='message'>
-                        Message
+        <InputContainer>
+            <ChatTextBox>
+                <FontAwesomeIcon icon={faComments} />
+                <ChatTextArea
+                    name='message'
+                    placeholder='Message'
+                    value={textMessage}
+                    onChange={handleOnTextChange}
+                    tabIndex={0}
+                    onKeyPress={handleKeyDown}
+                />
+                <HiddenLabel htmlFor='message'>
+                    Message
                     </HiddenLabel>
-                </ChatTextBox>
-                <AudioPicker sendAction={handleOnActionPicker} />
-                <ImagePicker sendAction={handleOnActionPicker} />
-                <GifPicker sendAction={handleOnActionPicker} />
-                <ButtonFlex>
-                    <ChatButton
-                        primary
-                        onClick={handleOnTextSubmit}
-                    >
-                        Envoyer
-                </ChatButton>
-                </ButtonFlex>
-            </InputContainer>
-        </div>
+            </ChatTextBox>
+            <AudioPicker sendAction={handleOnActionPicker} />
+            <ImagePicker sendAction={handleOnActionPicker} />
+            <GifPicker sendAction={handleOnActionPicker} />
+            <ButtonFlex>
+                <ChatButton
+                    primary
+                    onClick={handleOnTextSubmit}
+                >
+                    Envoyer
+                    </ChatButton>
+            </ButtonFlex>
+        </InputContainer>
     );
 }
 

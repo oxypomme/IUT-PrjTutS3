@@ -29,7 +29,7 @@ const buttonStyle = {
 const AlertTemplate = ({ message, options, style, close }: any) => {
   return (
     <div style={{ ...alertStyle, ...style }}>
-      {options.type === 'info' && <FontAwesomeIcon icon={faInfoCircle} color={'cyan'} />}
+      {options.type === 'info' && <FontAwesomeIcon icon={faInfoCircle} color={'var(--accent2)'} />}
       {options.type === 'success' && <FontAwesomeIcon icon={faCheckCircle} color={'lime'} />}
       {options.type === 'error' && <FontAwesomeIcon icon={faExclamationCircle} color={'red'} />}
       <span style={{ flex: 2, marginLeft: 10 }}>{message}</span>

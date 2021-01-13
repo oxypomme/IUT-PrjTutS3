@@ -57,29 +57,12 @@ const ContentContainer = styled.ul`
     flex-direction: column;
 `;
 
-const ProgressContainer = styled.div<{ isShowing?: boolean }>`
-    position: absolute;
-    width: calc(100% - 323px);
-    bottom: 65px;
-    right: 0;
-    height: 20px;
-    background: #333;
-    opacity: 0.75;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    visibility: ${props => props.isShowing ? "visible" : "hidden"};
-    display: flex;
-
-    & > * {
-        flex: 0.95;
-    }
-
-    & > svg {
-        margin-top: 2px;
-        flex: 0.05;
-    }
-    & > svg:hover {
-        cursor: pointer;
+const StyledUploadProgress = styled.div`
+    & > div{
+        position: absolute;
+        left: 318px;
+        bottom: 47px;
+        width: calc(100% - 318px);
     }
 `;
 
@@ -89,13 +72,8 @@ type PropsType = {
 }
 
 const ChatContent = ({ onClick, profile }: PropsType) => {
-    const alert = useAlert();
-    const dispatch = useDispatch();
-
     const rawInMessages = useSelector(getInChat);
     const rawOutMessages = useSelector(getOutChat);
-    const storageWorkState = useSelector(getStorageWorking);
-    const uploadProgress = useSelector(getStorageProgress);
 
     const [messages, setMessages] = React.useState<IMessage[]>([]);
     const [bigImage, setBigImage] = React.useState<string>(undefined);
@@ -145,7 +123,9 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
                     <ChatContentItem key={index} message={message} isOwner={profile?.authId !== message?.sender} onImageClick={onImageClick} />
                 ))}
             </ContentContainer>
-            <UploadProgress />
+            <StyledUploadProgress>
+                <UploadProgress />
+            </StyledUploadProgress>
             <ChatContentInput profile={profile} />
         </MainContainer>
     );
