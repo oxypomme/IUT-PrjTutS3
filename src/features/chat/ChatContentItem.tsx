@@ -77,7 +77,7 @@ const ChatContentItem = ({ onClick, message, isOwner }: PropsType) => {
         <Item isOwner={isOwner}>
             <SpeechBubble isOwner={isOwner}>
                 {message?.content.text?.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji)).split("\n").map((str, key) => <Markdown key={key} options={markdownOptions}>{str}</Markdown>)}
-                {message?.content.type === "images" || message?.content.type === "giphy" && typeof message?.content.media === "string" &&
+                {(message?.content.type === "images" || message?.content.type === "giphy") && typeof message?.content.media === "string" &&
                     <ChatImage src={message?.content.media} alt="Image" />
                 }
                 {message?.content.type === "audios" && typeof message?.content.media === "string" &&
