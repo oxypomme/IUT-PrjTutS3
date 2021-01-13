@@ -51,6 +51,13 @@ export const getDlUrl = createAction(
     })
 );
 
+export const cancelUpload = createAction(
+    "CANCEL_UPLOAD_REQUESTED",
+    () => ({
+        payload: {}
+    })
+);
+
 export const storageSlice = createSlice({
     name: "storage",
     initialState: {
@@ -112,6 +119,10 @@ export const storageSlice = createSlice({
             isWorking: false,
             error: message
         }),
+        isUploading: (state, { payload: UploadTask }) => ({
+            ...state,
+            isWorking: UploadTask
+        })
     }
 });
 
@@ -121,7 +132,8 @@ export const {
     deleteAvatarSuccess,
     deleteAvatarFailed,
     getDlUrlSuccess,
-    getDlUrlFailed
+    getDlUrlFailed,
+    isUploading
 } = storageSlice.actions;
 
 export const uploadTypes = {
@@ -133,5 +145,6 @@ export const getState = state => state.storage;
 
 export const getUploadedFiles = createSelector(getState, state => state.uploads);
 export const getStorageError = createSelector(getState, state => state.error);
+export const getStorageWorking = createSelector(getState, state => state.isWorking);
 
 export default storageSlice.reducer;
