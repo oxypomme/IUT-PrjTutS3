@@ -6,7 +6,7 @@ import { useAlert } from 'react-alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComments } from '@fortawesome/free-solid-svg-icons';
 
-import { Button, HiddenLabel, TextBox, } from '../../components/styledComponents';
+import { Button, ButtonFlex, HiddenLabel, TextBox, } from '../../components/styledComponents';
 import { ImagePicker, AudioPicker, GifPicker } from '../../components/Pickers';
 
 import IProfile from '../../include/IProfile';
@@ -15,10 +15,12 @@ import { getCurrProfile } from '../accounts/profileSlice';
 import { newMessage } from './chatSlice';
 
 const InputContainer = styled.form`
-    width: 100%;
+    width: calc(100% - 330px);
+    position: absolute;
+    bottom: 0;
 
     display: flex;
-    padding: 4px;
+    padding: 4px 0;
     background: var(--background2);
 
     & > svg {
@@ -115,6 +117,7 @@ const ChatContentInput = ({ profile }: PropsType) => {
                     <AudioPicker sendAction={handleOnActionPicker} />
             <ImagePicker sendAction={handleOnActionPicker} />
             <GifPicker sendAction={handleOnActionPicker} />
+            <StyledUploadProgress />
      */
 
     return (
@@ -133,12 +136,14 @@ const ChatContentInput = ({ profile }: PropsType) => {
                     Message
                     </HiddenLabel>
             </ChatTextBox>
-            <ChatButton
-                primary
-                onClick={handleOnTextSubmit}
-            >
-                Envoyer
+            <ButtonFlex>
+                <ChatButton
+                    primary
+                    onClick={handleOnTextSubmit}
+                >
+                    Envoyer
                 </ChatButton>
+            </ButtonFlex>
         </InputContainer>
     );
 }

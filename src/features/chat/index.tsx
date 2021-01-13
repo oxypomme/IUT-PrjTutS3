@@ -30,12 +30,12 @@ const ChatContentContainer = styled.div`
 `;
 
 const TitleContainer = styled.div`
-    width: calc(100% - 16px);
+    width: 100%;
     display: flex;
     border-left: 8px solid var(--accent2);
-    padding: 4px;
+    padding: 4px 0;
+    box-sizing: border-box;
     background: var(--background2);
-    z-index: 99;
 
     & > p {
         font-weight: bold;
@@ -66,15 +66,15 @@ const Chat = ({ className }: any) => {
                 <ChatMenu onClick={handleOnProfileClick} activeProfile={profile} />
             </ChatMenuContainer>
             <ChatContentContainer>
-                <TitleContainer>
+                {profile ? <TitleContainer>
                     <ImageProfileContainer>
                         <ProfilePicture source={profile?.imageURL} />
                     </ImageProfileContainer>
                     <p>{profile?.name || <WaitingForData length={8} />}</p>
-                </TitleContainer>
+                </TitleContainer> : <></>}
                 <ChatContainer>
                     {profile ? <ChatContent profile={profile} /> : <></>}
-                    <ChatInput profile={profile} />
+                    {profile ? <ChatInput profile={profile} /> : <></>}
                 </ChatContainer>
             </ChatContentContainer>
         </ChatApp>

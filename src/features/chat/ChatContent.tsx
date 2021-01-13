@@ -13,7 +13,7 @@ import CoverImage from '../../components/CoverImage';
 import UploadProgress from '../firestorage/UploadProgress';
 
 const MainContainer = styled.div`
-    height:calc(100% - 61px);
+    height: calc(100% - 47px);
 	display:flex;
 	flex-direction:column;
 `;
@@ -90,7 +90,6 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
                     <ChatContentItem key={index} message={message} isOwner={profile?.authId !== message?.sender} onImageClick={onImageClick} />
                 ))}
             </ContentContainer>
-            <StyledUploadProgress />
         </MainContainer>
     );
 }
