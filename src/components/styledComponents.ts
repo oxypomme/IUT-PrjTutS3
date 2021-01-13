@@ -112,7 +112,7 @@ export const FrontContainer = styled.div<{ isShowing?: boolean }>`
     position: absolute;
     top:0;
     left:0;
-    width: calc(100vw - 5px);
+    width: 100vw;
     height: 100vh;
     z-index: 10000;
 
