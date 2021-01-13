@@ -27,9 +27,9 @@ const RegisterPersonal = (): JSX.Element => {
     }, [auth])
 
     const actualInfos = useSelector(getPersonalInfos);
-    const [name, setName] = React.useState(actualInfos.name);
-    const [age, setAge] = React.useState<number>(actualInfos.age !== -1 ? actualInfos.age : 18);
-    const [town, setTown] = React.useState(actualInfos.town);
+    const [name, setName] = React.useState(actualInfos.name || "");
+    const [age, setAge] = React.useState<number>(actualInfos.age ? actualInfos.age : 18);
+    const [town, setTown] = React.useState(actualInfos.town || "");
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
 

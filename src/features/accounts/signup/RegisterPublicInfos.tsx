@@ -31,8 +31,8 @@ export function RegisterPublicInfos(): JSX.Element {
     }, [profile])
 
     const actualInfos = useSelector(getPublicInfos);
-    const [picture, setPicture] = React.useState<string>(actualInfos.imageURL);
-    const [description, setDescription] = React.useState<string>(actualInfos.desc);
+    const [picture, setPicture] = React.useState<string>(actualInfos.imageURL || "");
+    const [description, setDescription] = React.useState<string>(actualInfos.desc || "");
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const handleSetDescriptionOnChange = (event) => setDescription(event.target.value);

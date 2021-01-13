@@ -60,8 +60,8 @@ export const RegisterPreferences = (): JSX.Element => {
 
     const actualInfos = useSelector(getPrefsInfos);
     const [selectedTags, setSelectedTags] = React.useState<Array<IComboBoxItem>>(actualInfos.tags);
-    const [selectedGender, setSelectedGender] = React.useState<Array<IComboBoxItem>>(actualInfos.sex !== -1 ? [{ value: actualInfos.sex, label: "" }] : []);
-    const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IComboBoxItem>>(actualInfos.orientation !== -1 ? [{ value: actualInfos.orientation, label: "" }] : []);
+    const [selectedGender, setSelectedGender] = React.useState<Array<IComboBoxItem>>(actualInfos.sex ? [{ value: actualInfos.sex, label: "" }] : []);
+    const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IComboBoxItem>>(actualInfos.orientation ? [{ value: actualInfos.orientation, label: "" }] : []);
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const genders = [
@@ -112,7 +112,7 @@ export const RegisterPreferences = (): JSX.Element => {
                 isSearchable={true}
                 isClearable={true}
                 onChange={mygender => setSelectedGender([mygender as IComboBoxItem])}
-                defaultValue={actualInfos.sex !== -1 ? { value: actualInfos.sex, label: genders.filter(g => g.value === actualInfos.sex)[0].label } : null}
+                defaultValue={actualInfos.sex ? { value: actualInfos.sex, label: genders.filter(g => g.value === actualInfos.sex)[0].label } : null}
                 options={genders}
                 placeholder="Sélectionnez votre genre"
                 styles={{
@@ -131,7 +131,7 @@ export const RegisterPreferences = (): JSX.Element => {
                 isSearchable={true}
                 isClearable={true}
                 onChange={myorientation => setSelectedOrientation([myorientation as IComboBoxItem])}
-                defaultValue={actualInfos.orientation !== -1 ? { value: actualInfos.orientation, label: orientations.filter(g => g.value === actualInfos.orientation)[0].label } : null}
+                defaultValue={actualInfos.orientation ? { value: actualInfos.orientation, label: orientations.filter(g => g.value === actualInfos.orientation)[0].label } : null}
                 options={orientations}
                 placeholder="Sélectionnez votre orientation"
                 styles={{
@@ -153,7 +153,7 @@ export const RegisterPreferences = (): JSX.Element => {
                 isSearchable={true}
                 isClearable={true}
                 onChange={(mytags) => setSelectedTags(mytags as IComboBoxItem[])}
-                defaultValue={actualInfos.tags.length > 0 ? tags.filter(t => actualInfos.tags.some(ut => t.value === ut)) : []}
+                defaultValue={actualInfos.tags?.length > 0 ? tags.filter(t => actualInfos.tags.some(ut => t.value === ut)) : []}
                 options={tags}
                 placeholder="Sélectionnez vos tags"
                 closeMenuOnSelect={false}

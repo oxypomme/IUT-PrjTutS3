@@ -66,7 +66,7 @@ function* getProfile(action) {
     }
 }
 
-function* getCurrProfile(action) {
+function* getCurrProfileSaga(action) {
     try {
         const authId = yield select(getAuthId);
 
@@ -136,12 +136,17 @@ function* createProfileSaga(action) {
 function* updateProfileSaga(action) {
     try {
         const { request } = action.payload;
-        const authid = yield select(getAuthId);
+        const authId = yield select(getAuthId);
+        const newProfile = yield select(getInfos);
+
         yield call(
             rsf.database[request.type],
-            request.url + '/' + authid,
-            request.params);
+            request.url + '/' + authId,
+            { ...newProfile, ...request.params }
+        );
         yield put(updateProfileSuccess());
+        yield put(clearNewAccount());
+        yield put(fetchCurrProfile());
     } catch (error) {
         yield put(updateProfileFailed(error.message));
     }
@@ -238,7 +243,7 @@ function* getArrayProfile(chan) {
 export default function* profilesSagas() {
     yield all([
         takeLatest(fetchProfile.type, getProfile),
-        takeLatest(fetchCurrProfile.type, getCurrProfile),
+        takeLatest(fetchCurrProfile.type, getCurrProfileSaga),
         takeLatest(createProfile.type, withCallback(createProfileSaga)),
         takeLatest(updateProfile.type, updateProfileSaga),
         takeLatest(deleteProfile.type, withCallback(deleteProfileSaga)),

@@ -56,12 +56,12 @@ createProfile.type = "CREATE_PROFILE_REQUESTED";
 
 export const updateProfile = createAction(
     "EDIT_PROFILE_REQUESTED",
-    (profile: IProfile, params = {}) => ({
+    (params = {}) => ({
         payload: {
             request: {
-                type: "update",
+                type: "patch",
                 url: "/profiles",
-                params: { ...profile, ...params }
+                params: { ...params }
             }
         }
     })

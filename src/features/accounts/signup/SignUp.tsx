@@ -17,9 +17,9 @@ const SignUp = (): JSX.Element => {
 
 
     const actualInfos = useSelector(getNewAuth);
-    const [email, setEmail] = React.useState<string>(actualInfos.email);
-    const [passwd, setPasswd] = React.useState<string>(actualInfos.passwd);
-    const [secondPasswd, setSecondPasswd] = React.useState<string>(actualInfos.passwd);
+    const [email, setEmail] = React.useState<string>(actualInfos.email || "");
+    const [passwd, setPasswd] = React.useState<string>(actualInfos.passwd || "");
+    const [secondPasswd, setSecondPasswd] = React.useState<string>(actualInfos.passwd || "");
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const handleSetEmailOnChange = (event) => setEmail(event.target.value);

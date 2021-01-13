@@ -83,23 +83,10 @@ export const deleteAccount = createAction(
     })
 )
 
-const initialNewAccount = {
-    age: -1,
-    desc: "",
-    imageURL: "",
-    mail: "",
-    passwd: "",
-    name: "",
-    orientation: -1,
-    sex: -1,
-    tags: new Array<number>(0),
-    town: "",
-};
-
 export const accountSlice = createSlice({
     name: "account",
     initialState: {
-        new: initialNewAccount,
+        new: {},
         uid: "",
         isWorking: false,
         error: ""
@@ -263,7 +250,7 @@ export const accountSlice = createSlice({
 
         clearNewAccount: (state) => ({
             ...state,
-            new: initialNewAccount
+            new: {}
         }),
     },
 });
