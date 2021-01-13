@@ -15,6 +15,8 @@ import { getCurrProfile } from '../accounts/profileSlice';
 import { newMessage } from './chatSlice';
 
 const InputContainer = styled.form`
+    width: 100%;
+
     display: flex;
     padding: 4px;
     background: var(--background2);
@@ -109,34 +111,35 @@ const ChatContentInput = ({ profile }: PropsType) => {
         setTextMessage("");
     }
 
+    /*
+                    <AudioPicker sendAction={handleOnActionPicker} />
+            <ImagePicker sendAction={handleOnActionPicker} />
+            <GifPicker sendAction={handleOnActionPicker} />
+     */
+
     return (
-        <div>
-            <InputContainer>
-                <ChatTextBox height={textHeight}>
-                    <FontAwesomeIcon icon={faComments} />
-                    <ChatTextArea
-                        name='message'
-                        placeholder='Message'
-                        value={textMessage}
-                        onChange={handleOnTextChange}
-                        tabIndex={0}
-                        onKeyPress={handleKeyDown}
-                    />
-                    <HiddenLabel htmlFor='message'>
-                        Message
+        <InputContainer>
+            <ChatTextBox height={textHeight}>
+                <FontAwesomeIcon icon={faComments} />
+                <ChatTextArea
+                    name='message'
+                    placeholder='Message'
+                    value={textMessage}
+                    onChange={handleOnTextChange}
+                    tabIndex={0}
+                    onKeyPress={handleKeyDown}
+                />
+                <HiddenLabel htmlFor='message'>
+                    Message
                     </HiddenLabel>
-                </ChatTextBox>
-                <AudioPicker sendAction={handleOnActionPicker} />
-                <ImagePicker sendAction={handleOnActionPicker} />
-                <GifPicker sendAction={handleOnActionPicker} />
-                <ChatButton
-                    primary
-                    onClick={handleOnTextSubmit}
-                >
-                    Envoyer
+            </ChatTextBox>
+            <ChatButton
+                primary
+                onClick={handleOnTextSubmit}
+            >
+                Envoyer
                 </ChatButton>
-            </InputContainer>
-        </div>
+        </InputContainer>
     );
 }
 

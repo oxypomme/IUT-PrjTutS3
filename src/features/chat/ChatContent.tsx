@@ -1,48 +1,21 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { useDispatch, useSelector } from 'react-redux';
-import ProgressBar from '@ramonak/react-progress-bar';
-import { useAlert } from 'react-alert';
+import { useSelector } from 'react-redux';
 import moment from 'moment';
 
-import { WaitingForData } from '../../components/styledComponents';
-import { ProfilePicture } from '../accounts/profile/ProfileComponent';
 import ChatContentItem from './ChatContentItem';
 
-import { getCurrProfile } from '../accounts/profileSlice';
 import { getInChat, getOutChat } from './chatSlice';
-import { cancelUpload, getStorageProgress, getStorageWorking } from '../firestorage/storageSlice';
 
 import IProfile from '../../include/IProfile';
 import IMessage from '../../include/IMessage';
-import ChatContentInput from './ChatContentInput';
 import CoverImage from '../../components/CoverImage';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-
-const ImageProfileContainer = styled.div`
-    width: 45%;
-    max-width: 75px;
-    margin: 0;
-    margin-right: 15px;
-`;
+import UploadProgress from '../firestorage/UploadProgress';
 
 const MainContainer = styled.div`
-    height:100%;
+    height:calc(100% - 61px);
 	display:flex;
 	flex-direction:column;
-`;
-
-const TitleContainer = styled.div`
-    display: flex;
-    border-left: 8px solid var(--accent2);
-    padding: 4px;
-    background: var(--background2);
-
-    & > p {
-        font-weight: bold;
-    }
 `;
 
 const ContentContainer = styled.ul`
@@ -56,30 +29,12 @@ const ContentContainer = styled.ul`
     flex-direction: column;
 `;
 
-const ProgressContainer = styled.div<{ isShowing?: boolean }>`
+const StyledUploadProgress = styled(UploadProgress)`
     position: absolute;
     width: calc(100% - 323px);
     bottom: 65px;
     right: 0;
     height: 20px;
-    background: #333;
-    opacity: 0.75;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    visibility: ${props => props.isShowing ? "visible" : "hidden"};
-    display: flex;
-
-    & > * {
-        flex: 0.95;
-    }
-
-    & > svg {
-        margin-top: 2px;
-        flex: 0.05;
-    }
-    & > svg:hover {
-        cursor: pointer;
-    }
 `;
 
 type PropsType = {
@@ -88,13 +43,9 @@ type PropsType = {
 }
 
 const ChatContent = ({ onClick, profile }: PropsType) => {
-    const alert = useAlert();
-    const dispatch = useDispatch();
 
     const rawInMessages = useSelector(getInChat);
     const rawOutMessages = useSelector(getOutChat);
-    const storageWorkState = useSelector(getStorageWorking);
-    const uploadProgress = useSelector(getStorageProgress);
 
     const [messages, setMessages] = React.useState<IMessage[]>([]);
     const [bigImage, setBigImage] = React.useState<string>(undefined);
@@ -131,44 +82,15 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
         }
     }, [messages])
 
-    const handleCancelUpload = (event) => {
-        event.preventDefault();
-        dispatch(cancelUpload());
-        alert.info("Envoi annulé");
-    }
-
     return (
         <MainContainer>
             <CoverImage src={bigImage} onClick={() => setBigImage(undefined)} />
-            <TitleContainer>
-                <ImageProfileContainer>
-                    <ProfilePicture source={profile.imageURL} />
-                </ImageProfileContainer>
-                <p>{profile?.name || <WaitingForData length={8} />}</p>
-            </TitleContainer>
             <ContentContainer ref={messageRef}>
                 {messages.map((message, index) => (
                     <ChatContentItem key={index} message={message} isOwner={profile?.authId !== message?.sender} onImageClick={onImageClick} />
                 ))}
             </ContentContainer>
-            <ChatContentInput profile={profile} />
-            <ProgressContainer isShowing={storageWorkState}>
-                <ProgressBar
-                    completed={uploadProgress}
-                    bgcolor={"var(--accent2)"}
-                    baseBgColor={"transparent"}
-                    borderRadius={"0"}
-                    height={"10px"}
-                    margin={"5px"}
-                    labelSize={"0"}
-                />
-                <FontAwesomeIcon
-                    icon={faTimes}
-                    color={"white"}
-                    tabIndex={0}
-                    onClick={handleCancelUpload}
-                />
-            </ProgressContainer>
+            <StyledUploadProgress />
         </MainContainer>
     );
 }
