@@ -13,7 +13,6 @@ import { Home } from "./views/Home";
 import { Login } from "./views/Login/Login";
 import { NotFound } from "./views/Errors/NotFound";
 import { PublicHome } from "./views/Home/PublicHome";
-import { Camera } from "./../src/features/camera/Camera";
 import { Profile } from "./views/Profile";
 import Matches from "./views/Matches";
 import Chat from "./views/Chat";
@@ -44,7 +43,6 @@ function App(): JSX.Element {
                 <Switch>
                     <Route exact path='/' component={Home} />
                     <Route exact path='/profile' component={Profile} />
-                    <Route exact path='/camera' component={Camera} />
                     <Route exact path='/matches' component={Matches} />
                     <Route exact path='/chat' component={Chat} />
                     <Route component={NotFound} />
@@ -57,7 +55,6 @@ function App(): JSX.Element {
                     <Route exact path='/SignUp/2' component={CreatePreferences} />
                     <Route exact path='/SignUp/3' component={CreateFinishing} />
                     <Route exact path='/SignUp/4' component={CreateConfirm} />
-                    <Route exact path='/camera' component={Camera} />
                     <Route component={NotFound} />
                 </Switch>
             }
