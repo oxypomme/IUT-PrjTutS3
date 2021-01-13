@@ -18,9 +18,14 @@ import SelectGiphy from './SelectGiphy';
 
 const InputContainer = styled.form`
     display: flex;
+
+`;
+
+const MessageContainer = styled.div`
+    display: flex;
     padding: 4px;
     background: var(--background2);
-
+    width: 100%;
     & > svg {
         margin: auto;
     }
@@ -60,61 +65,38 @@ const ChatContentInput = ({ profile }: PropsType) => {
     const [showUploadGiphy, setShowUploadGiphy] = React.useState(false);
 
     const [textMessage, setTextMessage] = React.useState<string>("");
-    const [mediaString, setMediaString] = React.useState<string>("");
-    const [mediaBlob, setMediaBlob] = React.useState<Blob>(undefined);
-    const [mediaType, setMediaType] = React.useState<string>("");
 
     const handleOnTextChange = (event) => setTextMessage(event.target.value);
 
-    const handleOnTextSubmit = (event: React.BaseSyntheticEvent) => {
-        event.preventDefault();
-        if (textMessage || mediaType) {
-            if (mediaType === "audios") {
-                dispatch(newMessage({
-                    sender: currProfile.authId,
-                    target: profile.authId,
-                    content: {
-                        text: textMessage,
-                        media: mediaBlob,
-                        type: mediaType
-                    },
-                    read: false,
-                    date: new Date().toLocaleString('en-GB')
-                }, "uploadFile"));
-                setMediaBlob(undefined);
-            } else if (mediaType === "giphy") {
-                dispatch(newMessage({
-                    sender: currProfile.authId,
-                    target: profile.authId,
-                    content: {
-                        text: textMessage,
-                        media: mediaBlob,
-                        type: mediaType
-                    },
-                    read: false,
-                    date: new Date().toLocaleString('en-GB')
-                }, ""));
-                setMediaBlob(undefined);
+    const sendMessage = (text?: string, media?: string | Blob, type?: string) => {
+        if (text || type) {
+            const message = {
+                sender: currProfile.authId,
+                target: profile.authId,
+                content: {
+                    text,
+                    media,
+                    type
+                },
+                read: false,
+                date: new Date().toLocaleString('en-GB')
+            };
+
+            if (type === "audios") {
+                dispatch(newMessage(message, "uploadFile"));
             } else {
-                dispatch(newMessage({
-                    sender: currProfile.authId,
-                    target: profile.authId,
-                    content: {
-                        text: textMessage,
-                        media: mediaString,
-                        type: mediaType
-                    },
-                    read: false,
-                    date: new Date().toLocaleString('en-GB')
-                }));
-                setMediaString("");
+                dispatch(newMessage(message));
             }
-            setTextMessage("");
-            setMediaType("");
         }
         else {
             alert.error("Vous ne pouvez pas envoyer un message vide.");
         }
+    }
+
+    const handleOnTextSubmit = (event: React.BaseSyntheticEvent) => {
+        event.preventDefault();
+        sendMessage(textMessage);
+        setTextMessage("");
     }
 
     const handleMicroClick = (event: React.SyntheticEvent) => {
@@ -134,40 +116,34 @@ const ChatContentInput = ({ profile }: PropsType) => {
 
     const handleImageSend = (event: React.SyntheticEvent, picture: string) => {
         event.preventDefault();
-        setMediaString(picture);
-        setMediaType("images")
         setShowUploadImage(false);
+        sendMessage(textMessage, picture, "images");
     }
 
     const handleImageCancel = (event: React.SyntheticEvent) => {
         event.preventDefault();
-        setMediaType("")
         setShowUploadImage(false);
     }
 
     const handleMicRecordSend = (event: React.SyntheticEvent, micRecord: Blob) => {
         event.preventDefault();
-        setMediaBlob(micRecord);
-        setMediaType("audios")
         setShowUploadMicRecord(false);
+        sendMessage(textMessage, micRecord, "audios");
     }
 
     const handleMicRecordCancel = (event: React.SyntheticEvent) => {
         event.preventDefault();
-        setMediaType("")
         setShowUploadMicRecord(false);
     }
 
     const handleGiphySend = (event: React.SyntheticEvent, gifLink: string) => {
         event.preventDefault();
-        setMediaString(gifLink);
-        setMediaType("giphy")
+        sendMessage(textMessage, gifLink, "giphy");
         setShowUploadGiphy(false);
     }
 
     const handleGiphyCancel = (event: React.SyntheticEvent) => {
         event.preventDefault();
-        setMediaType("")
         setShowUploadGiphy(false);
     }
 
@@ -190,29 +166,31 @@ const ChatContentInput = ({ profile }: PropsType) => {
             <FrontContainer isShowing={showUploadGiphy}>
                 <SelectGiphy onOk={handleGiphySend} onCancel={handleGiphyCancel} />
             </FrontContainer>
-            <ChatTextBox>
-                <FontAwesomeIcon icon={faComments} />
-                <ChatTextArea
-                    name='message'
-                    placeholder='Message'
-                    value={textMessage}
-                    onChange={handleOnTextChange}
-                    tabIndex={0}
-                    onKeyPress={handleKeyDown}
-                />
-                <HiddenLabel htmlFor='message'>
-                    Message
+            <MessageContainer>
+                <ChatTextBox>
+                    <FontAwesomeIcon icon={faComments} />
+                    <ChatTextArea
+                        name='message'
+                        placeholder='Message'
+                        value={textMessage}
+                        onChange={handleOnTextChange}
+                        tabIndex={0}
+                        onKeyPress={handleKeyDown}
+                    />
+                    <HiddenLabel htmlFor='message'>
+                        Message
                 </HiddenLabel>
-            </ChatTextBox>
-            <FontAwesomeIcon icon={faMicrophone} size="2x" color={mediaType === "audios" ? "var(--accent2)" : "gray"} tabIndex={100} onClick={handleMicroClick} />
-            <FontAwesomeIcon icon={faCameraRetro} size="2x" color={mediaType === "images" ? "var(--accent2)" : "gray"} tabIndex={101} onClick={handleImageClick} />
-            <FontAwesomeIcon icon={faFileImage} size="2x" color={mediaType === "giphy" ? "var(--accent2)" : "gray"} tabIndex={102} onClick={handleGiphyClick} />
-            <ChatButton
-                primary
-                onClick={handleOnTextSubmit}
-            >
-                Envoyer
+                </ChatTextBox>
+                <FontAwesomeIcon icon={faMicrophone} size="2x" color={"var(--accent2)"} tabIndex={100} onClick={handleMicroClick} />
+                <FontAwesomeIcon icon={faCameraRetro} size="2x" color={"var(--accent2)"} tabIndex={101} onClick={handleImageClick} />
+                <FontAwesomeIcon icon={faFileImage} size="2x" color={"var(--accent2)"} tabIndex={102} onClick={handleGiphyClick} />
+                <ChatButton
+                    primary
+                    onClick={handleOnTextSubmit}
+                >
+                    Envoyer
                 </ChatButton>
+            </MessageContainer>
         </InputContainer>
     );
 }
