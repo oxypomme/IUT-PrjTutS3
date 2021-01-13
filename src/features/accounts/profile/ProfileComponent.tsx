@@ -16,7 +16,7 @@ import EOrientation from '../../../include/EOrientation';
 
 import { Button, WaitingForData } from '../../../components/styledComponents';
 import { newMatch, updateMatch } from '../matches/matchesSlice';
-import { deleteProfile } from '../profileSlice';
+import { deleteProfile, updateProfile } from '../profileSlice';
 
 export const ProfilePicture = styled.img <{ source?: string }> `
     width: 100%;
@@ -102,10 +102,11 @@ const ButtonContainer = styled.div`
 type PropsType = {
     profile: IProfile,
     isMatchable?: boolean,
-    isDeletable?: boolean
+    isDeletable?: boolean,
+    handleEditProfile?: (event: React.SyntheticEvent) => void;
 }
 
-const ProfileComponent = ({ profile, isMatchable, isDeletable }: PropsType): JSX.Element => {
+const ProfileComponent = ({ profile, isMatchable, isDeletable, handleEditProfile }: PropsType): JSX.Element => {
     const dispatch = useDispatch();
     const alert = useAlert();
     const history = useHistory();
@@ -174,6 +175,13 @@ const ProfileComponent = ({ profile, isMatchable, isDeletable }: PropsType): JSX
         );
     }
 
+    // const handleUpdate = (event: React.SyntheticEvent) => {
+    //     event.preventDefault();
+    //     dispatch(
+    //         updateProfile(profile)
+    //     )
+    // }
+
     return (
         <Profile>
             <div>
@@ -201,8 +209,10 @@ const ProfileComponent = ({ profile, isMatchable, isDeletable }: PropsType): JSX
                         <Button onClick={handleMatch} primary>Match</Button>
                     </ButtonContainer>
                     : <></>}
+
                 {isDeletable ?
                     <ButtonContainer>
+                        <Button onClick={handleEditProfile}>Modifier le compte</Button>
                         <Button onClick={handleDelete} danger style={{ width: "100%" }}>Supprimer le compte</Button>
                     </ButtonContainer>
                     : <></>
