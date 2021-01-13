@@ -9,12 +9,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCalendarAlt, faBuilding, faGenderless, faHelicopter, faHorse, faMarsDouble, faTransgender, faVenusDouble, faVenusMars } from "@fortawesome/free-solid-svg-icons";
 
 import ErrorComponent from '../../../components/ErrorComponent';
-import { Button, TextBox, HiddenLabel } from '../../../components/styledComponents';
+import { Button, TextBox, HiddenLabel, ButtonFlex } from '../../../components/styledComponents';
 import UploadFile from '../../firestorage/UploadFile';
 
 import { getAllTags, fetchTags } from '../tagSlice';
 import { getCurrProfile } from '../profileSlice';
-import { addAge, addCity, addName, addGender, addPrefs, addTags, addDesc, addPhoto, getPrefsInfos } from "../accountSlice";
+import { addAge, addCity, addName, addGender, addPrefs, addTags, addDesc, addPhoto } from "../accountSlice";
 
 import IProfile from '../../../include/IProfile';
 import EOrientation from "../../../include/EOrientation";
@@ -56,19 +56,21 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
     const currProfile = useSelector(getCurrProfile);
     const tags: Array<IComboBoxItem> = useSelector(getAllTags);
 
-    // TODO default values @AvaN0x
-    // const prefInfos = useSelector(getPrefsInfos);
-    // const [name, setName] = React.useState(prefInfos.name);
-    // const [age, setAge] = React.useState<number>(prefInfos.age !== -1 ? prefInfos.age : 18);
-    // const [town, setTown] = React.useState(prefInfos.town);
-    const [name, setName] = React.useState("");
-    const [age, setAge] = React.useState<number>(18);
-    const [town, setTown] = React.useState("");
-    const [selectedTags, setSelectedTags] = React.useState<Array<IComboBoxItem>>([]);
-    const [selectedGender, setSelectedGender] = React.useState<Array<IComboBoxItem>>([]);
-    const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IComboBoxItem>>([]);
-    const [picture, setPicture] = React.useState<string>("");
-    const [description, setDescription] = React.useState<string>("");
+    // const currProfile = useSelector(getcurrProfile);
+    const [name, setName] = React.useState(currProfile.name || "");
+    const [age, setAge] = React.useState<number>(currProfile.age ? currProfile.age : 18);
+    const [town, setTown] = React.useState(currProfile.town || "");
+
+
+    // const currProfile = useSelector(getcurrProfile);
+    const [selectedTags, setSelectedTags] = React.useState<Array<IComboBoxItem>>(currProfile?.tags?.length > 0 ? tags.filter(t => currProfile.tags.some(ut => t.value === ut)) : []);
+    const [selectedGender, setSelectedGender] = React.useState<Array<IComboBoxItem>>(currProfile?.sex ? [{ value: currProfile.sex, label: "" }] : []);
+    const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IComboBoxItem>>(currProfile?.orientation ? [{ value: currProfile.orientation, label: "" }] : []);
+
+    // const currProfile = useSelector(getcurrProfile);
+    const [picture, setPicture] = React.useState<string>(currProfile.imageURL || "");
+    const [description, setDescription] = React.useState<string>(currProfile.desc || "");
+
     const [globalErrors, setGlobalErrors] = React.useState<Array<IError>>([]);
 
     const genders = [
@@ -148,7 +150,7 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
 
     return (
         <div>
-            <UploadFile defaultURL={"https://www.lesoir.be/sites/default/files/dpistyles_v2/ena_16_9_extra_big/2020/02/17/node_280979/27427088/public/2020/02/17/B9722622052Z.1_20200217212210_000+GIPFHQRIL.1-0.jpg?itok=rm26feJT1582732791"} onSnapExtension={handleFile} />
+            <UploadFile defaultURL={currProfile.imageURL} onSnapExtension={handleFile} />
             <ErrorComponent array={globalErrors} name={"picture"}></ErrorComponent><TextBox borderColor={globalErrors.some(e => e.component === "name") ? 'red' : 'default'}>
                 <FontAwesomeIcon icon={faUser} />
                 <input
@@ -198,6 +200,7 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
                 isSearchable={true}
                 isClearable={true}
                 onChange={mygender => setSelectedGender([mygender as IComboBoxItem])}
+                defaultValue={currProfile?.sex ? { value: currProfile.sex, label: genders.filter(g => g.value === currProfile.sex)[0].label } : null}
                 options={genders}
                 placeholder="Sélectionnez votre genre"
                 styles={{
@@ -216,6 +219,7 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
                 isSearchable={true}
                 isClearable={true}
                 onChange={myorientation => setSelectedOrientation([myorientation as IComboBoxItem])}
+                defaultValue={currProfile?.orientation ? { value: currProfile.orientation, label: orientations.filter(g => g.value === currProfile.orientation)[0].label } : null}
                 options={orientations}
                 placeholder="Sélectionnez votre orientation"
                 styles={{
@@ -237,6 +241,7 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
                 isSearchable={true}
                 isClearable={true}
                 onChange={(mytags) => setSelectedTags(mytags as IComboBoxItem[])}
+                defaultValue={currProfile?.tags?.length > 0 ? tags.filter(t => currProfile.tags.some(ut => t.value === ut)) : []}
                 options={tags}
                 placeholder="Sélectionnez vos tags"
                 closeMenuOnSelect={false}
@@ -270,9 +275,10 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
                 </HiddenLabel>
             </TextBox>
             <ErrorComponent array={globalErrors} name={"description"}></ErrorComponent>
-            <Button onClick={handleBack}>Retour</Button>
-            <Button onClick={handleOnSubmit}>Enregistrer les modifications</Button>
-
+            <ButtonFlex>
+                <Button onClick={handleBack}>Retour</Button>
+                <Button primary onClick={handleOnSubmit}>Enregistrer les modifications</Button>
+            </ButtonFlex>
         </div>
     );
 }
