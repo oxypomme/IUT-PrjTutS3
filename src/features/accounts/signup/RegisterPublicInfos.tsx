@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useAlert } from "react-alert";
 
-import { getUploadedFiles } from "../../firestorage/storageSlice";
-
 import { Button, ButtonFlex, ErrorLabel, HiddenLabel, TextBox } from "../../../components/styledComponents";
 import { ProfilePicture } from "../profile/ProfileComponent";
 import { addDesc, addPhoto, getInfos, getPublicInfos } from "../accountSlice";

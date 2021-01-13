@@ -15,7 +15,6 @@ import {
     getDlUrlFailed,
     getDlUrlSuccess,
     getStorageError,
-    isUploading,
     uploadFile,
     uploadFileFailed,
     uploadFileSuccess,

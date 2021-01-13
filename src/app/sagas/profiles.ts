@@ -45,7 +45,7 @@ import {
     fetchTagSuccess,
     getTagError
 } from '../../features/accounts/tagSlice';
-import { deleteAvatar, getStorageError, getUploadedFiles, uploadFileFailed, uploadFileSuccess, uploadStringFile } from '../../features/firestorage/storageSlice';
+import { deleteAvatar, getStorageError, uploadFileFailed, uploadFileSuccess, uploadStringFile } from '../../features/firestorage/storageSlice';
 import { syncInMatchesSuccess, syncOutMatchesSuccess } from "../../features/accounts/matches/matchesSlice";
 
 function* getProfile(action) {
@@ -107,7 +107,7 @@ function* createProfileSaga(action) {
         const newProfile = yield select(getInfos);
 
         yield put(uploadStringFile("profiles/" + authid, newProfile.imageURL));
-        yield take([uploadFileSuccess, uploadFileFailed])
+        const { payload } = yield take([uploadFileSuccess, uploadFileFailed])
 
         const storageError = yield select(getStorageError);
         if (storageError !== "") {
@@ -115,14 +115,8 @@ function* createProfileSaga(action) {
         }
 
         const profile = { ...newProfile };
-        const files = yield select(getUploadedFiles);
 
-        let mylink;
-        if ((mylink = files.find(u => u.url === "profiles/" + authid)) !== undefined) {
-            profile.imageURL = mylink.dlUrl;
-        } else {
-            throw new Error("File upload failed.");
-        }
+        profile.imageURL = payload.dlUrl;
 
         yield call(
             rsf.database[request.type],
