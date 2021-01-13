@@ -62,7 +62,7 @@ function* uploadFlow() {
     while (true) {
         const callAction = yield take([uploadFile.type, uploadStringFile.type]);
         const task = yield fork(uploadFileSaga, callAction);
-        const action = yield take([uploadFileFailed, cancelUpload])
+        const action = yield take([uploadFileSuccess, uploadFileFailed, cancelUpload])
         if (action.type == cancelUpload.type) {
             yield cancel(task);
         }
