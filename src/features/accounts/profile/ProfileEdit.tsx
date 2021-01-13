@@ -136,9 +136,13 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
             dispatch(addPrefs(selectedOrientation[0].value));
             dispatch(addDesc(description));
             dispatch(addPhoto(picture));
+
+            // TODO trigger update profile
+            // dispatch(
+            //     updateProfile(profile)
+            // )
         }
     }
-
     const handleFile = (picture: string) => {
         setPicture(picture);
     }

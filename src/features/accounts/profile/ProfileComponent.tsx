@@ -175,13 +175,6 @@ const ProfileComponent = ({ profile, isMatchable, isDeletable, handleEditProfile
         );
     }
 
-    // const handleUpdate = (event: React.SyntheticEvent) => {
-    //     event.preventDefault();
-    //     dispatch(
-    //         updateProfile(profile)
-    //     )
-    // }
-
     return (
         <Profile>
             <div>
