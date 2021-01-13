@@ -39,6 +39,7 @@ const SpeechBubble = styled.div<{ isOwner?: boolean }>`
     float: ${props => (props.isOwner ? "right" : "left")};
     border-radius: 10px;
     height: fit-content;
+    min-width: 30px;
     width: fit-content;
     padding: 10px;
     text-align: justify;
