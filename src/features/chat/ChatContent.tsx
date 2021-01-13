@@ -20,6 +20,7 @@ import CoverImage from '../../components/CoverImage';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import UploadProgress from '../firestorage/UploadProgress';
 
 const ImageProfileContainer = styled.div`
     width: 45%;
@@ -151,7 +152,8 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
                     <ChatContentItem key={index} message={message} isOwner={profile?.authId !== message?.sender} onImageClick={onImageClick} />
                 ))}
             </ContentContainer>
-            <StyledUploadProgress />
+            <UploadProgress />
+            <ChatContentInput profile={profile} />
         </MainContainer>
     );
 }
