@@ -42,7 +42,7 @@ const ChatTextArea = styled.textarea`
 `;
 
 const ChatButton = styled(Button)`
-    height: 100%;
+    height: 65px;
     margin: 0 5px;
 `;
 
@@ -154,7 +154,7 @@ const ChatContentInput = ({ profile }: PropsType) => {
     }
 
     return (
-        <InputContainer>
+        <div>
             <FrontContainer isShowing={showUploadImage} onClick={handleImageCancel}>
                 <UploadFile onOk={handleImageSend} onCancel={handleImageCancel} />
             </FrontContainer>
@@ -164,48 +164,50 @@ const ChatContentInput = ({ profile }: PropsType) => {
             <FrontContainer isShowing={showUploadGiphy} onClick={handleGiphyCancel}>
                 <SelectGiphy onOk={handleGiphySend} onCancel={handleGiphyCancel} />
             </FrontContainer>
-            <ChatTextBox>
-                <FontAwesomeIcon icon={faComments} />
-                <ChatTextArea
-                    name='message'
-                    placeholder='Message'
-                    value={textMessage}
-                    onChange={handleOnTextChange}
-                    tabIndex={0}
-                    onKeyPress={handleKeyDown}
-                />
-                <HiddenLabel htmlFor='message'>
-                    Message
+            <InputContainer>
+                <ChatTextBox>
+                    <FontAwesomeIcon icon={faComments} />
+                    <ChatTextArea
+                        name='message'
+                        placeholder='Message'
+                        value={textMessage}
+                        onChange={handleOnTextChange}
+                        tabIndex={0}
+                        onKeyPress={handleKeyDown}
+                    />
+                    <HiddenLabel htmlFor='message'>
+                        Message
                     </HiddenLabel>
-            </ChatTextBox>
-            <FontAwesomeIcon
-                icon={faMicrophone}
-                size="2x"
-                color={"silver"}
-                tabIndex={100}
-                onClick={handleMicroClick}
-            />
-            <FontAwesomeIcon
-                icon={faCameraRetro}
-                size="2x"
-                color={"silver"}
-                tabIndex={101}
-                onClick={handleImageClick}
-            />
-            <FontAwesomeIcon
-                icon={faFileImage}
-                size="2x"
-                color={"silver"}
-                tabIndex={102}
-                onClick={handleGiphyClick}
-            />
-            <ChatButton
-                primary
-                onClick={handleOnTextSubmit}
-            >
-                Envoyer
+                </ChatTextBox>
+                <FontAwesomeIcon
+                    icon={faMicrophone}
+                    size="2x"
+                    color={"silver"}
+                    tabIndex={100}
+                    onClick={handleMicroClick}
+                />
+                <FontAwesomeIcon
+                    icon={faCameraRetro}
+                    size="2x"
+                    color={"silver"}
+                    tabIndex={101}
+                    onClick={handleImageClick}
+                />
+                <FontAwesomeIcon
+                    icon={faFileImage}
+                    size="2x"
+                    color={"silver"}
+                    tabIndex={102}
+                    onClick={handleGiphyClick}
+                />
+                <ChatButton
+                    primary
+                    onClick={handleOnTextSubmit}
+                >
+                    Envoyer
                 </ChatButton>
-        </InputContainer>
+            </InputContainer>
+        </div>
     );
 }
 
