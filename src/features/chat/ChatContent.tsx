@@ -101,7 +101,6 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
     const [bigImage, setBigImage] = React.useState<string>(undefined);
 
     const onImageClick = (link: string) => {
-        console.log(link);
         setBigImage(link);
     }
 
