@@ -132,12 +132,6 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
         }
     }, [messages])
 
-    const handleCancelUpload = (event) => {
-        event.preventDefault();
-        dispatch(cancelUpload());
-        alert.info("Envoi annulé");
-    }
-
     return (
         <MainContainer>
             <CoverImage src={bigImage} onClick={() => setBigImage(undefined)} />
