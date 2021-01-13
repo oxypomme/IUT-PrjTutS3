@@ -141,6 +141,11 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
         setPicture(picture);
     }
 
+    const handleBack = (event) => {
+        event.preventDefault();
+        history.back()
+    };
+
     return (
         <div>
             <UploadFile defaultURL={"https://www.lesoir.be/sites/default/files/dpistyles_v2/ena_16_9_extra_big/2020/02/17/node_280979/27427088/public/2020/02/17/B9722622052Z.1_20200217212210_000+GIPFHQRIL.1-0.jpg?itok=rm26feJT1582732791"} onSnapExtension={handleFile} />
@@ -265,7 +270,9 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
                 </HiddenLabel>
             </TextBox>
             <ErrorComponent array={globalErrors} name={"description"}></ErrorComponent>
+            <Button onClick={handleBack}>Retour</Button>
             <Button onClick={handleOnSubmit}>Enregistrer les modifications</Button>
+
         </div>
     );
 }
