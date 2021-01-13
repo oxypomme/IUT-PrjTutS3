@@ -46,7 +46,6 @@ function App(): JSX.Element {
                     <Route exact path='/profile' component={Profile} />
                     <Route exact path='/matches' component={Matches} />
                     <Route exact path='/chat' component={Chat} />
-                    <Route exact path='/editProfile' component={ProfileEdit} />
                     <Route component={NotFound} />
                 </Switch>
             }
