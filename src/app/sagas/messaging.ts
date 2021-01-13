@@ -20,11 +20,11 @@ function* createMessage(action) {
 
         const { request } = action.payload;
         const { data, ...params } = request.params;
-        let media;
+        let media = data.content.media;
 
-        if (data.content.media) {
+        if (data.content.media && request.typeUpload) {
             const uid = uuidv4();
-            yield put(uploadTypes[request.typeUpload]("messages/" + data.content.type + '/' + uid, data.content.media));
+            yield put(uploadTypes[request.typeUpload](request.url + "/" + data.content.type + '/' + uid, data.content.media));
 
             const { payload } = yield take([uploadFileSuccess, uploadFileFailed])
 
