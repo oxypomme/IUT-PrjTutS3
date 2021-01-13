@@ -48,6 +48,10 @@ type PropsType = {
     onOk?: (event: React.SyntheticEvent, gifLink: string) => void;
 }
 
+const handleStopPropagation = (event) => {
+    event.stopPropagation();
+}
+
 const SelectGiphy = ({ onCancel, onOk }: PropsType) => {
     const [gifLink, setGifLink] = React.useState<string>(undefined);
 
@@ -67,7 +71,7 @@ const SelectGiphy = ({ onCancel, onOk }: PropsType) => {
     }
 
     return (
-        <Container>
+        <Container onClick={handleStopPropagation}>
             <ImageContainer>
                 <ReactGiphySearchbox
                     apiKey="9Ixlv3DWC1biJRI57RanyL7RTbfzz0o7"

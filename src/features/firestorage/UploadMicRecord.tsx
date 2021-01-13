@@ -59,6 +59,10 @@ type PropsType = {
     onOk?: (event: React.SyntheticEvent, micRecord: Blob) => void;
 }
 
+const handleStopPropagation = (event) => {
+    event.stopPropagation();
+}
+
 const UploadMicRecord = ({ onCancel, onOk }: PropsType) => {
 
     const [recording, setRecording] = React.useState<boolean>();
@@ -84,7 +88,7 @@ const UploadMicRecord = ({ onCancel, onOk }: PropsType) => {
     }
 
     return (
-        <Container>
+        <Container onClick={handleStopPropagation}>
             <ImageContainer>
                 <MicCircle
                     record={recording}

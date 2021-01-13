@@ -109,6 +109,10 @@ type PropsType = {
     onSnapExtension?: (picture: string) => void;
 }
 
+const handleStopPropagation = (event) => {
+    event.stopPropagation();
+}
+
 interface ICam { value: string, label: string; }
 
 const UploadFile = ({ defaultURL, onCancel, onOk, onSnapExtension }: PropsType) => {
@@ -211,7 +215,7 @@ const UploadFile = ({ defaultURL, onCancel, onOk, onSnapExtension }: PropsType) 
     }
 
     return (
-        <Container>
+        <Container onClick={handleStopPropagation}>
             <ImageContainer>
                 <CameraContainer>
                     <Select

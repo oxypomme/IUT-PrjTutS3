@@ -159,13 +159,13 @@ const ChatContentInput = ({ profile }: PropsType) => {
 
     return (
         <InputContainer>
-            <FrontContainer isShowing={showUploadImage}>
+            <FrontContainer isShowing={showUploadImage} onClick={handleImageCancel}>
                 <UploadFile onOk={handleImageSend} onCancel={handleImageCancel} />
             </FrontContainer>
-            <FrontContainer isShowing={showUploadMicRecord}>
+            <FrontContainer isShowing={showUploadMicRecord} onClick={handleMicRecordCancel}>
                 <UploadMicRecord onOk={handleMicRecordSend} onCancel={handleMicRecordCancel} />
             </FrontContainer>
-            <FrontContainer isShowing={showUploadGiphy}>
+            <FrontContainer isShowing={showUploadGiphy} onClick={handleGiphyCancel}>
                 <SelectGiphy onOk={handleGiphySend} onCancel={handleGiphyCancel} />
             </FrontContainer>
             <MessageContainer>
