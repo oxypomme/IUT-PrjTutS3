@@ -120,7 +120,10 @@ const ChatMenuItem = ({ onClick, profile, isActive }: PropsType) => {
                         lastMessage?.content?.type === "audios" ?
                             <><FontAwesomeIcon icon={faFileAudio} />Audio</>
                             :
-                            <p>Fichier</p>
+                            lastMessage?.content?.type === "giphy" ?
+                                <><FontAwesomeIcon icon={faFileImage} />Gif</>
+                                :
+                                <p>Fichier</p>
                     :
                     <WaitingForData length={16} />
             }
