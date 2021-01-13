@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 import ProgressBar from '@ramonak/react-progress-bar';
 import { useAlert } from 'react-alert';
+import moment from 'moment';
 
 import { WaitingForData } from '../../components/styledComponents';
 import { ProfilePicture } from '../accounts/profile/ProfileComponent';
@@ -120,7 +121,7 @@ const ChatContent = ({ onClick, profile }: PropsType) => {
                 }
             }
         }
-        setMessages(msgs.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()));
+        setMessages(msgs.sort((a, b) => moment(a.date, "DD-MM-YYYY, HH:mm:SS").toDate().getTime() - moment(b.date, "DD-MM-YYYY, HH:mm:SS").toDate().getTime()));
     }, [rawInMessages, rawOutMessages, profile]);
 
     const messageRef = React.useRef(null);
