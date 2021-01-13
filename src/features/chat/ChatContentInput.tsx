@@ -84,6 +84,8 @@ const ChatContentInput = ({ profile }: PropsType) => {
 
             if (type === "audios") {
                 dispatch(newMessage(message, "uploadFile"));
+            } else if (type === "giphy") {
+                dispatch(newMessage(message, ""));
             } else {
                 dispatch(newMessage(message));
             }
