@@ -85,7 +85,7 @@ const ChatContentItem = ({ onClick, message, isOwner }: PropsType) => {
                 }
                 <p></p> {/* BUG fix style*/}
             </SpeechBubble>
-            <p>{new Date(message?.date).toLocaleString("en-GB") || <WaitingForData length={8} />}</p>
+            <p>{message?.date || <WaitingForData length={8} />}</p>
         </Item>
     );
 }
