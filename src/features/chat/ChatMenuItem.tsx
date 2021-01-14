@@ -9,7 +9,7 @@ import { WaitingForData } from '../../components/styledComponents';
 import IProfile from '../../include/IProfile';
 import IMessage from '../../include/IMessage';
 import { useSelector } from 'react-redux';
-import { getInChat } from './chatSlice';
+import { getInChat, getOutChat } from './chatSlice';
 
 import markdownOptions from './MarkdownOverride';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -80,6 +80,7 @@ type PropsType = {
 
 const ChatMenuItem = ({ onClick, profile, isActive }: PropsType) => {
     const rawInMessages = useSelector(getInChat);
+    const rawOutMessages = useSelector(getOutChat);
 
     const [lastMessage, setLastMessage] = React.useState<IMessage>();
 
@@ -88,15 +89,26 @@ const ChatMenuItem = ({ onClick, profile, isActive }: PropsType) => {
     }
 
     React.useEffect(() => {
+        let tempLastMessage: IMessage;
         if (rawInMessages && Object.keys(rawInMessages).length > 0) {
             for (const key in rawInMessages) {
                 if (rawInMessages[key]?.sender === profile.authId &&
-                    (!lastMessage || (moment(lastMessage.date, "DD-MM-YYYY, HH:mm:SS").toDate().getTime() < moment(rawInMessages[key].date, "DD-MM-YYYY, HH:mm:SS").toDate().getTime()))) {
-                    setLastMessage(rawInMessages[key]);
+                    (!tempLastMessage || (moment(tempLastMessage.date, "DD-MM-YYYY, HH:mm:SS").toDate().getTime() < moment(rawInMessages[key].date, "DD-MM-YYYY, HH:mm:SS").toDate().getTime()))) {
+                    tempLastMessage = rawInMessages[key];
                 }
             }
         }
-    }, [rawInMessages, profile]);
+        if (rawOutMessages && Object.keys(rawOutMessages).length > 0) {
+            for (const key in rawOutMessages) {
+                if (rawOutMessages[key]?.target === profile.authId &&
+                    (!tempLastMessage || (moment(tempLastMessage.date, "DD-MM-YYYY, HH:mm:SS").toDate().getTime() < moment(rawOutMessages[key].date, "DD-MM-YYYY, HH:mm:SS").toDate().getTime()))) {
+                    tempLastMessage = rawOutMessages[key];
+                }
+            }
+        }
+
+        setLastMessage(tempLastMessage);
+    }, [rawInMessages, rawOutMessages, profile]);
 
     return (
         <Item read={profile?.authId !== lastMessage?.sender && !lastMessage?.read} onClick={handleOnClick} isActive={isActive}>
@@ -111,7 +123,7 @@ const ChatMenuItem = ({ onClick, profile, isActive }: PropsType) => {
             </TitleContainer>
             {lastMessage?.content?.text ?
                 <Markdown options={markdownOptions}>
-                    {lastMessage?.content?.text.replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji))}
+                    {(lastMessage?.target === profile.authId ? "Moi: " + lastMessage?.content?.text : lastMessage?.content?.text).replace(/:[a-z]*:/i, (rawEmoji) => emoji.getUnicode(rawEmoji))}
                 </Markdown>
                 :
                 lastMessage?.content?.type ?
