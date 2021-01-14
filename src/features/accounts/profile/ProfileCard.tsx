@@ -9,7 +9,7 @@ import IProfile from '../../../include/IProfile';
 import ProfileComponent from './ProfileComponent';
 import ProfileEdit from './ProfileEdit';
 
-const ProfileCard = ({ id }: { id?: string }): JSX.Element => {
+const ProfileCard = ({ id, isMatchableOverride }: { id?: string, isMatchableOverride?: boolean }): JSX.Element => {
     const currProfile: IProfile = useSelector(getCurrProfile);
     const profiles: IProfile[] = useSelector(getAllProfiles);
     const uid: string = useSelector(getAuthId);
@@ -24,7 +24,7 @@ const ProfileCard = ({ id }: { id?: string }): JSX.Element => {
 
     if (!isEditing) {
         return (
-            <ProfileComponent profile={profile} isMatchable={profile !== currProfile} isDeletable={uid !== "" && profile === currProfile} handleEditProfile={toggleIsEditing} />
+            <ProfileComponent profile={profile} isMatchable={isMatchableOverride !== undefined ? isMatchableOverride : profile !== currProfile} isDeletable={uid !== "" && profile === currProfile} handleEditProfile={toggleIsEditing} />
         );
     }
     else {

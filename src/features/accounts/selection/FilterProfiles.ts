@@ -46,7 +46,7 @@ const filterProfiles = async ({ sex: mySex, orientation: myOrientation, tags: my
         const profile = profiles[key];
         if (myProfileId !== key) {
             const score = calcScore(profile);
-            if (score > 10 && (!matches || !Object.keys(matches).find(matchId => matches[matchId]?.target === key))) {
+            if (score > 10 && (!matches || Object.keys(matches).findIndex(matchId => matches[matchId]?.target === key) === -1)) {
                 if (mySex === EGender.NonBinary) {
                     if (profile.sex === EGender.NonBinary) {
                         profilesScore.push({ key, score });
@@ -87,19 +87,64 @@ const filterProfiles = async ({ sex: mySex, orientation: myOrientation, tags: my
     return profilesScore.sort((a, b) => b.score - a.score);
 }
 
-export const randomProfile = async (myProfileId: string): Promise<string> => {
+export const randomProfile = async ({ sex: mySex, orientation: myOrientation, authId: myProfileId }: IProfile): Promise<string> => {
     const profiles = (await Pref.once('value')).val();
 
     const Mref = db.ref('/matches/').orderByChild('sender').equalTo(myProfileId);
     const matches = (await Mref.once('value')).val();
 
-    let key: string;
+    let nbTries = 0;
+    let result = undefined;
 
     do {
+        nbTries++;
         const rndId = Math.floor(Math.random() * Math.floor(Object.keys(profiles).length + 1));
-        key = Object.keys(profiles)[rndId];
-    } while (!Object.keys(matches).find(matchId => matches[matchId]?.target === key));
-    return key;
+        const key = Object.keys(profiles)[rndId];
+        const profile = profiles[key];
+
+        if (myProfileId !== key) {
+            if ((!matches || Object.keys(matches).findIndex(matchId => matches[matchId]?.target === key) === -1)) {
+                if (mySex === EGender.NonBinary) {
+                    if (profile.sex === EGender.NonBinary) {
+                        result = key
+                    }
+                }
+                else if (profile.sex !== EGender.NonBinary) { // Men or Women
+                    if (myOrientation === EOrientation.Bisexual) {
+                        if (profile.orientation === EOrientation.Homosexual) {
+                            if (mySex === profile.sex) {
+                                result = key
+                            }
+                        }
+                        else if (profile.orientation === EOrientation.Heterosexual) {
+                            if (mySex !== profile.sex) {
+                                result = key
+                            }
+                        }
+                        else { // profile is Bi
+                            result = key
+                        }
+                    } else if (myOrientation === EOrientation.Heterosexual) {
+                        if (mySex !== profile.sex) {
+                            if (profile.orientation !== EOrientation.Homosexual) {
+                                result = key
+                            }
+                        }
+                    } else { // if (myOrientation === EOrientation.Homosexual)
+                        if (mySex === profile.sex) {
+                            if (profile.orientation !== EOrientation.Heterosexual) {
+                                result = key
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (result || nbTries >= Object.keys(profiles).length) {
+            return Object.keys(profiles)[rndId];
+        }
+    } while (!result);
+
 }
 
 export default filterProfiles;

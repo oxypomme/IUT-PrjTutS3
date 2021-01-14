@@ -15,6 +15,7 @@ import { NotFound } from "./views/Errors/NotFound";
 import { PublicHome } from "./views/Home/PublicHome";
 import { Profile } from "./views/Profile";
 import Matches from "./views/Matches";
+import Surprise from "./views/Matches/Surprise"
 import Chat from "./views/Chat";
 import { CreatePersonal, CreatePreferences, CreateFinishing, CreateConfirm } from "./views/CreateProfile";
 
@@ -46,6 +47,7 @@ function App(): JSX.Element {
                     <Route exact path='/profile' component={Profile} />
                     <Route exact path='/matches' component={Matches} />
                     <Route exact path='/chat' component={Chat} />
+                    <Route exact path='/surprise' component={Surprise} />
                     <Route component={NotFound} />
                 </Switch>
             }
