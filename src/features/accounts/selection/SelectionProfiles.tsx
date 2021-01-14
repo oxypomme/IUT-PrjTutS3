@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchArrayProfile, getCurrProfile } from '../profileSlice';
+import { fetchArrayProfile, getCurrProfile, getProfileWork } from '../profileSlice';
 import { getOutgoingMatches } from '../matches/matchesSlice';
 
 import { WaitingForData } from '../../../components/styledComponents';
@@ -10,6 +10,8 @@ import IProfile, { instanceOfIProfile } from '../../../include/IProfile';
 import filterProfiles from './FilterProfiles';
 
 import ProfileCard from '../profile/ProfileCard';
+import LoadContainer from '../../../components/LoadContainer';
+import { getTagWork } from '../tagSlice';
 
 const ProfilesContainer = styled.div`
     & > div {
@@ -23,6 +25,9 @@ const SelectionProfiles = (): JSX.Element => {
     const [loading, setLoading] = React.useState<boolean | null>(false);
     const currProfile: IProfile | Record<string, never> = useSelector(getCurrProfile);
     const matches = useSelector(getOutgoingMatches);
+    const isProfileWorking = useSelector(getProfileWork);
+    const isTagWorking = useSelector(getTagWork);
+    const isWorking = isTagWorking || isProfileWorking;
 
     React.useEffect(() => {
         (async () => {
@@ -47,6 +52,7 @@ const SelectionProfiles = (): JSX.Element => {
 
     return (
         <ProfilesContainer>
+            <LoadContainer isShowing={isWorking} loadIcon />
             {!loading ? matchableKeys?.map((authId, index) => (
                 <ProfileCard id={authId} key={index} />
             )) : (loading === null ? 'ERROR, see console for more info' : <WaitingForData length={16} />)}

@@ -83,7 +83,7 @@ export const tagSlice = createSlice({
 
             return {
                 ...state,
-                isWorking: false,
+                isFetching: false,
                 error: "",
                 tags
             }
@@ -104,7 +104,7 @@ export const tagSlice = createSlice({
 
             return {
                 ...state,
-                isWorking: false,
+                isFetching: false,
                 error: "",
                 tags
             }
@@ -129,8 +129,8 @@ export const {
 export const getState = state => state.tags;
 
 export const getAllTags = createSelector(getState, (state) => state.tags);
-
 export const getTagError = createSelector(getState, (state) => state.error);
+export const getTagWork = createSelector(getState, (state) => state.isFetching);
 
 export default tagSlice.reducer;
 

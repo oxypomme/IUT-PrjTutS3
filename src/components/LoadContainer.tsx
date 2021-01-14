@@ -36,6 +36,9 @@ const IconContainer = styled.div`
 `;
 
 const StyledFrontContainer = styled(FrontContainer)`
+    position: fixed;
+    margin: 0 !important;
+
     & > div {
         width: 80%;
     }
@@ -48,8 +51,6 @@ type PropsType = {
 }
 
 const LoadContainer = ({ isShowing, loadIcon, children }: PropsType) => {
-    console.log(isShowing);
-
     if (isShowing) {
         return (
             <StyledFrontContainer isShowing={isShowing}>
