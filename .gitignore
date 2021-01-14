@@ -34,3 +34,6 @@ desktop.ini
 firebaseconfig.js
 
 /src/tests/test.tsx
+
+.firebase/
+.firebaserc
