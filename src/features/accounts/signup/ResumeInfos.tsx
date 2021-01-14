@@ -14,12 +14,6 @@ import { createProfile, getProfileWork } from '../profileSlice';
 import CheckBox from '../../../components/CheckBox';
 import UploadProgress from '../../firestorage/UploadProgress';
 
-const UploadProgressContainer = styled.div`
-    width: 1002px;
-    margin: auto;
-    z-index: 20000;
-`;
-
 const ResumeInfos = () => {
     const dispatch = useDispatch();
     const history = useHistory();
@@ -66,10 +60,9 @@ const ResumeInfos = () => {
 
     return (
         <div>
-            <UploadProgressContainer>
+            <FrontContainer isShowing={isWorking}>
                 <UploadProgress />
-            </UploadProgressContainer>
-            <FrontContainer isShowing={isWorking} />
+            </FrontContainer>
             <ProfileComponent profile={profile} />
             <ButtonFlex>
                 <Button onClick={handleBack}>Retour</Button>

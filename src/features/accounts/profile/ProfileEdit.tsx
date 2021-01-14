@@ -73,12 +73,6 @@ const PublicEditContainer = styled.div`
     width: 400px;
 `;
 
-const UploadProgressContainer = styled.div`
-    width: 1002px;
-    margin: auto;
-    z-index: 20000;
-`;
-
 type PropsType = {
     profile: IProfile,
 }
@@ -207,10 +201,9 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
 
     return (
         <ProfileEditContainer>
-            <UploadProgressContainer>
+            <FrontContainer isShowing={isWorking}>
                 <UploadProgress />
-            </UploadProgressContainer>
-            <FrontContainer isShowing={isWorking} />
+            </FrontContainer>
 
             <UploadFileContainer>
                 <ImagePicker sendAction={handleFile} />
