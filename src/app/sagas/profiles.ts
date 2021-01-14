@@ -152,17 +152,19 @@ function* updateProfileSaga(action) {
         const authId = yield select(getAuthId);
         const newProfile = yield select(getInfos);
 
-        yield put(uploadStringFile("profiles/" + authId, newProfile.imageURL));
-        const { payload } = yield take([uploadFileSuccess, uploadFileFailed])
-
-
-        const storageError = yield select(getStorageError);
-        if (storageError !== "") {
-            throw new Error(storageError);
-        }
         const profile = { ...newProfile };
+        if (!newProfile.imageURL.match(/[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)?/gi)) {
 
-        profile.imageURL = payload.dlUrl;
+            yield put(uploadStringFile("profiles/" + authId, newProfile.imageURL));
+            const { payload } = yield take([uploadFileSuccess, uploadFileFailed])
+
+            const storageError = yield select(getStorageError);
+            if (storageError !== "") {
+                throw new Error(storageError);
+            }
+
+            profile.imageURL = payload.dlUrl;
+        }
 
         yield call(
             rsf.database[request.type],
