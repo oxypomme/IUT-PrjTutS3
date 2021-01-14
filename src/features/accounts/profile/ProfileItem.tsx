@@ -79,6 +79,12 @@ const InfoList = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     height: 100%;
+
+    & li {
+        overflow:hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
 `;
 
 const Buttons = styled.div`

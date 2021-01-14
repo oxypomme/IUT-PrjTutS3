@@ -50,7 +50,7 @@ export const RegisterPreferences = (): JSX.Element => {
 
     const profile = useSelector(getInfos);
     React.useEffect(() => {
-        if (!profile || profile.name === "" || profile.age < 18 || profile.town === "") {
+        if (!profile || !profile.name || profile.age < 18 || !profile.town) {
             alert.error("Vous n'avez pas rentré tous les champs nécéssaires")
             history.push('/SignUp/1');
         }
@@ -71,7 +71,7 @@ export const RegisterPreferences = (): JSX.Element => {
     ] as IComboBoxItem[]
 
     const orientations = [
-        { value: EOrientation.Homosexual, label: <span><FontStyledIcon icon={selectedGender[0]?.value === 1 ? faVenusDouble : faMarsDouble} />Homosexuel</span> },
+        { value: EOrientation.Homosexual, label: <span><FontStyledIcon icon={selectedGender[0]?.value === EGender.Women ? faVenusDouble : faMarsDouble} />Homosexuel</span> },
         { value: EOrientation.Heterosexual, label: <span><FontStyledIcon icon={faVenusMars} />Hétérosexuel</span> },
         { value: EOrientation.Bisexual, label: <span><FontStyledIcon icon={faTransgender} />Bisexuel</span> }
     ] as IComboBoxItem[]
@@ -103,7 +103,7 @@ export const RegisterPreferences = (): JSX.Element => {
 
     const handleBack = (event) => {
         event.preventDefault();
-        history.goBack()
+        history.push('/SignUp/1');
     };
 
     return (

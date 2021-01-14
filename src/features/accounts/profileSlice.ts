@@ -54,18 +54,18 @@ export const createProfile = (onComplete?: TCallback, params = {}): TCustomActio
 })
 createProfile.type = "CREATE_PROFILE_REQUESTED";
 
-export const updateProfile = createAction(
-    "EDIT_PROFILE_REQUESTED",
-    (params = {}) => ({
-        payload: {
-            request: {
-                type: "patch",
-                url: "/profiles",
-                params: { ...params }
-            }
+export const updateProfile = (onComplete?: TCallback, params = {}): TCustomAction => ({
+    type: updateProfile.type,
+    payload: {
+        request: {
+            type: "patch",
+            url: "/profiles",
+            params: { ...params }
         }
-    })
-);
+    },
+    onComplete
+});
+updateProfile.type = "EDIT_PROFILE_REQUESTED";
 
 export const deleteProfile = (onComplete?: TCallback, params = {}): TCustomAction => ({
     type: deleteProfile.type,
@@ -173,7 +173,6 @@ export const profileSlice = createSlice({
         }),
         fetchCurrProfilesFailed: (state, { payload: message }) => ({
             ...state,
-            isWorking: false,
             error: message
         }),
         createProfileSuccess: (state) => ({
@@ -245,5 +244,6 @@ export const getState = state => state.profiles;
 export const getAllProfiles = createSelector(getState, state => state.profiles);
 export const getCurrProfile = createSelector(getState, state => state.current.profile);
 export const getProfileError = createSelector(getState, state => state.error);
+export const getProfileWork = createSelector(getState, state => state.isWorking);
 
 export default profileSlice.reducer;

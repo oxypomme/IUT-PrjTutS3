@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAlert } from 'react-alert';
 import { useHistory } from 'react-router-dom';
@@ -8,10 +9,16 @@ import '@firebase/auth';
 
 import { getInfos } from '../accountSlice';
 import ProfileComponent from '../profile/ProfileComponent';
-import { Button, ButtonFlex } from '../../../components/styledComponents';
-import { createProfile } from '../profileSlice';
+import { Button, ButtonFlex, FrontContainer } from '../../../components/styledComponents';
+import { createProfile, getProfileWork } from '../profileSlice';
 import CheckBox from '../../../components/CheckBox';
+import UploadProgress from '../../firestorage/UploadProgress';
 
+const UploadProgressContainer = styled.div`
+    width: 1002px;
+    margin: auto;
+    z-index: 20000;
+`;
 
 const ResumeInfos = () => {
     const dispatch = useDispatch();
@@ -19,12 +26,13 @@ const ResumeInfos = () => {
     const alert = useAlert();
 
     const profile = useSelector(getInfos);
+    const isWorking = useSelector(getProfileWork);
     const [persistence, setPersistence] = React.useState<boolean>(false);
 
     const handlePersistanceChange = (event) => setPersistence(event.target.checked);
 
     React.useEffect(() => {
-        if (!profile || profile.desc === "" || profile.imageURL === "") {
+        if (!profile || !profile.desc || !profile.imageURL) {
             alert.error("Vous n'avez pas rentré tous les champs nécéssaires");
             history.push('/SignUp/3');
         }
@@ -53,11 +61,15 @@ const ResumeInfos = () => {
 
     const handleBack = (event) => {
         event.preventDefault();
-        history.goBack()
+        history.push('/SignUp/3');
     };
 
     return (
         <div>
+            <UploadProgressContainer>
+                <UploadProgress />
+            </UploadProgressContainer>
+            <FrontContainer isShowing={isWorking} />
             <ProfileComponent profile={profile} />
             <ButtonFlex>
                 <Button onClick={handleBack}>Retour</Button>

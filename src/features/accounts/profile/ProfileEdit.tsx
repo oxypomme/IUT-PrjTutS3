@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useAlert } from 'react-alert';
 import Select from "react-select";
 import Creatable, { components, MenuProps } from "react-select";
+import { useHistory } from 'react-router-dom';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCalendarAlt, faBuilding, faGenderless, faHelicopter, faHorse, faMarsDouble, faTransgender, faVenusDouble, faVenusMars, faMale, faFemale } from "@fortawesome/free-solid-svg-icons";
@@ -24,7 +25,6 @@ import IComboBoxItem from '../../../include/IComboBoxItem';
 import ITag from "../../../include/IComboBoxItem";
 import { ImagePicker } from '../../../components/Pickers';
 import { ProfilePicture } from './ProfileComponent';
-import AlertTemplate from '../../../AlertTemplate';
 //import ErrorComponent from "../../../components/ErrorComponent";
 
 const FontStyledIcon = styled(FontAwesomeIcon)`
@@ -92,6 +92,7 @@ const Menu = (props: MenuProps<ITag, true>) => {
 const ProfileEdit = (props: PropsType): JSX.Element => {
     const dispatch = useDispatch();
     const alert = useAlert();
+    const history = useHistory();
 
     const currProfile = useSelector(getCurrProfile);
     const tags: Array<IComboBoxItem> = useSelector(getAllTags);
@@ -173,8 +174,7 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
             dispatch(addPrefs(selectedOrientation[0].value));
             dispatch(addDesc(description));
             dispatch(addPhoto(picture));
-            // aide : includes/Delay.ts
-            // TODO trigger update profile
+
             dispatch(
                 updateProfile(({ error }) => {
                     if (error) {
@@ -195,7 +195,7 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
 
     const handleBack = (event) => {
         event.preventDefault();
-        history.back()
+        history.goBack()
     };
 
     return (
@@ -335,11 +335,6 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
                 </TextBox>
                 <ErrorComponent array={globalErrors} name={"description"}></ErrorComponent>
             </PublicEditContainer>
-
-            {/*<UploadFileContainer>
-                <UploadFile defaultURL={currProfile.imageURL} onSnapExtension={handleFile} />
-                <ErrorComponent array={globalErrors} name={"picture"}></ErrorComponent>
-            </UploadFileContainer>*/}
 
             <ButtonFlex>
                 <Button onClick={handleBack}>Retour</Button>

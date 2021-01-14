@@ -48,6 +48,7 @@ function App(): JSX.Element {
                     <Route exact path='/matches' component={Matches} />
                     <Route exact path='/chat' component={Chat} />
                     <Route exact path='/surprise' component={Surprise} />
+                    <Route exact path='/SignUp/4' component={CreateConfirm} />
                     <Route component={NotFound} />
                 </Switch>
             }

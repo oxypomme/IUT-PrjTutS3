@@ -93,6 +93,7 @@ function* getCurrProfileSaga(action) {
 }
 
 function* createProfileSaga(action) {
+    let progress = 0;
     try {
         yield put(createAccount());
         yield take([createAccountSuccess, createAccountFailed]);
@@ -101,6 +102,7 @@ function* createProfileSaga(action) {
         if (authError !== "") {
             throw new Error(authError);
         }
+        progress++;
 
         const { request } = action.payload;
         const authid = yield select(getAuthId);
@@ -113,6 +115,7 @@ function* createProfileSaga(action) {
         if (storageError !== "") {
             throw new Error(storageError);
         }
+        progress++;
 
         const profile = { ...newProfile };
 
@@ -123,12 +126,22 @@ function* createProfileSaga(action) {
             request.url + '/' + authid,
             { ...profile, ...request.params }
         );
+        progress++;
 
         yield put(createProfileSuccess());
         yield put(clearNewAccount());
         yield put(fetchCurrProfile());
     } catch (error) {
         yield put(createProfileFailed(error.message));
+        const authid = yield select(getAuthId);
+        if (progress >= 1) {
+            // Then the auth was created
+            yield put(deleteAccount());
+        }
+        if (progress >= 2) {
+            // Then the photo was uploaded
+            yield put(deleteAvatar(authid));
+        }
         throw error;
     }
 }
@@ -149,6 +162,7 @@ function* updateProfileSaga(action) {
         yield put(fetchCurrProfile());
     } catch (error) {
         yield put(updateProfileFailed(error.message));
+        throw error;
     }
 }
 
@@ -245,7 +259,7 @@ export default function* profilesSagas() {
         takeLatest(fetchProfile.type, getProfile),
         takeLatest(fetchCurrProfile.type, getCurrProfileSaga),
         takeLatest(createProfile.type, withCallback(createProfileSaga)),
-        takeLatest(updateProfile.type, updateProfileSaga),
+        takeLatest(updateProfile.type, withCallback(updateProfileSaga)),
         takeLatest(deleteProfile.type, withCallback(deleteProfileSaga)),
         fork(getArrayProfileChannel),
     ]);
