@@ -87,4 +87,19 @@ const filterProfiles = async ({ sex: mySex, orientation: myOrientation, tags: my
     return profilesScore.sort((a, b) => b.score - a.score);
 }
 
+export const randomProfile = async (myProfileId: string): Promise<string> => {
+    const profiles = (await Pref.once('value')).val();
+
+    const Mref = db.ref('/matches/').orderByChild('sender').equalTo(myProfileId);
+    const matches = (await Mref.once('value')).val();
+
+    let key: string;
+
+    do {
+        const rndId = Math.floor(Math.random() * Math.floor(Object.keys(profiles).length + 1));
+        key = Object.keys(profiles)[rndId];
+    } while (!Object.keys(matches).find(matchId => matches[matchId]?.target === key));
+    return key;
+}
+
 export default filterProfiles;
