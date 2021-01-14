@@ -13,7 +13,7 @@ import { Button, TextBox, HiddenLabel, ButtonFlex } from '../../../components/st
 import UploadFile from '../../firestorage/UploadFile';
 
 import { getAllTags, fetchTags } from '../tagSlice';
-import { getCurrProfile } from '../profileSlice';
+import { getCurrProfile, updateProfile } from '../profileSlice';
 import { addAge, addCity, addName, addGender, addPrefs, addTags, addDesc, addPhoto } from "../accountSlice";
 
 import IProfile from '../../../include/IProfile';
@@ -22,11 +22,10 @@ import EGender from "../../../include/EGender";
 import IError from "../../../include/IError";
 import IComboBoxItem from '../../../include/IComboBoxItem';
 import ITag from "../../../include/IComboBoxItem";
+import { ImagePicker } from '../../../components/Pickers';
+import { ProfilePicture } from './ProfileComponent';
+import AlertTemplate from '../../../AlertTemplate';
 //import ErrorComponent from "../../../components/ErrorComponent";
-
-type PropsType = {
-    profile: IProfile,
-}
 
 const FontStyledIcon = styled(FontAwesomeIcon)`
     margin-right: 5px;
@@ -35,6 +34,47 @@ const FontStyledIcon = styled(FontAwesomeIcon)`
 const MaxTagLimitAchieved = styled.div`
     margin: 15px;
 `;
+
+const ProfileEditContainer = styled.div`
+    display: flex;
+    align-items: center;
+    height: calc(100vh - 49px);
+    flex-direction: column;
+    margin-bottom: 50px;
+`;
+
+const UploadFileContainer = styled.div`
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+
+    & svg {
+        cursor: pointer;
+        color: var(--accent2);
+    }
+    & > img{
+        width: 250px;
+        /* max-height: 400px; */
+    }
+`;
+
+const PersonalEditContainer = styled.div`
+    min-width: 350px;
+    margin: 10px;
+`;
+
+const PreferenceEditContainer = styled.div`
+    width: 500px;
+    margin: 10px;
+`;
+
+const PublicEditContainer = styled.div`
+    width: 400px;
+`;
+
+type PropsType = {
+    profile: IProfile,
+}
 
 const Menu = (props: MenuProps<ITag, true>) => {
     const optionSelectedLength = props.getValue().length || 0;
@@ -56,18 +96,15 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
     const currProfile = useSelector(getCurrProfile);
     const tags: Array<IComboBoxItem> = useSelector(getAllTags);
 
-    // const currProfile = useSelector(getcurrProfile);
     const [name, setName] = React.useState(currProfile.name || "");
     const [age, setAge] = React.useState<number>(currProfile.age ? currProfile.age : 18);
     const [town, setTown] = React.useState(currProfile.town || "");
 
 
-    // const currProfile = useSelector(getcurrProfile);
     const [selectedTags, setSelectedTags] = React.useState<Array<IComboBoxItem>>(currProfile?.tags?.length > 0 ? tags.filter(t => currProfile.tags.some(ut => t.value === ut)) : []);
     const [selectedGender, setSelectedGender] = React.useState<Array<IComboBoxItem>>(currProfile?.sex ? [{ value: currProfile.sex, label: "" }] : []);
     const [selectedOrientation, setSelectedOrientation] = React.useState<Array<IComboBoxItem>>(currProfile?.orientation ? [{ value: currProfile.orientation, label: "" }] : []);
 
-    // const currProfile = useSelector(getcurrProfile);
     const [picture, setPicture] = React.useState<string>(currProfile.imageURL || "");
     const [description, setDescription] = React.useState<string>(currProfile.desc || "");
 
@@ -136,14 +173,23 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
             dispatch(addPrefs(selectedOrientation[0].value));
             dispatch(addDesc(description));
             dispatch(addPhoto(picture));
-
+            // aide : includes/Delay.ts
             // TODO trigger update profile
-            // dispatch(
-            //     updateProfile(profile)
-            // )
+            dispatch(
+                updateProfile(({ error }) => {
+                    if (error) {
+                        alert.error(error.message);
+                    }
+                    else {
+                        alert.success('Vos modifications ont été enregistrées')
+                        history.push('/');
+                    }
+                })
+
+            )
         }
     }
-    const handleFile = (picture: string) => {
+    const handleFile = (picture: string, type: string) => {
         setPicture(picture);
     }
 
@@ -153,137 +199,153 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
     };
 
     return (
-        <div>
-            <UploadFile defaultURL={currProfile.imageURL} onSnapExtension={handleFile} />
-            <ErrorComponent array={globalErrors} name={"picture"}></ErrorComponent><TextBox borderColor={globalErrors.some(e => e.component === "name") ? 'red' : 'default'}>
-                <FontAwesomeIcon icon={faUser} />
-                <input
-                    type='name'
-                    value={name}
-                    onChange={handleOnChange}
-                    name='name'
-                    placeholder='Prénom'
+        <ProfileEditContainer>
+            <UploadFileContainer>
+                <ImagePicker sendAction={handleFile} />
+                <ProfilePicture source={picture} />
+            </UploadFileContainer>
+
+
+            <PersonalEditContainer>
+                <TextBox borderColor={globalErrors.some(e => e.component === "name") ? 'red' : 'default'}>
+                    <FontAwesomeIcon icon={faUser} />
+                    <input
+                        type='name'
+                        value={name}
+                        onChange={handleOnChange}
+                        name='name'
+                        placeholder='Prénom'
+                    />
+                    <HiddenLabel htmlFor="name">
+                        Name
+                    </HiddenLabel>
+                </TextBox>
+                <ErrorComponent array={globalErrors} name={"name"}></ErrorComponent>
+
+                <TextBox borderColor={globalErrors.some(e => e.component === "age") ? 'red' : 'default'}>
+                    <FontAwesomeIcon icon={faCalendarAlt} />
+                    <input
+                        value={age}
+                        onChange={handleSetAgeOnChange}
+                        type='number'
+                        name='age'
+                        placeholder='Age'
+                        min={18}
+                    />
+                    <HiddenLabel htmlFor='age'>
+                        Age
+                    </HiddenLabel>
+                </TextBox>
+                <ErrorComponent array={globalErrors} name={"age"}></ErrorComponent>
+
+                <TextBox borderColor={globalErrors.some(e => e.component === "town") ? 'red' : 'default'}>
+                    <FontAwesomeIcon icon={faBuilding} />
+                    <input
+                        value={town}
+                        onChange={handleSetTownOnChange}
+                        type='town'
+                        name='town'
+                        placeholder='Ville'
+                    />
+                    <HiddenLabel htmlFor='town'>
+                        Town
+                    </HiddenLabel>
+                </TextBox>
+                <ErrorComponent array={globalErrors} name={"town"}></ErrorComponent>
+            </PersonalEditContainer>
+
+            <PreferenceEditContainer>
+                <Select
+                    isSearchable={true}
+                    isClearable={true}
+                    onChange={mygender => setSelectedGender([mygender as IComboBoxItem])}
+                    defaultValue={currProfile?.sex ? { value: currProfile.sex, label: genders.filter(g => g.value === currProfile.sex)[0].label } : null}
+                    options={genders}
+                    placeholder="Sélectionnez votre genre"
+                    styles={{
+                        container: base => ({
+                            ...base,
+                            backgroundColor: globalErrors.some(e => e.component === "gender") ? 'red' : 'default',
+                            borderRadius: '5px',
+                            padding: 2,
+                            marginBottom: '2px',
+                        }),
+                    }}
                 />
-                <HiddenLabel htmlFor="name">
-                    Name
-                </HiddenLabel>
-            </TextBox>
-            <ErrorComponent array={globalErrors} name={"name"}></ErrorComponent>
+                <ErrorComponent array={globalErrors} name={"gender"}></ErrorComponent>
 
-            <TextBox borderColor={globalErrors.some(e => e.component === "age") ? 'red' : 'default'}>
-                <FontAwesomeIcon icon={faCalendarAlt} />
-                <input
-                    value={age}
-                    onChange={handleSetAgeOnChange}
-                    type='number'
-                    name='age'
-                    placeholder='Age'
-                    min={18}
+                <Select
+                    isSearchable={true}
+                    isClearable={true}
+                    onChange={myorientation => setSelectedOrientation([myorientation as IComboBoxItem])}
+                    defaultValue={currProfile?.orientation ? { value: currProfile.orientation, label: orientations.filter(g => g.value === currProfile.orientation)[0].label } : null}
+                    options={orientations}
+                    placeholder="Sélectionnez votre orientation"
+                    styles={{
+                        container: base => ({
+                            ...base,
+                            backgroundColor: globalErrors.some(e => e.component === "orientation") ? 'red' : 'default',
+                            borderRadius: '5px',
+                            padding: 2,
+                            marginBottom: '2px',
+                        }),
+                    }}
                 />
-                <HiddenLabel htmlFor='age'>
-                    Age
-                </HiddenLabel>
-            </TextBox>
-            <ErrorComponent array={globalErrors} name={"age"}></ErrorComponent>
+                <ErrorComponent array={globalErrors} name={"orientation"}></ErrorComponent>
 
-            <TextBox borderColor={globalErrors.some(e => e.component === "town") ? 'red' : 'default'}>
-                <FontAwesomeIcon icon={faBuilding} />
-                <input
-                    value={town}
-                    onChange={handleSetTownOnChange}
-                    type='town'
-                    name='town'
-                    placeholder='Ville'
+                <Creatable
+                    components={{ Menu }}
+                    borderColor="red"
+                    isMulti
+                    isSearchable={true}
+                    isClearable={true}
+                    onChange={(mytags) => setSelectedTags(mytags as IComboBoxItem[])}
+                    defaultValue={currProfile?.tags?.length > 0 ? tags.filter(t => currProfile.tags.some(ut => t.value === ut)) : []}
+                    options={tags}
+                    placeholder="Sélectionnez vos tags"
+                    closeMenuOnSelect={false}
+                    styles={{
+                        container: base => ({
+                            ...base,
+                            backgroundColor: globalErrors.some(e => e.component === "tags") ? 'red' : 'default',
+                            borderRadius: '5px',
+                            padding: 2,
+                        }),
+                    }}
                 />
-                <HiddenLabel htmlFor='town'>
-                    Town
-                </HiddenLabel>
-            </TextBox>
-            <ErrorComponent array={globalErrors} name={"town"}></ErrorComponent>
-            <Select
-                isSearchable={true}
-                isClearable={true}
-                onChange={mygender => setSelectedGender([mygender as IComboBoxItem])}
-                defaultValue={currProfile?.sex ? { value: currProfile.sex, label: genders.filter(g => g.value === currProfile.sex)[0].label } : null}
-                options={genders}
-                placeholder="Sélectionnez votre genre"
-                styles={{
-                    container: base => ({
-                        ...base,
-                        backgroundColor: globalErrors.some(e => e.component === "gender") ? 'red' : 'default',
-                        borderRadius: '5px',
-                        padding: 2,
-                        marginBottom: '2px',
-                    }),
-                }}
-            />
-            <ErrorComponent array={globalErrors} name={"gender"}></ErrorComponent>
+                <ErrorComponent array={globalErrors} name={"tags"}></ErrorComponent>
+            </PreferenceEditContainer>
 
-            <Select
-                isSearchable={true}
-                isClearable={true}
-                onChange={myorientation => setSelectedOrientation([myorientation as IComboBoxItem])}
-                defaultValue={currProfile?.orientation ? { value: currProfile.orientation, label: orientations.filter(g => g.value === currProfile.orientation)[0].label } : null}
-                options={orientations}
-                placeholder="Sélectionnez votre orientation"
-                styles={{
-                    container: base => ({
-                        ...base,
-                        backgroundColor: globalErrors.some(e => e.component === "orientation") ? 'red' : 'default',
-                        borderRadius: '5px',
-                        padding: 2,
-                        marginBottom: '2px',
-                    }),
-                }}
-            />
-            <ErrorComponent array={globalErrors} name={"orientation"}></ErrorComponent>
+            <PublicEditContainer>
+                <TextBox
+                    borderColor={globalErrors.some(e => e.component === "description") ? 'red' : 'default'}
+                    width={400}
+                >
+                    <FontAwesomeIcon icon={faUser} />
+                    <textarea
+                        rows={5}
+                        value={description}
+                        onChange={handleSetDescriptionOnChange}
+                        name='description'
+                        placeholder='Description'
+                    ></textarea>
+                    <HiddenLabel htmlFor="description">
+                        Description
+                        </HiddenLabel>
+                </TextBox>
+                <ErrorComponent array={globalErrors} name={"description"}></ErrorComponent>
+            </PublicEditContainer>
 
-            <Creatable
-                components={{ Menu }}
-                borderColor="red"
-                isMulti
-                isSearchable={true}
-                isClearable={true}
-                onChange={(mytags) => setSelectedTags(mytags as IComboBoxItem[])}
-                defaultValue={currProfile?.tags?.length > 0 ? tags.filter(t => currProfile.tags.some(ut => t.value === ut)) : []}
-                options={tags}
-                placeholder="Sélectionnez vos tags"
-                closeMenuOnSelect={false}
-                styles={{
-                    container: base => ({
-                        ...base,
-                        backgroundColor: globalErrors.some(e => e.component === "tags") ? 'red' : 'default',
-                        borderRadius: '5px',
-                        padding: 2,
-                    }),
-                }}
-            />
-            <ErrorComponent array={globalErrors} name={"tags"}></ErrorComponent>
+            {/*<UploadFileContainer>
+                <UploadFile defaultURL={currProfile.imageURL} onSnapExtension={handleFile} />
+                <ErrorComponent array={globalErrors} name={"picture"}></ErrorComponent>
+            </UploadFileContainer>*/}
 
-
-
-            <TextBox
-                borderColor={globalErrors.some(e => e.component === "description") ? 'red' : 'default'}
-                width={400}
-            >
-                <FontAwesomeIcon icon={faUser} />
-                <textarea
-                    rows={5}
-                    value={description}
-                    onChange={handleSetDescriptionOnChange}
-                    name='description'
-                    placeholder='Description'
-                ></textarea>
-                <HiddenLabel htmlFor="description">
-                    Description
-                </HiddenLabel>
-            </TextBox>
-            <ErrorComponent array={globalErrors} name={"description"}></ErrorComponent>
             <ButtonFlex>
                 <Button onClick={handleBack}>Retour</Button>
                 <Button primary onClick={handleOnSubmit}>Enregistrer les modifications</Button>
             </ButtonFlex>
-        </div>
+        </ProfileEditContainer>
     );
 }
 
