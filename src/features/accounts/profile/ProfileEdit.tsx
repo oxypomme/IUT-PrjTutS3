@@ -26,6 +26,7 @@ import ITag from "../../../include/IComboBoxItem";
 import { ImagePicker } from '../../../components/Pickers';
 import { ProfilePicture } from './ProfileComponent';
 import UploadProgress from '../../firestorage/UploadProgress';
+import LoadContainer from '../../../components/LoadContainer';
 //import ErrorComponent from "../../../components/ErrorComponent";
 
 const FontStyledIcon = styled(FontAwesomeIcon)`
@@ -200,9 +201,9 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
 
     return (
         <ProfileEditContainer>
-            <FrontContainer isShowing={isWorking}>
+            <LoadContainer isShowing={isWorking}>
                 <UploadProgress />
-            </FrontContainer>
+            </LoadContainer>
 
             <UploadFileContainer>
                 <ImagePicker sendAction={handleFile} />

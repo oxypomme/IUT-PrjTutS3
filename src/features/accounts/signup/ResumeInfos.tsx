@@ -9,10 +9,11 @@ import '@firebase/auth';
 
 import { getInfos } from '../accountSlice';
 import ProfileComponent from '../profile/ProfileComponent';
-import { Button, ButtonFlex, FrontContainer } from '../../../components/styledComponents';
+import { Button, ButtonFlex } from '../../../components/styledComponents';
 import { createProfile, getProfileWork } from '../profileSlice';
 import CheckBox from '../../../components/CheckBox';
 import UploadProgress from '../../firestorage/UploadProgress';
+import LoadContainer from '../../../components/LoadContainer';
 
 const ResumeInfos = () => {
     const dispatch = useDispatch();
@@ -60,9 +61,9 @@ const ResumeInfos = () => {
 
     return (
         <div>
-            <FrontContainer isShowing={isWorking}>
+            <LoadContainer isShowing={isWorking} loadIcon>
                 <UploadProgress />
-            </FrontContainer>
+            </LoadContainer>
             <ProfileComponent profile={profile} />
             <ButtonFlex>
                 <Button onClick={handleBack}>Retour</Button>

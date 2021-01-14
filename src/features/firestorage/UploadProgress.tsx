@@ -15,8 +15,7 @@ const ProgressContainer = styled.div<{ isShowing?: boolean }>`
     width: 100%;
     background: #333;
     opacity: 0.75;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-radius: 5px;
     visibility: ${props => props.isShowing ? "visible" : "hidden"};
     display: flex;
 
