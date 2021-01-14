@@ -63,6 +63,9 @@ const StyledUploadProgress = styled.div`
         left: 318px;
         bottom: 47px;
         width: calc(100% - 318px);
+        border-radius: 0;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
     }
 `;
 
