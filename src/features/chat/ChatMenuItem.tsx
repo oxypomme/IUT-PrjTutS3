@@ -14,6 +14,7 @@ import { getInChat } from './chatSlice';
 import markdownOptions from './MarkdownOverride';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAudio, faFileImage } from '@fortawesome/free-solid-svg-icons';
+import moment from 'moment';
 
 const Item = styled.li<{ isActive?: boolean, read?: boolean }>`
     width: 100%;
@@ -90,7 +91,7 @@ const ChatMenuItem = ({ onClick, profile, isActive }: PropsType) => {
         if (rawInMessages && Object.keys(rawInMessages).length > 0) {
             for (const key in rawInMessages) {
                 if (rawInMessages[key]?.sender === profile.authId &&
-                    (!lastMessage || (new Date(lastMessage.date).getTime() < new Date(rawInMessages[key].date).getTime()))) {
+                    (!lastMessage || (moment(lastMessage.date, "DD-MM-YYYY, HH:mm:SS").toDate().getTime() < moment(rawInMessages[key].date, "DD-MM-YYYY, HH:mm:SS").toDate().getTime()))) {
                     setLastMessage(rawInMessages[key]);
                 }
             }
