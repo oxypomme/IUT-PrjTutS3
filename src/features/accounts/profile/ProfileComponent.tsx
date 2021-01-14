@@ -162,17 +162,19 @@ const ProfileComponent = ({ profile, isMatchable, isDeletable, handleEditProfile
     }
     const handleDelete = (event: React.SyntheticEvent) => {
         event.preventDefault();
-        dispatch(
-            deleteProfile(({ error }) => {
-                if (error) {
-                    alert.error(error.message);
-                }
-                else {
-                    alert.success('Vous avez bien supprimé votre compte')
-                    history.push('/');
-                }
-            })
-        );
+        if (window.confirm("Voulez-vous vraiment supprimer votre compte ? 😭")) {
+            dispatch(
+                deleteProfile(({ error }) => {
+                    if (error) {
+                        alert.error(error.message);
+                    }
+                    else {
+                        alert.success('Vous avez bien supprimé votre compte')
+                        history.push('/');
+                    }
+                })
+            )
+        }
     }
 
     return (
