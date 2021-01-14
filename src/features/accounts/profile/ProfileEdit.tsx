@@ -10,11 +10,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCalendarAlt, faBuilding, faGenderless, faHelicopter, faHorse, faMarsDouble, faTransgender, faVenusDouble, faVenusMars, faMale, faFemale } from "@fortawesome/free-solid-svg-icons";
 
 import ErrorComponent from '../../../components/ErrorComponent';
-import { Button, TextBox, HiddenLabel, ButtonFlex } from '../../../components/styledComponents';
+import { Button, TextBox, HiddenLabel, ButtonFlex, FrontContainer } from '../../../components/styledComponents';
 import UploadFile from '../../firestorage/UploadFile';
 
 import { getAllTags, fetchTags } from '../tagSlice';
-import { getCurrProfile, updateProfile } from '../profileSlice';
+import { getCurrProfile, getProfileWork, updateProfile } from '../profileSlice';
 import { addAge, addCity, addName, addGender, addPrefs, addTags, addDesc, addPhoto } from "../accountSlice";
 
 import IProfile from '../../../include/IProfile';
@@ -25,6 +25,7 @@ import IComboBoxItem from '../../../include/IComboBoxItem';
 import ITag from "../../../include/IComboBoxItem";
 import { ImagePicker } from '../../../components/Pickers';
 import { ProfilePicture } from './ProfileComponent';
+import UploadProgress from '../../firestorage/UploadProgress';
 //import ErrorComponent from "../../../components/ErrorComponent";
 
 const FontStyledIcon = styled(FontAwesomeIcon)`
@@ -72,6 +73,12 @@ const PublicEditContainer = styled.div`
     width: 400px;
 `;
 
+const UploadProgressContainer = styled.div`
+    width: 1002px;
+    margin: auto;
+    z-index: 20000;
+`;
+
 type PropsType = {
     profile: IProfile,
 }
@@ -96,11 +103,11 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
 
     const currProfile = useSelector(getCurrProfile);
     const tags: Array<IComboBoxItem> = useSelector(getAllTags);
+    const isWorking = useSelector(getProfileWork);
 
     const [name, setName] = React.useState(currProfile.name || "");
     const [age, setAge] = React.useState<number>(currProfile.age ? currProfile.age : 18);
     const [town, setTown] = React.useState(currProfile.town || "");
-
 
     const [selectedTags, setSelectedTags] = React.useState<Array<IComboBoxItem>>(currProfile?.tags?.length > 0 ? tags.filter(t => currProfile.tags.some(ut => t.value === ut)) : []);
     const [selectedGender, setSelectedGender] = React.useState<Array<IComboBoxItem>>(currProfile?.sex ? [{ value: currProfile.sex, label: "" }] : []);
@@ -200,6 +207,11 @@ const ProfileEdit = (props: PropsType): JSX.Element => {
 
     return (
         <ProfileEditContainer>
+            <UploadProgressContainer>
+                <UploadProgress />
+            </UploadProgressContainer>
+            <FrontContainer isShowing={isWorking} />
+
             <UploadFileContainer>
                 <ImagePicker sendAction={handleFile} />
                 <ProfilePicture source={picture} />
