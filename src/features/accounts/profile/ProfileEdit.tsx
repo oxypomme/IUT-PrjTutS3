@@ -39,9 +39,7 @@ const MaxTagLimitAchieved = styled.div`
 const ProfileEditContainer = styled.div`
     display: flex;
     align-items: center;
-    height: calc(100vh - 49px);
     flex-direction: column;
-    margin-bottom: 50px;
 `;
 
 const UploadFileContainer = styled.div`
@@ -55,6 +53,7 @@ const UploadFileContainer = styled.div`
     }
     & > img{
         width: 250px;
+        height: 380px;
         /* max-height: 400px; */
     }
 `;
