@@ -64,9 +64,18 @@ const handleStopPropagation = (event) => {
 }
 
 const UploadMicRecord = ({ onCancel, onOk }: PropsType) => {
-
     const [recording, setRecording] = React.useState<boolean>();
     const [micRecord, setMicRecord] = React.useState<ReactMicStopEvent>(undefined);
+
+    React.useEffect(() => {
+        (async () => {
+            navigator.mediaDevices.getUserMedia({
+                video: false,
+                audio: true
+            })
+        })()
+    }, [navigator.mediaDevices]);
+
 
     const onNOk = (event: React.SyntheticEvent) => {
         setMicRecord(undefined);
