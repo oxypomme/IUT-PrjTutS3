@@ -61,11 +61,11 @@ export const updatePasswordAccount = createAction(
 )
 export const resetPasswordAccount = createAction(
     'RESET-PASSWORD_AUTH_REQUESTED',
-    (params = {}) => ({
+    (email: string, params = {}) => ({
         payload: {
             request: {
                 type: "sendPasswordResetEmail",
-                email: params.email,
+                email,
                 actionCodeSettings: null
             }
         }

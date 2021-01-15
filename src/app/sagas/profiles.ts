@@ -46,7 +46,7 @@ import {
     getTagError
 } from '../../features/accounts/tagSlice';
 import { deleteAvatar, getStorageError, uploadFileFailed, uploadFileSuccess, uploadStringFile } from '../../features/firestorage/storageSlice';
-import { syncInMatchesSuccess, syncOutMatchesSuccess } from "../../features/accounts/matches/matchesSlice";
+import { getIngoingMatches, getOutgoingMatches, syncInMatchesSuccess, syncOutMatchesSuccess } from "../../features/accounts/matches/matchesSlice";
 
 function* getProfile(action) {
     try {
@@ -184,8 +184,61 @@ function* deleteProfileSaga(action) {
     try {
         const authId = yield select(getAuthId);
 
-        // delete before login out
+        // delete before log out
         yield put(deleteAvatar(authId));
+
+        const { request } = action.payload;
+
+        const outMatches = yield select(getOutgoingMatches);
+        if (outMatches) {
+            for (const key in outMatches) {
+                const uid = outMatches[key]?.key;
+                yield call(
+                    rsf.database[request.type],
+                    request.urls[1] + '/' + uid,
+                    request.params
+                );
+            }
+        }
+        const inMatches = yield select(getIngoingMatches);
+        if (inMatches) {
+            for (const key in inMatches) {
+                const uid = inMatches[key]?.key;
+                yield call(
+                    rsf.database[request.type],
+                    request.urls[1] + '/' + uid,
+                    request.params
+                );
+            }
+        }
+
+        const outChat = yield select(getOutgoingMatches);
+        if (outChat) {
+            for (const key in outChat) {
+                yield call(
+                    rsf.database[request.type],
+                    request.urls[2] + '/' + key,
+                    request.params
+                );
+            }
+        }
+        const inChat = yield select(getIngoingMatches);
+        if (inMatches) {
+            for (const key in inChat) {
+                yield call(
+                    rsf.database[request.type],
+                    request.urls[2] + '/' + key,
+                    request.params
+                );
+            }
+        }
+
+        // Deletes the profile
+        yield call(
+            rsf.database[request.type],
+            request.urls[0] + '/' + authId,
+            request.params
+        );
 
         // It actually log you out
         yield put(deleteAccount());
@@ -194,16 +247,6 @@ function* deleteProfileSaga(action) {
         if (accountError !== "") {
             throw new Error(accountError);
         }
-
-        const { request } = action.payload;
-
-        yield call(
-            rsf.database[request.type],
-            request.urls[0] + '/' + authId,
-            request.params
-        );
-
-        //TODO: delete matches
 
         yield put(deleteProfileSuccess());
     } catch (error) {

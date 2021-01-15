@@ -72,7 +72,7 @@ export const deleteProfile = (onComplete?: TCallback, params = {}): TCustomActio
     payload: {
         request: {
             type: "delete",
-            urls: ["/profiles", "/matchs"],
+            urls: ["/profiles", "/matches", "/messages"],
             params
         }
     },

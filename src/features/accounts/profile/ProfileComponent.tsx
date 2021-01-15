@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from 'react-alert';
@@ -6,6 +6,9 @@ import { useHistory } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHorse, faCalendarAlt, faBuilding, faVenusMars, faVenusDouble, faNeuter, faHelicopter, faMarsDouble, faTransgender, faGenderless, faMale, faFemale } from '@fortawesome/free-solid-svg-icons';
+
+import firebase from 'firebase/app';
+import '@firebase/auth';
 
 import { getAllTags } from '../tagSlice';
 
@@ -162,18 +165,28 @@ const ProfileComponent = ({ profile, isMatchable, isDeletable, handleEditProfile
     }
     const handleDelete = (event: React.SyntheticEvent) => {
         event.preventDefault();
+        const user = firebase.auth().currentUser;
         if (window.confirm("Voulez-vous vraiment supprimer votre compte ? 😭")) {
-            dispatch(
-                deleteProfile(({ error }) => {
-                    if (error) {
-                        alert.error(error.message);
-                    }
-                    else {
-                        alert.success('Vous avez bien supprimé votre compte')
-                        history.push('/');
-                    }
-                })
-            )
+            const passwd = window.prompt("(re)tapez votre mot de passe :");
+            if (passwd) {
+                user.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(user.email, passwd)).then(() => {
+                    dispatch(
+                        deleteProfile(({ error }) => {
+                            if (error) {
+                                alert.error(error.message);
+                            }
+                            else {
+                                alert.success('Vous avez bien supprimé votre compte')
+                                history.push('/');
+                            }
+                        })
+                    );
+                }).catch((error) => {
+                    alert.error(error.message)
+                });
+            } else {
+                alert.error("Mot de passe vide... Action annulée...")
+            }
         }
     }
 
