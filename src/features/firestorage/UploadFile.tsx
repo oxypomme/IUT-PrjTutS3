@@ -125,18 +125,16 @@ const UploadFile = ({ defaultURL, onCancel, onOk, onSnapExtension }: PropsType) 
     const dropRef = React.useRef(null);
 
     React.useEffect(() => {
-        (async () => {
-            if (navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: false
-            })) {
-                let mdevices = await navigator.mediaDevices.enumerateDevices();
-                mdevices = mdevices.filter(({ kind }) => kind === "videoinput");
-                const icams = mdevices.map(v => { return { value: v.deviceId, label: v.label }; }) as ICam[];
+        navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false
+        }).then(async (stream) => {
+            let mdevices = await navigator.mediaDevices.enumerateDevices();
+            mdevices = mdevices.filter(({ kind }) => kind === "videoinput");
+            const icams = mdevices.map(v => { return { value: v.deviceId, label: v.label }; }) as ICam[];
 
-                setDevices(icams);
-            }
-        })()
+            setDevices(icams);
+        });
     }, [navigator.mediaDevices]);
 
     const handleCamChange = (device: ICam) => {
