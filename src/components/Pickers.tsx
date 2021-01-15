@@ -101,7 +101,7 @@ export const GifPicker = ({ sendAction }: PropsType) => {
     return (
         <span>
             <FrontContainer isShowing={showUploadGiphy} onClick={handleGiphyCancel}>
-                <SelectGiphy onOk={handleGiphySend} onCancel={handleGiphyCancel} />
+                {showUploadGiphy && <SelectGiphy onOk={handleGiphySend} onCancel={handleGiphyCancel} />}
             </FrontContainer>
             <FontAwesomeIcon
                 icon={faFileImage}
