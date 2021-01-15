@@ -34,7 +34,7 @@ export const ImagePicker = ({ sendAction }: PropsType) => {
     return (
         <span>
             <FrontContainer isShowing={showUploadImage} onClick={handleImageCancel}>
-                <UploadFile onOk={handleImageSend} onCancel={handleImageCancel} />
+                {showUploadImage && <UploadFile onOk={handleImageSend} onCancel={handleImageCancel} />}
             </FrontContainer>
             <FontAwesomeIcon
                 icon={faCameraRetro}
@@ -68,7 +68,7 @@ export const AudioPicker = ({ sendAction }: PropsType) => {
     return (
         <span>
             <FrontContainer isShowing={showUploadMicRecord} onClick={handleMicRecordCancel}>
-                <UploadMicRecord onOk={handleMicRecordSend} onCancel={handleMicRecordCancel} />
+                {showUploadMicRecord && <UploadMicRecord onOk={handleMicRecordSend} onCancel={handleMicRecordCancel} />}
             </FrontContainer>
             <FontAwesomeIcon
                 icon={faMicrophone}
